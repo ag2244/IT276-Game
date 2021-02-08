@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30523.141
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gf2d", "gf2d\gf2d.vcxproj", "{784CDE08-E04A-4A87-AE74-69BD8CCF6CBA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{784CDE08-E04A-4A87-AE74-69BD8CCF6CBA}.Debug|x64.ActiveCfg = Debug|x64
+		{784CDE08-E04A-4A87-AE74-69BD8CCF6CBA}.Debug|x64.Build.0 = Debug|x64
+		{784CDE08-E04A-4A87-AE74-69BD8CCF6CBA}.Debug|x86.ActiveCfg = Debug|Win32
+		{784CDE08-E04A-4A87-AE74-69BD8CCF6CBA}.Debug|x86.Build.0 = Debug|Win32
+		{784CDE08-E04A-4A87-AE74-69BD8CCF6CBA}.Release|x64.ActiveCfg = Release|Win32
+		{784CDE08-E04A-4A87-AE74-69BD8CCF6CBA}.Release|x64.Build.0 = Release|Win32
+		{784CDE08-E04A-4A87-AE74-69BD8CCF6CBA}.Release|x86.ActiveCfg = Release|Win32
+		{784CDE08-E04A-4A87-AE74-69BD8CCF6CBA}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F5066035-4A29-482B-A5D5-DA8F8DC9FB0B}
+	EndGlobalSection
+EndGlobal
