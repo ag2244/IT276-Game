@@ -9,19 +9,43 @@
 #ifndef __ENTITY_H__
 #define __ENTITY_H__
 
-typedef struct {
+/* Entity_s is a temporary name, used so it can be called recursively*/
+typedef struct Entity_s{
 
 	Bool _inuse;
 	Vector2D position;
+	Vector2D velocity;
 	Sprite* sprite;
 
-} Entity;
+	float frame;
+	float frameRate;
+	int frameCount;
+
+	/*Function pointers!*/
+	void (*update)(struct Entity_s *self);
+	void (*think)(struct Entity_s* self);
+	void (*draw)(struct Entity_s* self);
+	void (*free)(struct Entity_s* self);
+
+	void* data;
+
+} Entity; //Finally naming it Entity
 
 /**
 * @brief initialize internal entity management system
 * @param max_entities how many concurrent entities to support
 */
 void entity_manager_init(Uint32 max_entities);
+
+/**
+* @brief calls update function on all entities
+*/
+void entity_manager_update_entities();
+
+/**
+* @brief calls draw function on all entities
+*/
+void entity_manager_draw_entities();
 
 /**
 * @brief free all entities in the system, destroy entity manager

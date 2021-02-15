@@ -1,9 +1,14 @@
 #include <SDL.h>
-#include "gf2d_graphics.h"
-#include "gf2d_sprite.h"
+
+#include <math.h>
+
 #include "simple_logger.h"
 
+#include "gf2d_graphics.h"
+#include "gf2d_sprite.h"
+
 #include "starsabove_entity.h"
+#include "starsabove_player.h"
 
 int main(int argc, char * argv[])
 {
@@ -30,12 +35,18 @@ int main(int argc, char * argv[])
         0);
     gf2d_graphics_set_frame_delay(16);
     gf2d_sprite_init(1024);
+    
+    /* Starting the entity manager */
     entity_manager_init(100);
+    
     SDL_ShowCursor(SDL_DISABLE);
     
     /*demo setup*/
     sprite = gf2d_sprite_load_image("images/backgrounds/bg_flat.png");
     mouse = gf2d_sprite_load_all("images/pointer.png",32,32,16);
+
+    player_spawn(vector2d(100, 100));
+
     /*main game loop*/
     while(!done)
     {
@@ -46,11 +57,15 @@ int main(int argc, char * argv[])
         mf+=0.1;
         if (mf >= 16.0)mf = 0;
         
+        entity_manager_update_entities();
         
         gf2d_graphics_clear_screen();// clears drawing buffers
-        // all drawing should happen betweem clear_screen and next_frame
+        // all drawing should happen between clear_screen and next_frame
+
             //backgrounds drawn first
             gf2d_sprite_draw_image(sprite,vector2d(0,0));
+
+            entity_manager_draw_entities();
             
             //UI elements last
             gf2d_sprite_draw(
@@ -62,6 +77,7 @@ int main(int argc, char * argv[])
                 NULL,
                 &mouseColor,
                 (int)mf);
+
         gf2d_grahics_next_frame();// render current draw frame and skip to the next frame
         
         if (keys[SDL_SCANCODE_ESCAPE])done = 1; // exit condition

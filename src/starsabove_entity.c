@@ -1,4 +1,8 @@
 #include <stdlib.h>
+#include "gfc_types.h"
+#include "gfc_vector.h"
+
+#include "gf2d_sprite.h"
 #include "simple_logger.h"
 
 #include "starsabove_entity.h"
@@ -46,10 +50,120 @@ void entity_manager_free() {
 	slog("Entity system freed");
 }
 
-Entity* entity_new();
+void entity_update(Entity* self) 
+{
+	if (!self) return;
 
-void entity_free(Entity* ent);
+	// Move
+	vector2d_add(self->position, self->position, self->velocity);
 
-void entity_draw(Entity* ent);
+	//Animate
+	self->frame += self->frameRate;
+	if (self->frame >= self->frameCount) self->frame = 0;
+
+	// DO ANY GENERIC UPDATE CODE
+	// IF THERE IS A CUSTOM UPDATE, DO THAT NOW
+	if (self->update) self->update(self);
+}
+
+void entity_manager_update_entities() {
+
+	int i;
+
+	if (entity_manager.entity_list == NULL) {
+		slog("Entity system does not exist!");
+		return;
+	}
+
+	for (i = 0; i < entity_manager.max_entities; i++) 
+	{
+		if (entity_manager.entity_list[i]._inuse == 0) continue;
+
+		entity_update(&entity_manager.entity_list[i]);
+	}
+}
+
+void entity_manager_draw_entities() {
+
+	int i;
+
+	if (entity_manager.entity_list == NULL) {
+		slog("Entity system does not exist!");
+		return;
+	}
+
+	for (i = 0; i < entity_manager.max_entities; i++)
+	{
+		if (entity_manager.entity_list[i]._inuse == 0) continue;
+		
+		entity_draw(&entity_manager.entity_list[i]);
+	}
+}
+
+Entity* entity_new() 
+{
+
+	int i;
+
+	if (entity_manager.entity_list == NULL) {
+		slog("Entity system does not exist!");
+		return;
+	}
+
+	for (i = 0; i < entity_manager.max_entities; i++) 
+	{
+
+		if (entity_manager.entity_list[i]._inuse) continue; // Someone else using this one
+		memset(&entity_manager.entity_list[i], 0, sizeof(Entity));
+
+		entity_manager.entity_list[i]._inuse = 1;
+
+		return &entity_manager.entity_list[i];
+	}
+
+	slog("No free entities available");
+	return NULL;
+}
+
+void entity_free(Entity* ent) 
+{
+	if (!ent) 
+	{
+		slog("Cannot free a NULL entity");
+		return;
+	}
+
+	gf2d_sprite_free(ent->sprite);
+	ent->sprite = NULL;
+	ent->_inuse = 0;
+}
+
+void entity_draw(Entity* ent) 
+{
+	if (!ent)
+	{
+		slog("Cannot draw a NULL entity");
+		return;
+	}
+
+	//If there's a custom draw
+	if (ent->draw) ent->draw(ent);
+
+	else {
+
+		if (ent->sprite == NULL) return; //Nothing to draw
+
+		gf2d_sprite_draw(
+			ent->sprite,
+			ent->position,
+			NULL,
+			NULL,
+			NULL,
+			NULL,
+			NULL,
+			(Uint32)ent->frame );
+
+	}
+}
 
 /*eol@oef*/
