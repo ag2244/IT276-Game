@@ -165,5 +165,3 @@ void entity_draw(Entity* ent)
 
 	}
 }
-
-/*eol@oef*/

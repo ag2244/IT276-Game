@@ -10,6 +10,8 @@
 #include "starsabove_entity.h"
 #include "starsabove_player.h"
 
+#include "starsabove_game.h"
+
 int main(int argc, char * argv[])
 {
     /*variable declarations*/
@@ -26,26 +28,23 @@ int main(int argc, char * argv[])
     init_logger("gf2d.log");
     slog("---==== BEGIN ====---");
     gf2d_graphics_initialize(
-        "gf2d",
+        "Stars Above",
         1200,
         720,
-        1200,
-        720,
+        1500,
+        900,
         vector4d(0,0,0,255),
         0);
     gf2d_graphics_set_frame_delay(16);
     gf2d_sprite_init(1024);
-    
-    /* Starting the entity manager */
-    entity_manager_init(100);
+
+    prepare_game();
     
     SDL_ShowCursor(SDL_DISABLE);
     
     /*demo setup*/
-    sprite = gf2d_sprite_load_image("images/backgrounds/bg_flat.png");
+    sprite = gf2d_sprite_load_image("images/backgrounds/space.jpg");
     mouse = gf2d_sprite_load_all("images/pointer.png",32,32,16);
-
-    player_spawn(vector2d(100, 100));
 
     /*main game loop*/
     while(!done)
@@ -57,16 +56,14 @@ int main(int argc, char * argv[])
         mf+=0.1;
         if (mf >= 16.0)mf = 0;
         
-        entity_manager_update_entities();
-        
         gf2d_graphics_clear_screen();// clears drawing buffers
         // all drawing should happen between clear_screen and next_frame
 
             //backgrounds drawn first
             gf2d_sprite_draw_image(sprite,vector2d(0,0));
-
-            entity_manager_draw_entities();
             
+            starsabove_loop();
+
             //UI elements last
             gf2d_sprite_draw(
                 mouse,
