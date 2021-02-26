@@ -6,6 +6,8 @@
 
 #include "gf2d_sprite.h"
 
+#include "starsabove_collision.h"
+
 #ifndef __ENTITY_H__
 #define __ENTITY_H__
 
@@ -26,8 +28,13 @@ typedef struct Entity_s{
 	void (*think)(struct Entity_s* self);
 	void (*draw)(struct Entity_s* self);
 	void (*free)(struct Entity_s* self);
+	
+	void (*onClick)(struct Entity_s* self);
 
 	void* data;
+
+	Collider_Circle* collider_circle;
+	Collider_Box* collider_box;
 
 } Entity; //Finally naming it Entity
 
@@ -53,7 +60,7 @@ void entity_manager_draw_entities();
 void entity_manager_free();
 
 /**
-* @brief allocate an entiity, initialize to zero, return a pointer to it
+* @brief allocate an entity, initialize to zero, return a pointer to it
 * @return NULL on error (see logs) or a pointer to an initialized entity
 */
 Entity* entity_new();
@@ -69,5 +76,11 @@ void entity_free(Entity *ent);
 * @param ent the entity to draw
 */
 void entity_draw(Entity* ent);
+
+/**
+* @brief check if this entity is clickable
+* @param ent the entity to draw
+*/
+Bool entity_clickable(Entity* ent);
 
 #endif

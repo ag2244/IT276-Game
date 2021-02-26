@@ -40,7 +40,6 @@ void entity_manager_init(Uint32 max_entities)
 	slog("Entity system initialized");
 }
 
-
 void entity_manager_free() {
 
 	if (entity_manager.entity_list != NULL) {
@@ -131,6 +130,16 @@ void entity_free(Entity* ent)
 	{
 		slog("Cannot free a NULL entity");
 		return;
+	}
+
+	if (ent->collider_box)
+	{
+		box_free(ent->collider_box);
+	}
+
+	if (ent->collider_circle)
+	{
+		box_free(ent->collider_circle);
 	}
 
 	gf2d_sprite_free(ent->sprite);

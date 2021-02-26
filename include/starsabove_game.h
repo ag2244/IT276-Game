@@ -4,7 +4,6 @@
 #define __STARSABOVE_H__
 
 #include "starsabove_entity.h"
-#include "starsabove_player.h"
 
 /**
 * @brief Spawn a player entity

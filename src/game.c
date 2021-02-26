@@ -8,7 +8,6 @@
 #include "gf2d_sprite.h"
 
 #include "starsabove_entity.h"
-#include "starsabove_player.h"
 
 #include "starsabove_game.h"
 
