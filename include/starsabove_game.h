@@ -6,6 +6,12 @@
 #include "starsabove_entity.h"
 #include "starsabove_ui_base.h"
 
+typedef struct GameState_s
+{
+	void* currentClickable;
+
+} GameState;
+
 /**
 * @brief Do stuff before the game loop begins
 * @return NULL on error

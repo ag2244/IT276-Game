@@ -26,6 +26,7 @@ UI_Element* gametext_init(Vector2D position)
     element->frameRate = 0;
     element->frameCount = 1;
 
+    /*
     element->collider_box = box_new();
 
     vector2d_copy(boxsize, vector2d(element->sprite->frame_w, element->sprite->frame_h));
@@ -33,6 +34,7 @@ UI_Element* gametext_init(Vector2D position)
     vector2d_copy(element->collider_box->position, element->position);
 
     vector2d_add(element->collider_box->extremity, position, boxsize);
+    */
 
     slog("System created!");
     return element;
