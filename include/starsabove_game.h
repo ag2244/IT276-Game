@@ -4,13 +4,7 @@
 #define __STARSABOVE_H__
 
 #include "starsabove_entity.h"
-
-/**
-* @brief Spawn a player entity
-* @param position The screen position to spawn the player at
-* @return NULL on error, or a pointer to a new player entity
-*/
-Entity* player_spawn(Vector2D position);
+#include "starsabove_ui_base.h"
 
 /**
 * @brief Do stuff before the game loop begins
@@ -23,5 +17,11 @@ void prepare_game();
 * @return NULL on error
 */
 void starsabove_loop();
+
+/**
+* @brief check to see if the mouse is hovering over any clickable entity
+* @return 1 if hovering over a clickable, 0 if not, NULL on error
+*/
+Bool starsabove_hoverDetection(float mX, float mY);
 
 #endif

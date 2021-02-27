@@ -7,13 +7,6 @@
 
 #include "starsabove_entity.h"
 
-typedef struct
-{
-	Entity* entity_list;
-	Uint32 max_entities;
-
-} EntityManager;
-
 EntityManager entity_manager = { 0 };
 
 void entity_manager_init(Uint32 max_entities)
@@ -38,6 +31,17 @@ void entity_manager_init(Uint32 max_entities)
 	entity_manager.max_entities = max_entities;
 	atexit(entity_manager_free);
 	slog("Entity system initialized");
+}
+
+EntityManager* entity_manager_get() {
+
+	if (entity_manager.entity_list == NULL) {
+		slog("Entity system does not exist!");
+		return;
+	}
+
+	return &entity_manager;
+
 }
 
 void entity_manager_free() {
@@ -173,4 +177,30 @@ void entity_draw(Entity* ent)
 			(Uint32)ent->frame );
 
 	}
+}
+
+Bool entity_clickable(Entity* ent, float mX, float mY) {
+
+	//slog("entity_clickable");
+
+	Vector2D pos = vector2d(mX, mY);
+
+	if (ent->collider_box != NULL)
+	{
+		if (box_clickable(ent->collider_box, pos) != 0)
+		{
+			return 1;
+		}
+	}
+
+	else if (ent->collider_circle != NULL)
+	{
+		if (circle_clickable(ent->collider_circle, pos) != 0)
+		{
+			return 1;
+		}
+	}
+
+	return 0;
+
 }

@@ -38,11 +38,25 @@ typedef struct Entity_s{
 
 } Entity; //Finally naming it Entity
 
+
+typedef struct
+{
+	Entity* entity_list;
+	Uint32 max_entities;
+
+} EntityManager;
+
 /**
 * @brief initialize internal entity management system
 * @param max_entities how many concurrent entities to support
 */
 void entity_manager_init(Uint32 max_entities);
+
+/**
+* @brief gets the active entity manager
+* @return the active entity manager
+*/
+EntityManager* entity_manager_get();
 
 /**
 * @brief calls update function on all entities
@@ -78,9 +92,11 @@ void entity_free(Entity *ent);
 void entity_draw(Entity* ent);
 
 /**
-* @brief check if this entity is clickable
-* @param ent the entity to draw
+* @brief check if the mouse is hovering over this entity
+* @param ent the entity to check
+* @param mX the x position of the mouse point
+* @param mY the y position of the mouse point
 */
-Bool entity_clickable(Entity* ent);
+Bool entity_clickable(Entity* ent, float mX, float mY);
 
 #endif

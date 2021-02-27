@@ -10,6 +10,7 @@
 #include "starsabove_entity.h"
 
 #include "starsabove_game.h"
+#include "starsabove_ui_base.h"
 
 int main(int argc, char * argv[])
 {
@@ -20,7 +21,7 @@ int main(int argc, char * argv[])
     
     int mx,my;
     float mf = 0;
-    Sprite *mouse;
+    Sprite *mouseNormal, *mouseClickable, *mouse;
     Vector4D mouseColor = {255,100,255,200};
     
     /*program initializtion*/
@@ -43,7 +44,8 @@ int main(int argc, char * argv[])
     
     /*demo setup*/
     sprite = gf2d_sprite_load_image("images/backgrounds/space.jpg");
-    mouse = gf2d_sprite_load_all("images/pointer.png",32,32,16);
+    mouseNormal = gf2d_sprite_load_all("images/ui/cursor.png",32,32,1);
+    mouseClickable = gf2d_sprite_load_all("images/ui/cursor_click.png", 32, 32, 1);
 
     /*main game loop*/
     while(!done)
@@ -52,27 +54,37 @@ int main(int argc, char * argv[])
         keys = SDL_GetKeyboardState(NULL); // get the keyboard state for this frame
         /*update things here*/
         SDL_GetMouseState(&mx,&my);
-        mf+=0.1;
-        if (mf >= 16.0)mf = 0;
+        //mf+=0.1;
+        //if (mf >= 16.0)mf = 0;
         
         gf2d_graphics_clear_screen();// clears drawing buffers
         // all drawing should happen between clear_screen and next_frame
 
-            //backgrounds drawn first
-            gf2d_sprite_draw_image(sprite,vector2d(0,0));
+        //backgrounds drawn first
+        gf2d_sprite_draw_image(sprite,vector2d(0,0));
             
+            //Stars Above stuff
+
             starsabove_loop();
 
-            //UI elements last
+            //draw UI elements last
+            if (starsabove_hoverDetection(mx, my)) {
+                mouse = mouseClickable;
+            }
+
+            else {
+                mouse = mouseNormal;
+            }
+
             gf2d_sprite_draw(
                 mouse,
-                vector2d(mx,my),
+                vector2d(mx, my),
                 NULL,
                 NULL,
                 NULL,
                 NULL,
-                &mouseColor,
-                (int)mf);
+                NULL,
+                0);
 
         gf2d_grahics_next_frame();// render current draw frame and skip to the next frame
         

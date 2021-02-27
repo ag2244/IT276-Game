@@ -19,10 +19,9 @@
 typedef struct Collider_Box_s 
 {
 
-	float width;
-	float height;
-
 	Vector2D position;
+
+	Vector2D extremity; //Bottom right corner of the box
 	
 	Bool(*is_clickable)(struct Collider_Box_s self, Vector2D otherPosition);
 
@@ -47,12 +46,12 @@ typedef struct Collider_Circle_s
 /**
 * @brief get a new box collider
 */
-Collider_Box box_new(Collider_Box* box, float in_width, float in_height, Vector2D in_position);
+Collider_Box* box_new();
 
 /**
 * @brief get a new circle collider
 */
-Collider_Circle circle_new(Collider_Circle* circle, float in_radius, Vector2D in_position);
+Collider_Circle* circle_new();
 
 /**
 * @brief free requested Collider_Box
@@ -72,7 +71,7 @@ void circle_free(Collider_Circle* circle);
 * @param otherX the x coordinate of the point
 * @param otherY the y coordinate of the point
 */
-Bool box_clickable(struct Collider_Circle_s self, Vector2D otherPosition);
+Bool box_clickable(Collider_Box* self, Vector2D otherPosition);
 
 /**
 * @brief checks if a point is within the specified circle
@@ -80,6 +79,6 @@ Bool box_clickable(struct Collider_Circle_s self, Vector2D otherPosition);
 * @param otherX the x coordinate of the point
 * @param otherY the y coordinate of the point
 */
-Bool circle_clickable(struct Collider_Circle_s self, Vector2D otherPosition);
+Bool circle_clickable(Collider_Circle* self, Vector2D otherPosition);
 
 #endif
