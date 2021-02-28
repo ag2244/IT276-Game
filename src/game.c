@@ -17,11 +17,12 @@ int main(int argc, char * argv[])
     /*variable declarations*/
     int done = 0;
     const Uint8 * keys;
+    const Uint32* mouse;
     Sprite *sprite;
     
     int mx,my;
     float mf = 0;
-    Sprite *mouseNormal, *mouseClickable, *mouse;
+    Sprite *mouseNormal, *mouseClickable, *mouseSprite;
     Vector4D mouseColor = {255,100,255,200};
     
     /*program initializtion*/
@@ -43,7 +44,7 @@ int main(int argc, char * argv[])
     SDL_ShowCursor(SDL_DISABLE);
     
     /*demo setup*/
-    sprite = gf2d_sprite_load_image("images/backgrounds/space.jpg");
+    sprite = gf2d_sprite_load_image("images/backgrounds/space.png");
     mouseNormal = gf2d_sprite_load_all("images/ui/cursor.png",32,32,1);
     mouseClickable = gf2d_sprite_load_all("images/ui/cursor_click.png", 32, 32, 1);
 
@@ -53,7 +54,7 @@ int main(int argc, char * argv[])
         SDL_PumpEvents();   // update SDL's internal event structures
         keys = SDL_GetKeyboardState(NULL); // get the keyboard state for this frame
         /*update things here*/
-        SDL_GetMouseState(&mx,&my);
+        mouse = SDL_GetMouseState(&mx,&my);
         //mf+=0.1;
         //if (mf >= 16.0)mf = 0;
         
@@ -69,15 +70,15 @@ int main(int argc, char * argv[])
 
             //draw UI elements last
             if (starsabove_hoverDetection(mx, my)) {
-                mouse = mouseClickable;
+                mouseSprite = mouseClickable;
             }
 
             else {
-                mouse = mouseNormal;
+                mouseSprite = mouseNormal;
             }
 
             gf2d_sprite_draw(
-                mouse,
+                mouseSprite,
                 vector2d(mx, my),
                 NULL,
                 NULL,
@@ -85,6 +86,9 @@ int main(int argc, char * argv[])
                 NULL,
                 NULL,
                 0);
+
+            //Process keys
+            processKeys(keys, mouse);
 
         gf2d_grahics_next_frame();// render current draw frame and skip to the next frame
         

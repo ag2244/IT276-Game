@@ -201,3 +201,22 @@ Bool ui_clickable(UI_Element* element, float mX, float mY) {
 	return 0;
 
 }
+
+void ui_onClick(UI_Element* element) {
+
+	if (!element)
+	{
+		slog("Cannot click on a NULL UI element");
+		return;
+	}
+
+	//If there's a custom draw
+	if (element->onClick) element->onClick(element);
+
+	else {
+
+		//TODO
+
+	}
+
+}

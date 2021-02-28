@@ -20,9 +20,9 @@ void prepare_game()
 
 	gametext_init(vector2d(0, 700));
 
-    system_spawn(vector2d(500, 300));
+    system_spawn("System1", vector2d(500, 300));
 
-    system_spawn(vector2d(300, 400));
+    system_spawn("System2", vector2d(300, 400));
 
 }
 
@@ -56,10 +56,11 @@ Bool starsabove_hoverDetection(float mX, float mY) {
 		//If the element at index i is not in use, continue
 		if (ui_manager->element_list[i]._inuse == 0) continue;
 
-		//If the element is a clickable and the mouse is hovering over it, set the gameState.currentClickable to point to it and return True.
+		//If the element is a clickable and the mouse is hovering over it, set the gameState.currentClickable_ui to point to it and return True.
 		if (ui_clickable(&ui_manager->element_list[i], mX, mY)) 
 		{
-			gameState.currentClickable = &ui_manager->element_list[i];
+			gameState.currentClickable_ui = &ui_manager->element_list[i];
+			gameState.currentClickable_entity = NULL;
 			return 1;
 		}
 			
@@ -78,16 +79,47 @@ Bool starsabove_hoverDetection(float mX, float mY) {
 		//If the entity at index i is not in use, continue
 		if (entity_manager->entity_list[i]._inuse == 0) continue;
 
-		//If the entity is a clickable and the mouse is hovering over it, set the gameState.currentClickable to point to it and return True.
+		//If the entity is a clickable and the mouse is hovering over it, set the gameState.currentClickable_entity to point to it and return True.
 		if (entity_clickable(&entity_manager->entity_list[i], mX, mY))
 		{
-			gameState.currentClickable = &entity_manager->entity_list[i];
+			gameState.currentClickable_entity = &entity_manager->entity_list[i];
+			gameState.currentClickable_ui = NULL;
 			return 1;
 		}
 	}
 
 	//No clickable is being hovered over
-	gameState.currentClickable = NULL;
+	gameState.currentClickable_ui = NULL;
+	gameState.currentClickable_entity = NULL;
 	return 0;
+
+}
+
+void onClick_left() 
+{
+	if (gameState.currentClickable_entity) {
+		entity_onClick(gameState.currentClickable_entity);
+	};
+}
+
+void processKeys(Uint8 keys, Uint32 mouse) {
+
+	SDL_Event frame_event;
+
+	while (SDL_PollEvent(&frame_event)) {
+
+		switch (frame_event.type) {
+
+		case SDL_MOUSEBUTTONDOWN:
+
+			if (frame_event.button.button == SDL_BUTTON_LEFT)
+				onClick_left();
+
+			break;
+
+		default:
+			break;
+		}
+	}
 
 }

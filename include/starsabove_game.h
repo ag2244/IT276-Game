@@ -8,7 +8,8 @@
 
 typedef struct GameState_s
 {
-	void* currentClickable;
+	UI_Element* currentClickable_ui;
+	Entity* currentClickable_entity;
 
 } GameState;
 
@@ -25,9 +26,20 @@ void prepare_game();
 void starsabove_loop();
 
 /**
+* @brief take in the keys and mouse states and perform actions based on them
+* @return NULL on error
+*/
+void processKeys(Uint8 keys, Uint32 mouse);
+
+/**
 * @brief check to see if the mouse is hovering over any clickable entity
 * @return 1 if hovering over a clickable, 0 if not, NULL on error
 */
 Bool starsabove_hoverDetection(float mX, float mY);
 
+/**
+* @brief perform actions when left mouse button is clicked
+* @return NULL on error
+*/
+void onClick_left();
 #endif

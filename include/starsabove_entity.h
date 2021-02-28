@@ -99,4 +99,10 @@ void entity_draw(Entity* ent);
 */
 Bool entity_clickable(Entity* ent, float mX, float mY);
 
+/**
+* @brief what to do with an entity that has been clicked
+* @param ent the entity that has been clicked
+*/
+void entity_onClick(Entity* ent);
+
 #endif

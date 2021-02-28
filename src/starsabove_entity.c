@@ -181,8 +181,6 @@ void entity_draw(Entity* ent)
 
 Bool entity_clickable(Entity* ent, float mX, float mY) {
 
-	//slog("entity_clickable");
-
 	Vector2D pos = vector2d(mX, mY);
 
 	if (ent->collider_box != NULL)
@@ -202,5 +200,24 @@ Bool entity_clickable(Entity* ent, float mX, float mY) {
 	}
 
 	return 0;
+
+}
+
+void entity_onClick(Entity* ent) {
+
+	if (!ent)
+	{
+		slog("Cannot click on a NULL entity");
+		return;
+	}
+
+	//If there's a custom draw
+	if (ent->onClick) ent->onClick(ent);
+
+	else {
+
+		//TODO
+
+	}
 
 }

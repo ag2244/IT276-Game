@@ -11,13 +11,6 @@
 #ifndef __UI_H__
 #define __UI_H__
 
-/** @struct Collider_Box
- *  @brief box-shaped collider
- *  @var Collider_Box::width
- *  Member 'width' is float for width (x)
- *  @var Collider_Box::height
- *  Member 'height' is float for height (y)
- */
 typedef struct UI_Element_s
 {
 
@@ -103,5 +96,11 @@ void ui_draw(UI_Element* element);
 * @param mY the y position of the mouse point
 */
 Bool ui_clickable(UI_Element* element, float mX, float mY);
+
+/**
+* @brief what to do with a ui element that has been clicked
+* @param element the element that has been clicked
+*/
+void ui_onClick(UI_Element* element);
 
 #endif
