@@ -4,14 +4,23 @@
 
 #include "starsabove_system.h"
 
+//Use for pointing to the data for an individual system
+System_Data* system_data;
+
 System_Data* system_data_new(char* name)
 {
     return malloc(sizeof(System_Data));
 }
 
-void system_onClick(struct Entity_s* self) {
+char* system_name(Entity* self)
+{
+    system_data = self->data;
+    return system_data->name;
+}
 
-    System_Data* system_data = self->data;
+void system_onClick(Entity* self) {
+
+    system_data = self->data;
 
     if (system_data->name != NULL)
         slog("Clicked on STAR SYSTEM %s", system_data->name);
@@ -58,6 +67,8 @@ Entity* system_spawn(char* name, Vector2D position)
     (struct System_Data*)ent->data = thisSystem;
 
     ent->onClick = system_onClick;
+
+    ent->name = system_name;
 
     slog("System created!");
     return ent;

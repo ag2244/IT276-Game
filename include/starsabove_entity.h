@@ -31,6 +31,8 @@ typedef struct Entity_s{
 	
 	void (*onClick)(struct Entity_s* self);
 
+	char* (*name)(struct Entity_s* self);
+
 	void* data;
 
 	Collider_Circle* collider_circle;
@@ -57,6 +59,12 @@ void entity_manager_init(Uint32 max_entities);
 * @return the active entity manager
 */
 EntityManager* entity_manager_get();
+
+/*
+* @brief get an entity with a name specified
+* @return The entity with a matching name, 0 if there is none, NULL if error.
+*/
+Entity* get_entity_by_name(char* name);
 
 /**
 * @brief calls update function on all entities

@@ -44,6 +44,36 @@ EntityManager* entity_manager_get() {
 
 }
 
+Entity* get_entity_by_name(char* name)
+{
+	int i;
+	Entity* current_entity;
+
+	if (entity_manager.entity_list == NULL) {
+		slog("Entity system does not exist!");
+		return;
+	}
+
+	if (name == NULL) {
+		slog("Cannot get an entity with NULL name");
+		return;
+	}
+
+	for (i = 0; i < entity_manager.max_entities; i++)
+	{
+		current_entity = &entity_manager.entity_list[i];
+
+		if (current_entity->_inuse && current_entity->name)
+		{
+			if (current_entity->name(current_entity) == name)
+				return &entity_manager.entity_list[i];
+		}
+	}
+
+	slog("No Entity with the name: \"%s\"", name);
+	return 0;
+}
+
 void entity_manager_free() {
 
 	if (entity_manager.entity_list != NULL) {

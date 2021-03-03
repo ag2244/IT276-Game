@@ -10,8 +10,23 @@
 
 GameState gameState = { 0 };
 
+void test() 
+{
+
+	system_spawn("System1", vector2d(500, 300));
+
+	system_spawn("System2", vector2d(300, 400));
+
+	if (get_entity_by_name("System1"))
+	{
+		slog("Entity exists with name \"System1\"");
+	}
+
+}
+
 void prepare_game()
 {
+
     /* Starting the entity manager */
     entity_manager_init(100);
 
@@ -20,9 +35,8 @@ void prepare_game()
 
 	gametext_init(vector2d(0, 700));
 
-    system_spawn("System1", vector2d(500, 300));
-
-    system_spawn("System2", vector2d(300, 400));
+	// Set up the debug world
+	test();
 
 }
 

@@ -8,7 +8,6 @@
 typedef struct System_Data_s
 {
 	char* name;
-	float test;
 
 } System_Data;
 
@@ -22,7 +21,14 @@ System_Data* system_data_new(char* name);
 * @brief Perform actions when a system is clicked
 * @return NULL on error
 */
-void system_onClick(struct Entity_s* self);
+void system_onClick(struct Entity* self);
+
+/*
+* @brief Get the name belonging to this system
+* @param The system who's name is requested
+* @return The system's name, 0 if there is none, NULL if error.
+*/
+char* system_name(struct Entity* self);
 
 /**
 * @brief Spawn a star system entity
