@@ -3,8 +3,11 @@
 #ifndef __STARSABOVE_H__
 #define __STARSABOVE_H__
 
+#include "simple_json.h"
+
 #include "starsabove_entity.h"
 #include "starsabove_ui_base.h"
+#include "starsabove_system.h"
 
 typedef struct GameState_s
 {
@@ -12,6 +15,30 @@ typedef struct GameState_s
 	Entity* currentClickable_entity;
 
 } GameState;
+
+/**
+* @brief Load all the systems in a game
+* @return NULL on error
+*/
+void load_systems(SJson* game);
+
+/**
+* @brief Load a game from a filename
+* @return NULL on error
+*/
+void load_game(char* filename);
+
+/**
+* @brief Start a new game
+* @return NULL on error
+*/
+void new_game();
+
+/**
+* @brief Turn the game into a json file and save it
+* @return NULL on error
+*/
+void save_game();
 
 /**
 * @brief Do stuff before the game loop begins

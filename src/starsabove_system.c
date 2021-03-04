@@ -15,6 +15,7 @@ System_Data* system_data_new(char* name)
 char* system_name(Entity* self)
 {
     system_data = self->data;
+    //if (system_data->name != "System1") slog("\"%s\"", system_data->name); 
     return system_data->name;
 }
 
@@ -70,7 +71,7 @@ Entity* system_spawn(char* name, Vector2D position)
 
     ent->name = system_name;
 
-    slog("System created!");
+    slog("System \"%s\" created!", ent->name(ent));
     return ent;
 }
 

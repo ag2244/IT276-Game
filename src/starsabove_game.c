@@ -3,19 +3,100 @@
 #include "gfc_types.h"
 #include "gfc_vector.h"
 #include "gf2d_sprite.h"
-
 #include "simple_logger.h"
 
 #include "starsabove_game.h"
 
+SJson* game;
 GameState gameState = { 0 };
+
+void load_systems(SJson* game)
+{
+	//The star systems in this game
+	SJson* systems;
+	SJson* currentSystem;
+
+	char* name;
+
+	SJson* positionJson;
+	Vector2D pos;
+	float x, y;
+
+	int i;
+
+	//game["Systems"]
+	systems = sj_object_get_value(game, "Systems");
+
+	if (!systems)
+	{
+		slog("Save file does not have any star systems"); return NULL;
+	}
+
+	if (!sj_is_array(systems))
+	{
+		slog("Star Systems is not an array!"); return NULL;
+	}
+
+	//Go through the systems
+	for (i = 0; i < systems->v.array->count; i++)
+	{
+		currentSystem = sj_array_get_nth(systems, i);
+
+		positionJson = sj_object_get_value(currentSystem, "position");
+
+		//Get the name: string value of json object containing the value at currentSystem["name"]
+		name = sj_get_string_value( sj_object_get_value(currentSystem, "name"));
+		
+		//Set up the position vector
+
+		sj_get_float_value(sj_array_get_nth(positionJson, 0), &x); //float value of json object containing the value at currentSystem["position"][0]
+		sj_get_float_value(sj_array_get_nth(positionJson, 1), &y); //float value of json object containing the value at currentSystem["position"][1]
+
+		pos = vector2d(x, y);
+
+		system_spawn(name, pos);
+
+	}
+}
+
+void load_game(char* filename)
+{
+
+	if (filename == NULL)
+	{
+		slog("Cannot load a game with NULL filename"); return NULL;
+	}
+
+	game = sj_load(filename);
+
+	if (!game)
+	{
+		slog("Cannot load the file at \"%s\"", filename); return NULL;
+	}
+	
+	load_systems(game);
+
+}
+
+void new_game()
+{
+
+}
+
+void save_game()
+{
+
+
+}
 
 void test() 
 {
 
-	system_spawn("System1", vector2d(500, 300));
+	//system_spawn("System1", vector2d(500, 300));
 
-	system_spawn("System2", vector2d(300, 400));
+	//system_spawn("System2", vector2d(300, 400));
+
+	load_game("jsondata/Test Dictionary.json");
 
 	if (get_entity_by_name("System1"))
 	{
