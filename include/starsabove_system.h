@@ -37,4 +37,11 @@ char* system_name(struct Entity* self);
 */
 Entity* system_spawn(char* name, Vector2D position);
 
+/**
+* @brief Turn a star system to a json object
+* @param self the entity to convert
+* @return NULL on error, or a pointer to a json object
+*/
+SJson* system_toJson(Entity* self);
+
 #endif

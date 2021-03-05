@@ -18,9 +18,9 @@ typedef struct GameState_s
 
 /**
 * @brief Load all the systems in a game
-* @return NULL on error
+* @return NULL on error, 1 if successful
 */
-void load_systems(SJson* game);
+int load_systems(SJson* game);
 
 /**
 * @brief Load a game from a filename
@@ -38,7 +38,7 @@ void new_game();
 * @brief Turn the game into a json file and save it
 * @return NULL on error
 */
-void save_game();
+void save_game(char* savefile_name);
 
 /**
 * @brief Do stuff before the game loop begins

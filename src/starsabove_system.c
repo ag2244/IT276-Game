@@ -14,17 +14,19 @@ System_Data* system_data_new(char* name)
 
 char* system_name(Entity* self)
 {
+    char* rtnName = NULL;
     system_data = self->data;
-    //if (system_data->name != "System1") slog("\"%s\"", system_data->name); 
+    slog("\"%s\"", system_data->name); 
+    //strcpy(rtnName, system_data->name);
     return system_data->name;
 }
 
 void system_onClick(Entity* self) {
 
-    system_data = self->data;
+    char* name = system_name(self);
 
-    if (system_data->name != NULL)
-        slog("Clicked on STAR SYSTEM %s", system_data->name);
+    if (name != NULL)
+        slog("Clicked on STAR SYSTEM %s", name);
 }
 
 Entity* system_spawn(char* name, Vector2D position)
@@ -67,12 +69,37 @@ Entity* system_spawn(char* name, Vector2D position)
 
     (struct System_Data*)ent->data = thisSystem;
 
-    ent->onClick = system_onClick;
+    //Functions
 
+    ent->toJson = system_toJson;
+    ent->onClick = system_onClick;
     ent->name = system_name;
 
     slog("System \"%s\" created!", ent->name(ent));
     return ent;
+}
+
+SJson* system_toJson(Entity* self) 
+{
+    SJson* systemJson = sj_object_new();
+    SJson* array_position = sj_array_new();
+
+    if (self == NULL)
+    {
+        slog("Cannot convert NULL system to json!");
+        return NULL;
+    }
+
+    //Insert the system name
+    //sj_object_insert(systemJson, "name", sj_new_str(system_name(self)));
+    
+    //Get the position array and insert it into the system json
+    sj_array_append(array_position, sj_new_float(self->position.x));
+    sj_array_append(array_position, sj_new_float(self->position.y));
+
+    sj_object_insert(systemJson, "position", array_position);
+    
+    return systemJson;
 }
 
 /*Bottom*/

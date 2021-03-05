@@ -6,6 +6,8 @@
 
 #include "gf2d_sprite.h"
 
+#include "simple_json.h"
+
 #include "starsabove_collision.h"
 
 #ifndef __ENTITY_H__
@@ -25,13 +27,14 @@ typedef struct Entity_s{
 
 	/*Function pointers!*/
 	void (*update)(struct Entity_s *self);
-	void (*think)(struct Entity_s* self);
 	void (*draw)(struct Entity_s* self);
 	void (*free)(struct Entity_s* self);
 	
 	void (*onClick)(struct Entity_s* self);
 
 	char* (*name)(struct Entity_s* self);
+
+	SJson* (*toJson)(struct Entity_s* self);
 
 	void* data;
 

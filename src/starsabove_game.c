@@ -10,7 +10,7 @@
 SJson* game;
 GameState gameState = { 0 };
 
-void load_systems(SJson* game)
+int load_systems(SJson* game)
 {
 	//The star systems in this game
 	SJson* systems;
@@ -57,6 +57,9 @@ void load_systems(SJson* game)
 		system_spawn(name, pos);
 
 	}
+
+	slog("All systems have been spawned!");
+	return 1;
 }
 
 void load_game(char* filename)
@@ -74,7 +77,13 @@ void load_game(char* filename)
 		slog("Cannot load the file at \"%s\"", filename); return NULL;
 	}
 	
-	load_systems(game);
+	if (load_systems(game) == NULL)
+	{
+		slog("Was unable to load this game's star systems");
+		return NULL;
+	}
+
+	sj_free(game);
 
 }
 
@@ -83,26 +92,55 @@ void new_game()
 
 }
 
-void save_game()
+void save_game(char* savefile_name)
 {
+	SJson* savefile = sj_object_new();
+	SJson* systems = sj_array_new();
 
+	int i;
+	EntityManager* entity_manager = entity_manager_get();
+	Entity* thisEntity;
+
+	//char fullname[] = "jsondata/";
+
+	if (savefile_name == NULL)
+	{
+		slog("Cannot save game to file \"%s\"!", savefile_name);
+		return NULL;
+	}
+	
+	//Go through each entity in the entity manager
+	for (i = 0; i < entity_manager->max_entities; i++)
+	{
+		//If the entity at index i is not in use, continue
+		if (entity_manager->entity_list[i]._inuse == 0) continue;
+
+		thisEntity = &entity_manager->entity_list[i];
+		
+		//thisEntity->toJson(&thisEntity);
+		
+		sj_array_append(systems, thisEntity->toJson(&thisEntity));
+	}
+
+	sj_object_insert(savefile, "Systems", systems);
+
+	sj_echo(savefile);
+
+	sj_save(savefile, "jsondata/TEST.json");
 
 }
 
 void test() 
 {
 
-	//system_spawn("System1", vector2d(500, 300));
-
-	//system_spawn("System2", vector2d(300, 400));
-
 	load_game("jsondata/Test Dictionary.json");
 
 	if (get_entity_by_name("System1"))
 	{
-		slog("Entity exists with name \"System1\"");
+		slog("Entity exists with name \"System1\"!");
 	}
 
+	save_game("TESTOUT.json");
 }
 
 void prepare_game()
