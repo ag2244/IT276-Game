@@ -97,6 +97,9 @@ void save_game(char* savefile_name)
 	SJson* savefile = sj_object_new();
 	SJson* systems = sj_array_new();
 
+	char filename[10] = "jsondata/";
+	char savefile_copy[256]; strcpy(savefile_copy, savefile_name);
+
 	int i;
 	EntityManager entity_manager = *entity_manager_get();
 	Entity* thisEntity;
@@ -120,7 +123,9 @@ void save_game(char* savefile_name)
 
 	sj_object_insert(savefile, "Systems", systems);
 
-	sj_save(savefile, "jsondata/TEST.json");
+	strcat(filename, savefile_copy);
+
+	sj_save(savefile, filename);
 
 }
 
@@ -129,9 +134,16 @@ void test()
 
 	load_game("jsondata/Test Dictionary.json");
 
+	save_game("TESTOUT.json");
+
 	if (get_entity_by_name("System1"))
 	{
 		slog("Entity exists with name \"System1\"!");
+	}
+
+	if (get_entity_by_name("System2"))
+	{
+		slog("Entity exists with name \"System2\"!");
 	}
 }
 
@@ -151,8 +163,6 @@ void prepare_game()
 	test();
 
 	slog("============ GAME LOADED! ============");
-
-	save_game("TESTOUT.json");
 
 }
 
