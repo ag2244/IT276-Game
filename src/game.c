@@ -38,8 +38,6 @@ int main(int argc, char * argv[])
         0);
     gf2d_graphics_set_frame_delay(16);
     gf2d_sprite_init(1024);
-
-    prepare_game();
     
     SDL_ShowCursor(SDL_DISABLE);
     
@@ -47,6 +45,8 @@ int main(int argc, char * argv[])
     sprite = gf2d_sprite_load_image("images/backgrounds/space.png");
     mouseNormal = gf2d_sprite_load_all("images/ui/cursor.png",32,32,1);
     mouseClickable = gf2d_sprite_load_all("images/ui/cursor_click.png", 32, 32, 1);
+
+    prepare_game();
 
     /*main game loop*/
     while(!done)

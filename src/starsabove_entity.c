@@ -65,7 +65,7 @@ Entity* get_entity_by_name(char* name)
 
 		if (current_entity->_inuse && current_entity->name)
 		{
-			if (strcmp(current_entity->name(current_entity),  name))
+			if (strcmp(current_entity->name,  name))
 				return &entity_manager.entity_list[i];
 		}
 	}

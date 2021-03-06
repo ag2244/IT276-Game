@@ -98,10 +98,8 @@ void save_game(char* savefile_name)
 	SJson* systems = sj_array_new();
 
 	int i;
-	EntityManager* entity_manager = entity_manager_get();
+	EntityManager entity_manager = *entity_manager_get();
 	Entity* thisEntity;
-
-	//char fullname[] = "jsondata/";
 
 	if (savefile_name == NULL)
 	{
@@ -110,21 +108,17 @@ void save_game(char* savefile_name)
 	}
 	
 	//Go through each entity in the entity manager
-	for (i = 0; i < entity_manager->max_entities; i++)
+	for (i = 0; i < entity_manager.max_entities; i++)
 	{
 		//If the entity at index i is not in use, continue
-		if (entity_manager->entity_list[i]._inuse == 0) continue;
+		if (entity_manager.entity_list[i]._inuse == 0) continue;
 
-		thisEntity = &entity_manager->entity_list[i];
+		thisEntity = &entity_manager.entity_list[i];
 		
-		//thisEntity->toJson(&thisEntity);
-		
-		sj_array_append(systems, thisEntity->toJson(&thisEntity));
+		sj_array_append(systems, thisEntity->toJson(thisEntity));
 	}
 
 	sj_object_insert(savefile, "Systems", systems);
-
-	sj_echo(savefile);
 
 	sj_save(savefile, "jsondata/TEST.json");
 
@@ -139,12 +133,11 @@ void test()
 	{
 		slog("Entity exists with name \"System1\"!");
 	}
-
-	save_game("TESTOUT.json");
 }
 
 void prepare_game()
 {
+	int i = 0; EntityManager* entity_manager = entity_manager_get();
 
     /* Starting the entity manager */
     entity_manager_init(100);
@@ -156,6 +149,10 @@ void prepare_game()
 
 	// Set up the debug world
 	test();
+
+	slog("============ GAME LOADED! ============");
+
+	save_game("TESTOUT.json");
 
 }
 

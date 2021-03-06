@@ -17,6 +17,9 @@
 typedef struct Entity_s{
 
 	Bool _inuse;
+
+	char* name;
+
 	Vector2D position;
 	Vector2D velocity;
 	Sprite* sprite;
@@ -31,8 +34,6 @@ typedef struct Entity_s{
 	void (*free)(struct Entity_s* self);
 	
 	void (*onClick)(struct Entity_s* self);
-
-	char* (*name)(struct Entity_s* self);
 
 	SJson* (*toJson)(struct Entity_s* self);
 
