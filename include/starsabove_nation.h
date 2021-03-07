@@ -14,6 +14,22 @@ typedef struct Nation_s
 
 } Nation;
 
-//asd
+typedef struct Nations_s
+{
+	Nation* nations;
+	Uint32 max_nations;
+
+} Nation_List;
+
+
+void nations_list_init(Uint32 max_entities);
+
+Nation* get_nation_by_name(char* name);
+
+void nations_list_free();
+
+void nation_init(char* name, Uint32 max_systems);
+
+void nation_free(Nation* nation);
 
 #endif

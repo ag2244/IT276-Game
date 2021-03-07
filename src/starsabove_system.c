@@ -19,8 +19,8 @@ void system_onClick(Entity* self) {
         return NULL;
     }
 
-    if (self->name != NULL)
-        slog("Clicked on STAR SYSTEM \"%s\"", self->name);
+    /*if (self->name != NULL)
+        slog("Clicked on STAR SYSTEM \"%s\"", self->name);*/
 }
 
 SJson* system_toJson(Entity* self)

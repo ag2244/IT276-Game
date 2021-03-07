@@ -134,7 +134,7 @@ void test()
 
 	load_game("jsondata/Test Dictionary.json");
 
-	save_game("TESTOUT.json");
+	//save_game("TESTOUT.json");
 
 	if (get_entity_by_name("System1"))
 	{
@@ -168,6 +168,20 @@ void prepare_game()
 
 void starsabove_loop()
 {
+
+	int i = 0; EntityManager* entity_manager = entity_manager_get();
+
+	/*
+	for (i = 0; i < entity_manager->max_entities; i++)
+	{
+		//If the element at index i is not in use, continue
+		if (entity_manager->entity_list[i]._inuse == 0) continue;
+
+		slog(entity_manager->entity_list[i].name);
+
+	}
+	//*/
+
 	entity_manager_update_entities();
 
 	entity_manager_draw_entities();
