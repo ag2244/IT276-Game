@@ -65,13 +65,19 @@ Entity* get_entity_by_name(char* name)
 
 		if (current_entity->_inuse && current_entity->name)
 		{
-			if (strcmp(current_entity->name,  name))
+
+			//slog("%s == %s", current_entity->name, name); //For comparison
+
+			if (strcmp(current_entity->name, name) == 0)
+			{ 
 				return &entity_manager.entity_list[i];
+			}
+				
 		}
 	}
 
 	slog("No Entity with the name: \"%s\"", name);
-	return 0;
+	return NULL;
 }
 
 void entity_manager_free() {
@@ -158,6 +164,27 @@ Entity* entity_new()
 	return NULL;
 }
 
+Entity* entity_new_name(char* name)
+{
+	Entity* new_ent = NULL;
+
+	//If there is an entity with this name
+	if (get_entity_by_name(name) != NULL)
+	{
+		slog("Entity exists with the name \"%s\", cannot create!", name);
+		return;
+	}
+
+	new_ent = entity_new();
+
+	if (new_ent == NULL) return;
+
+	gfc_line_cpy(new_ent->name, name);
+	//new_ent->name = name;
+
+	return new_ent;
+}
+
 void entity_free(Entity* ent) 
 {
 	if (!ent) 
@@ -179,6 +206,8 @@ void entity_free(Entity* ent)
 	gf2d_sprite_free(ent->sprite);
 	ent->sprite = NULL;
 	ent->_inuse = 0;
+	//ent->name = NULL;
+	ent->data = NULL;
 }
 
 void entity_draw(Entity* ent) 

@@ -1,0 +1,21 @@
+{
+	"Systems":
+	[
+		{
+			"name": "System1",
+			"position": [400, 500]
+		},
+		{
+			"name": "System2",
+			"position": [300, 400]
+		},
+		{
+			"name": "System3",
+			"position": [800, 200]
+		},
+		{
+			"name": "System4",
+			"position": [600, 250]
+		}
+	]
+}

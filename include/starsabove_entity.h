@@ -18,7 +18,8 @@ typedef struct Entity_s{
 
 	Bool _inuse;
 
-	char* name;
+	char name[128];
+	//char* name;
 
 	Vector2D position;
 	Vector2D velocity;
@@ -90,6 +91,12 @@ void entity_manager_free();
 * @return NULL on error (see logs) or a pointer to an initialized entity
 */
 Entity* entity_new();
+
+/**
+* @brief allocate an entity with a name, initialize to zero, return a pointer to it
+* @return NULL on error or a pointer to an initialized entity
+*/
+Entity* entity_new_name(char* name);
 
 /**
 * @brief free requested entity

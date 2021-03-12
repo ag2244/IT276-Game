@@ -53,16 +53,17 @@ SJson* system_toJson(Entity* self)
 
 Entity* system_spawn(char* name, Vector2D position)
 {
+
     Entity* ent = NULL;
     System_Data* thisSystem = system_data_new(name);
 
     //Create the new entity
-    ent = entity_new();
+    ent = entity_new_name(name);
 
     if (!ent)
     {
         slog("Failed to spawn a system");
-        return NULL;
+        //return NULL;
     }
 
     //Load sprite and related info
@@ -86,7 +87,7 @@ Entity* system_spawn(char* name, Vector2D position)
     ent->collider_circle->position.y += ent->sprite->frame_h/2;
 
     //Load system details
-    ent->name = name;
+    //ent->name = name;
 
     (struct System_Data*)ent->data = thisSystem;
 
@@ -95,6 +96,7 @@ Entity* system_spawn(char* name, Vector2D position)
     ent->onClick = system_onClick;
     ent->toJson = system_toJson;
 
+    //Done!
     slog("System \"%s\" created!", ent->name);
     return ent;
 }

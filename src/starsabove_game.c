@@ -1,13 +1,8 @@
 #include <SDL.h>
 
-#include "gfc_types.h"
-#include "gfc_vector.h"
-#include "gf2d_sprite.h"
 #include "simple_logger.h"
 
 #include "starsabove_game.h"
-
-SJson* game;
 GameState gameState = { 0 };
 
 int load_systems(SJson* game)
@@ -16,7 +11,7 @@ int load_systems(SJson* game)
 	SJson* systems;
 	SJson* currentSystem;
 
-	char* name;
+	char* name = NULL, temp = NULL;
 
 	SJson* positionJson;
 	Vector2D pos;
@@ -43,9 +38,6 @@ int load_systems(SJson* game)
 		currentSystem = sj_array_get_nth(systems, i);
 
 		positionJson = sj_object_get_value(currentSystem, "position");
-
-		//Get the name: string value of json object containing the value at currentSystem["name"]
-		name = sj_get_string_value( sj_object_get_value(currentSystem, "name"));
 		
 		//Set up the position vector
 
@@ -53,6 +45,23 @@ int load_systems(SJson* game)
 		sj_get_float_value(sj_array_get_nth(positionJson, 1), &y); //float value of json object containing the value at currentSystem["position"][1]
 
 		pos = vector2d(x, y);
+
+
+		/*slog("ASD");
+		//Get the name: string value of json object containing the value at currentSystem["name"]
+		temp = sj_get_string_value(sj_object_get_value(currentSystem, "name"));
+		slog("QWE");
+
+		strcpy(name, temp);
+		slog(name);*/
+
+		name = sj_get_string_value(sj_object_get_value(currentSystem, "name"));
+
+		if (name == 0) {
+
+			slog("Cannot use '0' name!"); return NULL;
+
+		}
 
 		system_spawn(name, pos);
 
@@ -64,6 +73,7 @@ int load_systems(SJson* game)
 
 void load_game(char* filename)
 {
+	SJson* game;
 
 	if (filename == NULL)
 	{
@@ -132,9 +142,9 @@ void save_game(char* savefile_name)
 void test() 
 {
 
-	load_game("jsondata/Test Dictionary.json");
+	load_game("jsondata/Test Input.json");
 
-	//save_game("TESTOUT.json");
+	save_game("TESTOUT.json");
 
 	if (get_entity_by_name("System1"))
 	{
@@ -157,6 +167,10 @@ void prepare_game()
 	/* Starting the ui manager */
 	ui_manager_init(50);
 
+	/* Starting the nations list */
+	nations_list_init(24);
+	nation_new("Testistan1", 50);
+
 	gametext_init(vector2d(0, 700));
 
 	// Set up the debug world
@@ -168,16 +182,15 @@ void prepare_game()
 
 void starsabove_loop()
 {
-
+	/* FOR TESTING
 	int i = 0; EntityManager* entity_manager = entity_manager_get();
 
-	/*
 	for (i = 0; i < entity_manager->max_entities; i++)
 	{
 		//If the element at index i is not in use, continue
 		if (entity_manager->entity_list[i]._inuse == 0) continue;
 
-		slog(entity_manager->entity_list[i].name);
+		printf("NAME: \"%s\"\n\n", entity_manager->entity_list[i].name);
 
 	}
 	//*/

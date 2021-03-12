@@ -7,7 +7,7 @@
 #include "gf2d_sprite.h"
 #include "simple_logger.h"
 
-#include "starsabove_entity.h"
+#include "starsabove_collision.h"
 
 Collider_Box* box_new(Collider_Box* box, Vector2D in_position, Vector2D in_extremity)
 {

@@ -3,11 +3,16 @@
 #ifndef __STARSABOVE_H__
 #define __STARSABOVE_H__
 
+#include "gfc_types.h"
+#include "gfc_vector.h"
+#include "gf2d_sprite.h"
+
 #include "simple_json.h"
 
 #include "starsabove_entity.h"
 #include "starsabove_ui_base.h"
 #include "starsabove_system.h"
+#include "starsabove_nation.h"
 
 typedef struct GameState_s
 {
