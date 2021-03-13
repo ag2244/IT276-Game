@@ -11,6 +11,8 @@ typedef struct Nation_s
 {
 	Bool _inuse;
 	char name[256];
+
+	Uint32 max_systems;
 	Entity* controlled_systems;
 
 	void (*onNewTurn)(struct Nation* self);
@@ -73,7 +75,7 @@ Nation* nation_new(Nation* nation, char* name, Uint32 max_systems);
 * @param max_systems the maximum number of systems it can own
 * @return NULL on error, or a pointer to a json object
 */
-void nation_add(char* name, Uint32 max_systems);
+void nation_add(char* name);
 
 /**
 * @brief Turn a nation to a json object

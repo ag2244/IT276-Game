@@ -111,7 +111,7 @@ Nation* get_nation_by_name(char* name)
 
 		if (current_nation->_inuse && current_nation->name)
 		{
-			if (strcmp(current_nation->name, name))
+			if (strcmp(current_nation->name, name) == 0)
 				return &nation_list.nations[i];
 		}
 	}
@@ -144,6 +144,7 @@ void nations_list_free()
 Nation* nation_new(Nation* nation, char* name, Uint32 max_systems)
 {
 	gfc_line_cpy(nation->name, name);
+	nation->max_systems = max_systems;
 	nation->controlled_systems = (Entity*)gfc_allocate_array(sizeof(Entity), max_systems);
 
 	nation->toJson = nation_toJson;
@@ -151,9 +152,10 @@ Nation* nation_new(Nation* nation, char* name, Uint32 max_systems)
 	return nation;
 }
 
-void nation_add(char* name, Uint32 max_systems)
+void nation_add(char* name)
 {
 	int i;
+	Uint32 max_systems = entity_manager_get()->max_entities;
 
 	if (nation_list.nations == NULL) {
 		slog("Nations list does not exist!");
@@ -179,12 +181,43 @@ void nation_add(char* name, Uint32 max_systems)
 
 SJson* nation_toJson(Nation* self)
 {
+	int i = 0;
+	SJson* nation_json = sj_object_new();
 
+	sj_object_insert(nation_json, "name", sj_new_str(self->name));
+
+	//Go through each system in the nation's systems
+	for (i = 0; i < self->max_systems; i++)
+	{
+		//If the entity at index i is not in use, continue
+		if (self->controlled_systems[i]._inuse == 0) continue;
+
+		//Add system name to list
+
+	}
+
+	return nation_json;
 }
 
 SJson* allNations_toJson()
 {
+	SJson* nations = sj_array_new();
 
+	int i;
+	Nation* thisNation;
+
+	//Go through each nation in the nation list
+	for (i = 0; i < nation_list.max_nations; i++)
+	{
+		//If the nation at index i is not in use, continue
+		if (nation_list.nations[i]._inuse == 0) continue;
+
+		thisNation = &nation_list.nations[i];
+
+		sj_array_append(nations, thisNation->toJson(thisNation));
+	}
+
+	return nations;
 }
 
 void nation_free(Nation* nation)

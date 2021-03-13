@@ -73,6 +73,8 @@ void save_game(char* savefile_name)
 
 	sj_object_insert(savefile, "Systems", systems);
 
+	sj_object_insert(savefile, "Nations", allNations_toJson());
+
 	strcat(filename, savefile_copy);
 
 	sj_save(savefile, filename);
@@ -86,9 +88,9 @@ void test()
 
 	save_game("TESTOUT.json");
 
-	if (get_nation_by_name("Testistan1"))
+	if (get_nation_by_name("Nation1"))
 	{
-		slog("Nation exists with name \"Testistan1\"!");
+		slog("Nation exists with name \"Nation1\"!");
 	}
 }
 
@@ -104,7 +106,6 @@ void prepare_game()
 
 	/* Starting the nations list */
 	nations_list_init(24);
-	nation_add("Testistan1", 50);
 
 	gametext_init(vector2d(0, 700));
 
