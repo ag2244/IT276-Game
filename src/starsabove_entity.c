@@ -76,7 +76,7 @@ Entity* get_entity_by_name(char* name)
 		}
 	}
 
-	slog("No Entity with the name: \"%s\"", name);
+	//slog("No Entity with the name: \"%s\"", name);
 	return NULL;
 }
 

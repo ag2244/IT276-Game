@@ -22,12 +22,6 @@ typedef struct GameState_s
 } GameState;
 
 /**
-* @brief Load all the systems in a game
-* @return NULL on error, 1 if successful
-*/
-int load_systems(SJson* game);
-
-/**
 * @brief Load a game from a filename
 * @return NULL on error
 */
@@ -80,5 +74,11 @@ void onClick_left();
 * @return NULL on error
 */
 void test();
+
+/**
+* @brief output stuff for testing
+* @return NULL on error
+*/
+void testcmd();
 
 #endif

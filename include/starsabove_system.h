@@ -12,6 +12,12 @@ typedef struct System_Data_s
 } System_Data;
 
 /**
+* @brief Load all the systems in a game
+* @return NULL on error, 1 if successful
+*/
+int load_systems(SJson* game_json);
+
+/**
 * @brief Perform actions when a system is clicked
 * @return NULL on error
 */

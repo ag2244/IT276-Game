@@ -5,72 +5,6 @@
 #include "starsabove_game.h"
 GameState gameState = { 0 };
 
-int load_systems(SJson* game)
-{
-	//The star systems in this game
-	SJson* systems;
-	SJson* currentSystem;
-
-	char* name = NULL, temp = NULL;
-
-	SJson* positionJson;
-	Vector2D pos;
-	float x, y;
-
-	int i;
-
-	//game["Systems"]
-	systems = sj_object_get_value(game, "Systems");
-
-	if (!systems)
-	{
-		slog("Save file does not have any star systems"); return NULL;
-	}
-
-	if (!sj_is_array(systems))
-	{
-		slog("Star Systems is not an array!"); return NULL;
-	}
-
-	//Go through the systems
-	for (i = 0; i < systems->v.array->count; i++)
-	{
-		currentSystem = sj_array_get_nth(systems, i);
-
-		positionJson = sj_object_get_value(currentSystem, "position");
-		
-		//Set up the position vector
-
-		sj_get_float_value(sj_array_get_nth(positionJson, 0), &x); //float value of json object containing the value at currentSystem["position"][0]
-		sj_get_float_value(sj_array_get_nth(positionJson, 1), &y); //float value of json object containing the value at currentSystem["position"][1]
-
-		pos = vector2d(x, y);
-
-
-		/*slog("ASD");
-		//Get the name: string value of json object containing the value at currentSystem["name"]
-		temp = sj_get_string_value(sj_object_get_value(currentSystem, "name"));
-		slog("QWE");
-
-		strcpy(name, temp);
-		slog(name);*/
-
-		name = sj_get_string_value(sj_object_get_value(currentSystem, "name"));
-
-		if (name == 0) {
-
-			slog("Cannot use '0' name!"); return NULL;
-
-		}
-
-		system_spawn(name, pos);
-
-	}
-
-	slog("All systems have been spawned!");
-	return 1;
-}
-
 void load_game(char* filename)
 {
 	SJson* game;
@@ -90,6 +24,12 @@ void load_game(char* filename)
 	if (load_systems(game) == NULL)
 	{
 		slog("Was unable to load this game's star systems");
+		return NULL;
+	}
+
+	if (load_nations(game) == NULL)
+	{
+		slog("Was unable to load this game's nations");
 		return NULL;
 	}
 
@@ -146,14 +86,9 @@ void test()
 
 	save_game("TESTOUT.json");
 
-	if (get_entity_by_name("System1"))
+	if (get_nation_by_name("Testistan1"))
 	{
-		slog("Entity exists with name \"System1\"!");
-	}
-
-	if (get_entity_by_name("System2"))
-	{
-		slog("Entity exists with name \"System2\"!");
+		slog("Nation exists with name \"Testistan1\"!");
 	}
 }
 
@@ -169,7 +104,7 @@ void prepare_game()
 
 	/* Starting the nations list */
 	nations_list_init(24);
-	nation_new("Testistan1", 50);
+	nation_add("Testistan1", 50);
 
 	gametext_init(vector2d(0, 700));
 
@@ -180,7 +115,7 @@ void prepare_game()
 
 }
 
-void starsabove_loop()
+void testcmd()
 {
 	/* FOR TESTING
 	int i = 0; EntityManager* entity_manager = entity_manager_get();
@@ -193,7 +128,28 @@ void starsabove_loop()
 		printf("NAME: \"%s\"\n\n", entity_manager->entity_list[i].name);
 
 	}
+
 	//*/
+
+	/*
+
+	int i = 0; Nation_List* nation_list = nation_list_get();
+
+	for (i = 0; i < nation_list->max_nations; i++)
+	{
+
+		if (nation_list->nations[i]._inuse == 0) continue; // Someone else using this one
+
+		slog("NAME: \"%s\"\n\n", nation_list->nations[i].name);
+	}
+
+	//*/
+}
+
+void starsabove_loop()
+{
+
+	testcmd();
 
 	entity_manager_update_entities();
 
