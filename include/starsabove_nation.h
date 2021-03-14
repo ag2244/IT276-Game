@@ -3,17 +3,10 @@
 #ifndef __NATION_H__
 #define __NATION_H__
 
-#include "starsabove_entity.h"
-#include "starsabove_system.h"
-#include "starsabove_nation.h"
-
 typedef struct Nation_s
 {
 	Bool _inuse;
 	char name[256];
-
-	Uint32 max_systems;
-	Entity* controlled_systems;
 
 	void (*onNewTurn)(struct Nation* self);
 
@@ -67,15 +60,14 @@ void nations_list_free();
 * @param max_systems the maximum number of systems it can own
 * @return NULL on error, or a pointer to a json object
 */
-Nation* nation_new(Nation* nation, char* name, Uint32 max_systems);
+Nation* nation_new(Nation* nation, char* name);
 
 /**
 * @brief Add a nation to the nations list
 * @param name the name of the nation
-* @param max_systems the maximum number of systems it can own
 * @return NULL on error, or a pointer to a json object
 */
-void nation_add(char* name);
+Nation* nation_add(char* name);
 
 /**
 * @brief Turn a nation to a json object

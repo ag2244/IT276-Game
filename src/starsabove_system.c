@@ -18,7 +18,10 @@ int load_systems(SJson* game_json)
     SJson* systems;
     SJson* currentSystem;
 
-    char* name = NULL, temp = NULL;
+    char* name = NULL;
+    char* temp = NULL;
+
+    Nation* nation = NULL;
 
     SJson* positionJson;
     Vector2D pos;
@@ -53,6 +56,8 @@ int load_systems(SJson* game_json)
 
         pos = vector2d(x, y);
 
+        //Get the name
+
         name = sj_get_string_value(sj_object_get_value(currentSystem, "name"));
 
         if (name == 0) {
@@ -61,7 +66,32 @@ int load_systems(SJson* game_json)
 
         }
 
-        system_spawn(name, pos);
+        //Get the owner
+
+        temp = sj_get_string_value(sj_object_get_value(currentSystem, "owner"));
+
+        if (temp == 0) {
+
+            slog("Cannot use '0' name!"); return NULL;
+
+        }
+
+        slog(temp);
+
+        if (strcmp(temp, "null") != 0)
+        {
+            nation = get_nation_by_name(temp);
+
+            if (nation == NULL) {
+
+                slog("Owner nation \"%s\" does not exist!", temp); return NULL;
+
+            }
+        }
+
+        else nation = NULL;
+
+        system_spawn(name, pos, nation);
 
     }
 
@@ -85,6 +115,8 @@ SJson* system_toJson(Entity* self)
     SJson* systemJson;
     SJson* array_position;
 
+    char* owner;
+
     systemJson = sj_object_new();
     array_position = sj_array_new();
 
@@ -97,6 +129,14 @@ SJson* system_toJson(Entity* self)
     //Insert the system name
     sj_object_insert(systemJson, "name", sj_new_str(self->name));
 
+    //Insert the name of the system's owner
+
+    if (self->owner != NULL) owner = sj_new_str(self->owner->name);
+
+    else owner = sj_new_str("null");
+
+    sj_object_insert(systemJson, "owner", owner);
+
     //Get the position array and insert it into the system json
     sj_array_append(array_position, sj_new_float(self->position.x));
     sj_array_append(array_position, sj_new_float(self->position.y));
@@ -108,7 +148,7 @@ SJson* system_toJson(Entity* self)
     return sj_object_new();
 }
 
-Entity* system_spawn(char* name, Vector2D position)
+Entity* system_spawn(char* name, Vector2D position, Nation* owner)
 {
 
     Entity* ent = NULL;
@@ -144,7 +184,8 @@ Entity* system_spawn(char* name, Vector2D position)
     ent->collider_circle->position.y += ent->sprite->frame_h/2;
 
     //Load system details
-    //ent->name = name;
+    
+    ent->owner = owner; //Can be null!
 
     (struct System_Data*)ent->data = thisSystem;
 

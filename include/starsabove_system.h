@@ -32,9 +32,11 @@ SJson* system_toJson(struct Entity* self);
 
 /**
 * @brief Spawn a star system entity
+* @param name the name of the system
 * @param position The screen position to spawn the system at
+* @param owner The nation that owns this system
 * @return NULL on error, or a pointer to a new system entity
 */
-Entity* system_spawn(char* name, Vector2D position);
+Entity* system_spawn(char* name, Vector2D position, Nation* owner);
 
 #endif

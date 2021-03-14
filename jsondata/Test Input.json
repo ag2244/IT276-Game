@@ -3,31 +3,30 @@
 	[
 		{
 			"name": "System1",
-			"position": [400, 500]
+			"position": [400, 500],
+			"owner": "Nation1"
 		},
 		{
 			"name": "System2",
-			"position": [300, 400]
+			"position": [300, 400],
+			"owner": "Nation1"
 		},
 		{
 			"name": "System3",
-			"position": [800, 200]
+			"position": [800, 200],
+			"owner": "null"
 		},
 		{
 			"name": "System4",
-			"position": [600, 250]
+			"position": [600, 250],
+			"owner": "null"
 		}
 	],
 	
 	"Nations":
 	[
 		{
-			"name": "Nation1",
-			"systems":
-				[
-					"System1",
-					"System2"
-				]
+			"name": "Nation1"
 		}
 	]
 }

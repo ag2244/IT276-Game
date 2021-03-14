@@ -21,15 +21,15 @@ void load_game(char* filename)
 		slog("Cannot load the file at \"%s\"", filename); return NULL;
 	}
 	
-	if (load_systems(game) == NULL)
-	{
-		slog("Was unable to load this game's star systems");
-		return NULL;
-	}
-
 	if (load_nations(game) == NULL)
 	{
 		slog("Was unable to load this game's nations");
+		return NULL;
+	}
+
+	if (load_systems(game) == NULL)
+	{
+		slog("Was unable to load this game's star systems");
 		return NULL;
 	}
 
@@ -126,7 +126,9 @@ void testcmd()
 		//If the element at index i is not in use, continue
 		if (entity_manager->entity_list[i]._inuse == 0) continue;
 
-		printf("NAME: \"%s\"\n\n", entity_manager->entity_list[i].name);
+		if (entity_manager->entity_list[i].owner != NULL) slog("Owner of %s: \"%s\"", entity_manager->entity_list[i].name, entity_manager->entity_list[i].owner->name);
+
+		else slog("No Owner for %s", entity_manager->entity_list[i].name);
 
 	}
 
@@ -134,14 +136,14 @@ void testcmd()
 
 	/*
 
-	int i = 0; Nation_List* nation_list = nation_list_get();
+	int i; int j; Nation_List* nation_list = nation_list_get();
 
 	for (i = 0; i < nation_list->max_nations; i++)
 	{
 
 		if (nation_list->nations[i]._inuse == 0) continue; // Someone else using this one
 
-		slog("NAME: \"%s\"\n\n", nation_list->nations[i].name);
+		slog(nation_list->nations[i].name);
 	}
 
 	//*/

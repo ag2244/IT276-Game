@@ -18,9 +18,10 @@ int load_nations(SJson* game_json)
 	//The nations in this game
 	SJson* nations;
 	SJson* currentNation;
+	SJson* controlled_systems;
 
-	char* name = NULL, temp = NULL;
-
+	char* name = NULL;
+	
 	int i;
 
 	//game["Nations"]
@@ -41,7 +42,6 @@ int load_nations(SJson* game_json)
 	{
 		currentNation = sj_array_get_nth(nations, i);
 
-
 		/*slog("ASD");
 		//Get the name: string value of json object containing the value at currentSystem["name"]
 		temp = sj_get_string_value(sj_object_get_value(currentSystem, "name"));
@@ -58,7 +58,7 @@ int load_nations(SJson* game_json)
 
 		}
 
-		nation_add(name, entity_manager_get()->max_entities);
+		nation_add(name);
 
 	}
 
@@ -141,21 +141,19 @@ void nations_list_free()
 	slog("Nations List freed");
 }
 
-Nation* nation_new(Nation* nation, char* name, Uint32 max_systems)
+Nation* nation_new(Nation* nation, char* name)
 {
+
 	gfc_line_cpy(nation->name, name);
-	nation->max_systems = max_systems;
-	nation->controlled_systems = (Entity*)gfc_allocate_array(sizeof(Entity), max_systems);
 
 	nation->toJson = nation_toJson;
 
 	return nation;
 }
 
-void nation_add(char* name)
+Nation* nation_add(char* name)
 {
 	int i;
-	Uint32 max_systems = entity_manager_get()->max_entities;
 
 	if (nation_list.nations == NULL) {
 		slog("Nations list does not exist!");
@@ -170,7 +168,7 @@ void nation_add(char* name)
 
 		nation_list.nations[i]._inuse = 1;
 
-		nation_new(&nation_list.nations[i], name, max_systems);
+		nation_new(&nation_list.nations[i], name, 100);
 
 		return &nation_list.nations[i];
 	}
@@ -185,16 +183,6 @@ SJson* nation_toJson(Nation* self)
 	SJson* nation_json = sj_object_new();
 
 	sj_object_insert(nation_json, "name", sj_new_str(self->name));
-
-	//Go through each system in the nation's systems
-	for (i = 0; i < self->max_systems; i++)
-	{
-		//If the entity at index i is not in use, continue
-		if (self->controlled_systems[i]._inuse == 0) continue;
-
-		//Add system name to list
-
-	}
 
 	return nation_json;
 }

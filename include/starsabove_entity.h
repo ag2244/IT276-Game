@@ -9,6 +9,7 @@
 #include "simple_json.h"
 
 #include "starsabove_collision.h"
+#include "starsabove_nation.h"
 
 #ifndef __ENTITY_H__
 #define __ENTITY_H__
@@ -24,6 +25,8 @@ typedef struct Entity_s{
 	Vector2D position;
 	Vector2D velocity;
 	Sprite* sprite;
+
+	Nation* owner;
 
 	float frame;
 	float frameRate;
