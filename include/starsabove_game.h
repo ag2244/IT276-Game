@@ -7,12 +7,16 @@
 #include "gfc_vector.h"
 #include "gf2d_sprite.h"
 
+#include "gfc_color.h"
+
 #include "simple_json.h"
 
 #include "starsabove_entity.h"
 #include "starsabove_ui_base.h"
 #include "starsabove_system.h"
 #include "starsabove_nation.h"
+
+#include "starsabove_text.h"
 
 typedef struct GameState_s
 {

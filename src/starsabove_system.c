@@ -76,8 +76,6 @@ int load_systems(SJson* game_json)
 
         }
 
-        slog(temp);
-
         if (strcmp(temp, "null") != 0)
         {
             nation = get_nation_by_name(temp);

@@ -5,6 +5,8 @@
 #include "starsabove_game.h"
 GameState gameState = { 0 };
 
+Font* font;
+
 void load_game(char* filename)
 {
 	SJson* game;
@@ -87,11 +89,6 @@ void test()
 	load_game("jsondata/Test Input.json");
 
 	save_game("TESTOUT.json");
-
-	if (get_nation_by_name("Nation1"))
-	{
-		slog("Nation exists with name \"Nation1\"!");
-	}
 }
 
 void prepare_game()
@@ -103,6 +100,10 @@ void prepare_game()
 
 	/* Starting the ui manager */
 	ui_manager_init(50);
+
+	/* Starting the font manager */
+	font_init(50);
+	font = font_load("resources/fonts/futur.ttf", 20);
 
 	/* Starting the nations list */
 	nations_list_init(24);
@@ -151,6 +152,7 @@ void testcmd()
 
 void starsabove_loop()
 {
+	TextLine testText;
 
 	testcmd();
 
@@ -161,6 +163,9 @@ void starsabove_loop()
 	ui_manager_update();
 
 	ui_manager_draw();
+
+	gfc_line_sprintf(testText, "WELCOME TO STARS ABOVE");
+	font_render(font, testText, vector2d(40, 740), gfc_color(255, 255, 255, 0));
 }
 
 Bool starsabove_hoverDetection(float mX, float mY) {
