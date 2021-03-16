@@ -117,6 +117,9 @@ UI_Element* ui_new()
 		memset(&ui_manager.element_list[i], 0, sizeof(UI_Element));
 
 		ui_manager.element_list[i]._inuse = 1;
+		
+		ui_manager.element_list[i].text_position_relative = vector2d(0, 0);
+		ui_manager.element_list[i].text_color = gfc_color(1, 1, 1, 0);
 
 		return &ui_manager.element_list[i];
 	}
@@ -143,8 +146,9 @@ void ui_free(UI_Element* element)
 		box_free(element->collider_circle);
 	}
 
-	gf2d_sprite_free(element->sprite);
-	element->sprite = NULL;
+	gf2d_sprite_free(element->spriteMain);
+	element->spriteBorder = NULL;
+	element->spriteMain = NULL;
 	element->_inuse = 0;
 }
 
@@ -161,10 +165,45 @@ void ui_draw(UI_Element* element)
 
 	else {
 
-		if (element->sprite == NULL) return; //Nothing to draw
+		if (element->spriteMain == NULL) return; //Nothing to draw
+		
+		if (element->spriteBorder != NULL) //If there is a border sprite (assumes there is an offset if so)
+		{
+			Vector2D sum; //Sum of the position plus offset
+			vector2d_add(sum, element->position, element->offset);
 
-		gf2d_sprite_draw(
-			element->sprite,
+			gf2d_sprite_draw(
+				element->spriteBorder,
+				element->position,
+				NULL,
+				NULL,
+				NULL,
+				NULL,
+				NULL,
+				(Uint32)element->frame);
+
+			gf2d_sprite_draw(
+				element->spriteMain,
+				sum,
+				NULL,
+				NULL,
+				NULL,
+				NULL,
+				NULL,
+				(Uint32)element->frame);
+		}
+
+		if ((element->font != NULL) && (element->text != NULL))
+		{
+			Vector2D textpos;
+
+			vector2d_add(textpos, element->position, element->text_position_relative);
+
+			font_render(element->font, element->text, textpos, element->text_color);
+		}
+
+		else gf2d_sprite_draw(
+			element->spriteMain,
 			element->position,
 			NULL,
 			NULL,

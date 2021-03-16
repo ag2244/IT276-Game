@@ -2,7 +2,7 @@
 #include "simple_logger.h"
 #include "gfc_vector.h"
 
-#include "starsabove_ui_gametext.h"
+#include "starsabove_ui_textbox.h"
 
 UI_Element* gametext_init(Vector2D position)
 {
@@ -19,7 +19,7 @@ UI_Element* gametext_init(Vector2D position)
         return NULL;
     }
 
-    element->sprite = gf2d_sprite_load_all("images/ui/hud_basic.png", 1500, 200, 1);
+    element->spriteMain = gf2d_sprite_load_all("images/ui/hud_basic.png", 1500, 200, 1);
 
     vector2d_copy(element->position, position);
 

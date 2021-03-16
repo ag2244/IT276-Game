@@ -3,10 +3,12 @@
 #include <SDL.h>
 #include "gfc_types.h"
 #include "gfc_vector.h"
+#include "gfc_color.h"
 
 #include "gf2d_sprite.h"
 
 #include "starsabove_collision.h"
+#include "starsabove_text.h"
 
 #ifndef __UI_H__
 #define __UI_H__
@@ -15,8 +17,17 @@ typedef struct UI_Element_s
 {
 
 	Bool _inuse;
+
 	Vector2D position;
-	Sprite* sprite;
+	Vector2D offset;
+
+	Sprite* spriteBorder;
+	Sprite* spriteMain;
+
+	char* text;
+	Font* font;
+	Color text_color;
+	Vector2D text_position_relative; //position of text relative to UI_Element.position
 
 	float frame;
 	float frameRate;
@@ -29,8 +40,6 @@ typedef struct UI_Element_s
 	void (*free)(struct Entity_s* self);
 
 	void (*onClick)(struct Entity_s* self);
-
-	void* data;
 
 	Collider_Circle* collider_circle;
 	Collider_Box* collider_box;

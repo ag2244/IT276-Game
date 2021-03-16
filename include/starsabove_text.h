@@ -32,7 +32,7 @@ void font_init(Uint32 maxFonts);
 Font* font_load(const char* filename, int ptsize);
 
 /**
-* @brief Rree a font
+* @brief Free a font
 * @param font the font to free
 */
 void font_free(Font* font);

@@ -5,7 +5,7 @@
 #include "starsabove_game.h"
 GameState gameState = { 0 };
 
-Font* font;
+//Font* font;
 
 void load_game(char* filename)
 {
@@ -101,14 +101,16 @@ void prepare_game()
 	/* Starting the ui manager */
 	ui_manager_init(50);
 
-	/* Starting the font manager */
+	/* Starting the font manager, loading fonts */
 	font_init(50);
-	font = font_load("resources/fonts/futur.ttf", 20);
+	font_load("resources/fonts/futur.ttf", 12);
 
 	/* Starting the nations list */
 	nations_list_init(24);
 
 	gametext_init(vector2d(0, 700));
+
+	textbox_init(vector2d(0,0), vector2d(100, 50), "TextBox", font_load("resources/fonts/futur.ttf", 12));
 
 	// Set up the debug world
 	test();
@@ -163,9 +165,6 @@ void starsabove_loop()
 	ui_manager_update();
 
 	ui_manager_draw();
-
-	gfc_line_sprintf(testText, "WELCOME TO STARS ABOVE");
-	font_render(font, testText, vector2d(40, 740), gfc_color(255, 255, 255, 0));
 }
 
 Bool starsabove_hoverDetection(float mX, float mY) {
