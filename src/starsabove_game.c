@@ -85,10 +85,28 @@ void save_game(char* savefile_name)
 
 void test() 
 {
+	Menu_State* nullmenustate = NULL;
+	UI_Element* title;
+	UI_Element* beginning;
 
 	load_game("jsondata/Test Input.json");
 
 	save_game("TESTOUT.json");
+
+	gameState.player_menustate = malloc(sizeof(Menu_State));
+
+	title = textbox_init(vector2d(0, 0), vector2d(100, 50), "TITLE", font_load("resources/fonts/futur.ttf", 12));
+	beginning = textbox_init(vector2d(0, 0), vector2d(100, 50), "TextBox", font_load("resources/fonts/futur.ttf", 12));
+
+	gameState.player_menustate = menu_state_new(
+		nullmenustate,
+		title,
+		beginning,
+		vector2d(0, 0),
+		0,
+		10);
+
+	slog("Test Setup is done!");
 }
 
 void prepare_game()
@@ -110,7 +128,7 @@ void prepare_game()
 
 	gametext_init(vector2d(0, 700));
 
-	textbox_init(vector2d(0,0), vector2d(100, 50), "TextBox", font_load("resources/fonts/futur.ttf", 12));
+	//textbox_init(vector2d(0,0), vector2d(100, 50), "TextBox", font_load("resources/fonts/futur.ttf", 12));
 
 	// Set up the debug world
 	test();

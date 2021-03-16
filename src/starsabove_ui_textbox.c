@@ -26,13 +26,18 @@ UI_Element* textbox_init(Vector2D position, Vector2D size, char* text, Font* fon
     element->offset = vector2d(5, 5);
 
     //Load text rendering info
-    element->text = text;
+    gfc_line_cpy(element->text, text);
     element->font = font;
-    element->text_position_relative = vector2d(10, (element->spriteBorder->frame_h - font->ptsize) / 2);
+    element->text_position_relative = 
+        vector2d(
+            10, 
+            (element->spriteBorder->frame_h - font->ptsize) / 2);
+
     element->text_color = gfc_color(29 / 255, 50 / 255, 54 / 255, 0);
 
-    //Load position
+    //Load position, size
     vector2d_copy(element->position, position);
+    vector2d_copy(element->size, size);
 
     element->frameRate = 0;
     element->frameCount = 1;
@@ -44,10 +49,43 @@ UI_Element* textbox_init(Vector2D position, Vector2D size, char* text, Font* fon
 
     vector2d_copy(element->collider_box->position, element->position);
 
-    vector2d_add(element->collider_box->extremity, position, boxsize);
+    vector2d_copy(element->collider_box->size, boxsize);
 
-    slog("System created!");
+    slog("Textbox created with text \"%s\"!", text);
     return element;
+}
+
+Menu* menu_init(UI_Element* title, UI_Element* beginning, Vector2D position, int spacing_x, int spacing_y)
+{
+    Menu* newMenu = malloc(sizeof(Menu));
+
+    newMenu->title = *title;
+
+    //Set up the beginning textbox
+    beginning->position = vector2d(position.x + spacing_x, position.y + title->size.y + spacing_y);
+    vector2d_copy(beginning->collider_box->position, beginning->position);
+
+    newMenu->beginning = malloc(sizeof(UI_Node));
+    newMenu->beginning->element = beginning;
+
+    newMenu->position = position;
+
+    newMenu->spacing_x = spacing_x;
+    newMenu->spacing_y = spacing_y;
+
+    return newMenu;
+}
+
+Menu_State* menu_state_new(Menu_State* previous_menu_state, UI_Element* title, UI_Element* beginning, Vector2D position, int spacing_x, int spacing_y)
+{
+    Menu_State* new_state = malloc(sizeof(new_state));
+
+    Menu* newMenu = menu_init(title, beginning, position, spacing_x, spacing_y);
+
+    new_state->current_menu = newMenu;
+    new_state->previous_menu_state = &previous_menu_state;
+
+    return new_state;
 }
 
 /*Bottom*/

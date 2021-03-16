@@ -20,11 +20,12 @@ typedef struct UI_Element_s
 
 	Vector2D position;
 	Vector2D offset;
+	Vector2D size;
 
 	Sprite* spriteBorder;
 	Sprite* spriteMain;
 
-	char* text;
+	char text[256];
 	Font* font;
 	Color text_color;
 	Vector2D text_position_relative; //position of text relative to UI_Element.position
@@ -43,6 +44,8 @@ typedef struct UI_Element_s
 
 	Collider_Circle* collider_circle;
 	Collider_Box* collider_box;
+
+	void* data;
 
 } UI_Element;
 

@@ -12,9 +12,11 @@
 #include "simple_json.h"
 
 #include "starsabove_entity.h"
-#include "starsabove_ui_base.h"
 #include "starsabove_system.h"
 #include "starsabove_nation.h"
+
+#include "starsabove_ui_base.h"
+#include "starsabove_ui_textbox.h"
 
 #include "starsabove_text.h"
 
@@ -22,6 +24,8 @@ typedef struct GameState_s
 {
 	UI_Element* currentClickable_ui;
 	Entity* currentClickable_entity;
+
+	Menu_State* player_menustate;
 
 } GameState;
 

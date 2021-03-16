@@ -52,7 +52,11 @@ Bool box_clickable(Collider_Box* box, Vector2D otherPosition) {
 		return NULL;
 	}
 
-	if ((otherPosition.x > box->position.x) && (otherPosition.y > box->position.y) && (otherPosition.x < box->extremity.x) && (otherPosition.y < box->extremity.y)) {
+	if (
+		(otherPosition.x > box->position.x) && (otherPosition.y > box->position.y) 
+		&& 
+		(otherPosition.x < box->position.x + box->size.x) && (otherPosition.y < box->position.y + box->size.y))
+	{
 		return 1;
 	}
 

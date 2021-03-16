@@ -21,7 +21,7 @@ typedef struct Collider_Box_s
 
 	Vector2D position;
 
-	Vector2D extremity; //Bottom right corner of the box
+	Vector2D size; //Bottom right corner of the box
 	
 	Bool(*is_clickable)(struct Collider_Box_s self, Vector2D otherPosition);
 
