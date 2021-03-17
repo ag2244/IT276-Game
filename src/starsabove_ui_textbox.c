@@ -30,7 +30,7 @@ UI_Element* textbox_init(Vector2D position, Vector2D size, char* text, Font* fon
     element->font = font;
     element->text_position_relative = 
         vector2d(
-            10, 
+            15,
             (element->spriteBorder->frame_h - font->ptsize) / 2);
 
     element->text_color = gfc_color(29 / 255, 50 / 255, 54 / 255, 0);
@@ -88,4 +88,69 @@ Menu_State* menu_state_new(Menu_State* previous_menu_state, UI_Element* title, U
     return new_state;
 }
 
-/*Bottom*/
+Menu_State* menu_state_addTo(Menu_State* old, Menu* new)
+{
+
+}
+
+Menu_State* menu_state_back(Menu_State* menu)
+{
+
+}
+
+void ui_node_addTo(Menu* menu, UI_Node* node, UI_Element* element)
+{
+    if (node->next == NULL)
+    {
+        ui_node_addTo(menu, node->next, element);
+        return;
+    }
+
+    element->position = vector2d(
+        node->element->position.x + menu->spacing_x,
+        node->element->position.y + menu->spacing_y + node->element->size.y
+    );
+
+    element->collider_box->position = vector2d(
+        node->element->collider_box->position.x + menu->spacing_x,
+        node->element->collider_box->position.y + menu->spacing_y + node->element->collider_box->size.y
+    );
+
+    node->next = malloc(sizeof(UI_Node));
+    node->next = element;
+}
+
+void menu_addTo(Menu* menu, UI_Element* element)
+{
+    ui_node_addTo(menu, menu->beginning, element);
+}
+
+void ui_node_free(UI_Node node)
+{
+    if (node.next != NULL) 
+        ui_node_free(*node.next);
+
+    ui_free(node.element);
+
+    free(&node);
+}
+
+void menu_free(Menu* menu)
+{
+    ui_free(&menu->title);
+    ui_free(&menu->next_button);
+    ui_free(&menu->previous_button);
+
+    ui_node_free(*menu->beginning);
+
+    free(menu);
+}
+
+void menu_state_free(Menu_State* menu_state)
+{
+    menu_free(menu_state->current_menu);
+
+    menu_state_free(menu_state->previous_menu_state);
+
+    free(menu_state);
+}

@@ -78,15 +78,14 @@ Bool starsabove_hoverDetection(float mX, float mY);
 void onClick_left();
 
 /**
-* @brief set up the game's test world
-* @return NULL on error
+* @brief called on program exit
 */
+void starsabove_exit();
+
 void test();
 
-/**
-* @brief output stuff for testing
-* @return NULL on error
-*/
+void test_ui();
+
 void testcmd();
 
 #endif

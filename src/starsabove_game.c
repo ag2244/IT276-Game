@@ -85,53 +85,64 @@ void save_game(char* savefile_name)
 
 void test() 
 {
-	Menu_State* nullmenustate = NULL;
-	UI_Element* title;
-	UI_Element* beginning;
 
 	load_game("jsondata/Test Input.json");
 
 	save_game("TESTOUT.json");
 
-	gameState.player_menustate = malloc(sizeof(Menu_State));
+	test_ui();
 
-	title = textbox_init(vector2d(0, 0), vector2d(100, 50), "TITLE", font_load("resources/fonts/futur.ttf", 12));
-	beginning = textbox_init(vector2d(0, 0), vector2d(100, 50), "TextBox", font_load("resources/fonts/futur.ttf", 12));
+	slog("Test Setup is done!");
+}
+
+void test_ui()
+{
+	Menu_State* nullmenustate = NULL;
+	UI_Element* title;
+	UI_Element* beginning;
+
+	title = textbox_init(vector2d(10, 10), vector2d(100, 50), "TITLE", font_load("resources/fonts/futur.ttf", 12));
+	beginning = textbox_init(vector2d(0, 0), vector2d(100, 50), "TEXTBOX", font_load("resources/fonts/futur.ttf", 12));
 
 	gameState.player_menustate = menu_state_new(
 		nullmenustate,
 		title,
 		beginning,
-		vector2d(0, 0),
+		vector2d(10, 10),
 		0,
-		10);
+		5
+	);
 
-	slog("Test Setup is done!");
+	menu_addTo(
+		gameState.player_menustate->current_menu, 
+		textbox_init(vector2d(0, 0), vector2d(100, 50), "ADDED", font_load("resources/fonts/futur.ttf", 12))
+	);
 }
 
 void prepare_game()
 {
 	int i = 0; EntityManager* entity_manager = entity_manager_get();
 
-    /* Starting the entity manager */
+    // Starting the entity manager
     entity_manager_init(100);
 
-	/* Starting the ui manager */
+	// Starting the ui manager
 	ui_manager_init(50);
 
-	/* Starting the font manager, loading fonts */
+	// Starting the font manager, loading fonts
 	font_init(50);
 	font_load("resources/fonts/futur.ttf", 12);
 
-	/* Starting the nations list */
+	// Starting the nations list
 	nations_list_init(24);
 
-	gametext_init(vector2d(0, 700));
-
-	//textbox_init(vector2d(0,0), vector2d(100, 50), "TextBox", font_load("resources/fonts/futur.ttf", 12));
+	// Initialize the player's menu state
+	gameState.player_menustate = malloc(sizeof(Menu_State));
 
 	// Set up the debug world
 	test();
+
+	atexit(starsabove_exit);
 
 	slog("============ GAME LOADED! ============");
 
@@ -270,4 +281,10 @@ void processKeys(Uint8 keys, Uint32 mouse) {
 		}
 	}
 
+}
+
+void starsabove_exit()
+{
+	gameState.currentClickable_entity = NULL;
+	gameState.currentClickable_ui = NULL;
 }

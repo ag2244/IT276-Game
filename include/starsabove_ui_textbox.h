@@ -57,6 +57,28 @@ typedef struct Menu_State_s
 UI_Element *textbox_init(Vector2D position, Vector2D size, char* text, Font* font);
 
 /**
+* @brief Add a menu to a menu state struct
+* @param old The old menu state
+* @param new The new menu to add
+* @return NULL on error, or a pointer to a new menu state
+*/
+Menu_State* menu_state_addTo(Menu_State* old, Menu* new);
+
+/**
+* @brief Go to the previous Menu_State
+* @param old The old menu state
+* @return NULL on error, or a pointer to the previous menu state
+*/
+Menu_State* menu_state_back(Menu_State* menu);
+
+/**
+* @brief Add a UI element to the menu
+* @param menu The menu to add to
+* @param element The element to add
+*/
+void menu_addTo(Menu* menu, UI_Element* element);
+
+/**
 * @brief Initialize a menu state
 * @param previous_menu_state (Optional) The previous menu to the current displayed one.
 * 
@@ -70,6 +92,12 @@ UI_Element *textbox_init(Vector2D position, Vector2D size, char* text, Font* fon
 * @return NULL on error, or a pointer to a new menu state
 */
 Menu_State* menu_state_new(Menu_State* previous_menu_state, UI_Element* title, UI_Element* beginning, Vector2D position, int spacing_x, int spacing_y);
+
+/**
+* @brief Free a menu_state
+* @param menu_state The menu state
+*/
+void menu_state_free(Menu_State* menu_state);
 
 
 #endif
