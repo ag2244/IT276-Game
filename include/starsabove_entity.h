@@ -135,6 +135,6 @@ void entity_onClick(Entity* ent, Game_Event* event_reciever);
 * @brief recieve a button transmission
 * @param transmission The transmission struct to process
 */
-//void entity_reciever(Entity* self, void* transmission);
+//void entity_reciever(Entity* self, Game_Event* transmission);
 
 #endif

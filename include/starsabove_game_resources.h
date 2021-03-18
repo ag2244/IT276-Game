@@ -8,6 +8,7 @@ typedef struct
 	Bool _sent;
 
 	char target_id[128];
+	char sub_target_id[128];
 
 	char command[128];
 	char descriptor[128];

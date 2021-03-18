@@ -158,7 +158,7 @@ SJson* system_toJson(Entity* self)
 
 void system_reciever(Entity* self, Game_Event* event)
 {
-    printf(event->command);
+    slog(event->command);
 }
 
 Entity* system_spawn(char* name, Vector2D position, Nation* owner)

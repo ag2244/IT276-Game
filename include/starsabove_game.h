@@ -77,6 +77,11 @@ void processKeys(Uint8 keys, Uint32 mouse);
 Bool starsabove_hoverDetection(float mX, float mY);
 
 /**
+* @brief Go through all game objects that may be listening for an event
+*/
+void event_relay();
+
+/**
 * @brief perform actions when left mouse button is clicked
 * @return NULL on error
 */
