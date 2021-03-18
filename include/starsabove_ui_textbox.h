@@ -6,14 +6,6 @@
 #include "starsabove_entity.h"
 #include "starsabove_ui_base.h"
 
-//Data specific to a textbox
-typedef struct
-{
-
-	char command[256];
-
-} Textbox_Data;
-
 //A link in a menu linked list
 typedef struct UI_Node_s
 {
@@ -54,7 +46,7 @@ typedef struct Menu_State_s
 * @param size The size of the textBox
 * @return NULL on error, or a pointer to a new textbox
 */
-UI_Element *textbox_init(Vector2D position, Vector2D size, char* text, Font* font);
+UI_Element* textbox_init(Vector2D position, Vector2D size, char* text, Font* font);
 
 /**
 * @brief Add a menu to a menu state struct
@@ -62,7 +54,7 @@ UI_Element *textbox_init(Vector2D position, Vector2D size, char* text, Font* fon
 * @param new The new menu to add
 * @return NULL on error, or a pointer to a new menu state
 */
-Menu_State* menu_state_addTo(Menu_State* old, Menu* new);
+Menu_State* menu_state_addTo(Menu_State* old, Menu* newMenu);
 
 /**
 * @brief Go to the previous Menu_State
@@ -98,6 +90,8 @@ Menu_State* menu_state_new(Menu_State* previous_menu_state, UI_Element* title, U
 * @param menu_state The menu state
 */
 void menu_state_free(Menu_State* menu_state);
+
+void textbox_onClick(UI_Element* element, Game_Event* event_reciever);
 
 
 #endif

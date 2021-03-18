@@ -101,8 +101,12 @@ void test_ui()
 	UI_Element* title;
 	UI_Element* beginning;
 
-	title = textbox_init(vector2d(10, 10), vector2d(100, 50), "TITLE", font_load("resources/fonts/futur.ttf", 12));
-	beginning = textbox_init(vector2d(0, 0), vector2d(100, 50), "TEXTBOX", font_load("resources/fonts/futur.ttf", 12));
+	Game_Event* game_event = malloc(sizeof(Game_Event));
+	char* temp;
+
+	//Make a menu
+	title = textbox_init(vector2d(10, 10), vector2d(200, 50), "TITLE", font_load("resources/fonts/futur.ttf", 16));
+	beginning = textbox_init(vector2d(0, 0), vector2d(200, 50), "BEGINNING", font_load("resources/fonts/futur.ttf", 12));
 
 	gameState.player_menustate = menu_state_new(
 		nullmenustate,
@@ -115,8 +119,23 @@ void test_ui()
 
 	menu_addTo(
 		gameState.player_menustate->current_menu, 
-		textbox_init(vector2d(0, 0), vector2d(100, 50), "ADDED", font_load("resources/fonts/futur.ttf", 12))
+		textbox_init(vector2d(0, 0), vector2d(200, 50), "ADDED", font_load("resources/fonts/futur.ttf", 12))
 	);
+
+	//Attach a signal
+	temp = "COMMAND";
+	strcpy(game_event->command, "COMMAND");
+	temp = "TARGETID";
+	strcpy(game_event->target_id, "TARGETID");
+	temp = "DESCRIPTOR";
+	strcpy(game_event->descriptor, "DESCRIPTOR");
+
+	slog(game_event->command);
+	slog(game_event->target_id);
+	slog(game_event->descriptor);
+
+	ui_addevent(beginning, game_event);
+	
 }
 
 void prepare_game()
@@ -179,11 +198,15 @@ void testcmd()
 	}
 
 	//*/
+
+	if (gameState._hasevent)
+	{
+		slog("EVENT WITH COMMAND: \"%s\"", gameState.frame_event.command);
+	}
 }
 
 void starsabove_loop()
 {
-	TextLine testText;
 
 	testcmd();
 
@@ -257,7 +280,35 @@ Bool starsabove_hoverDetection(float mX, float mY) {
 void onClick_left() 
 {
 	if (gameState.currentClickable_entity) {
-		entity_onClick(gameState.currentClickable_entity);
+		entity_onClick(gameState.currentClickable_entity, &gameState.frame_event);
+
+		if (gameState.frame_event._sent)
+		{
+			gameState._hasevent = 1;
+			gameState.frame_event._sent = 0;
+
+			gameState._hasevent = 0;
+		}
+
+		return;
+	};
+
+	if (gameState.currentClickable_ui) {
+		ui_onClick(gameState.currentClickable_ui, &gameState.frame_event);
+
+		if (gameState.frame_event._sent == 1)
+		{
+			gameState._hasevent = 1;
+			gameState.frame_event._sent = 0;
+
+			slog(gameState.frame_event.command);
+			slog(gameState.frame_event.target_id);
+			slog(gameState.frame_event.descriptor);
+
+			gameState._hasevent = 0;
+		}
+
+		return;
 	};
 }
 
@@ -287,4 +338,11 @@ void starsabove_exit()
 {
 	gameState.currentClickable_entity = NULL;
 	gameState.currentClickable_ui = NULL;
+
+	if (gameState._hasevent)
+	{
+		free(&gameState.frame_event);
+	}
+
+	slog("Freed game metadata");
 }

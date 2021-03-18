@@ -11,6 +11,25 @@ typedef struct System_Data_s
 
 } System_Data;
 
+typedef struct
+{
+	
+	char message[128];
+
+} System_Transmission;
+
+/**
+* @brief Allocate a system data struct
+* @return NULL on error, or a pointer to a new system_data struct
+*/
+System_Data* system_data_new();
+
+/**
+* @brief Allocate a system transmission
+* @return NULL on error, or a pointer to a new system_transmission struct
+*/
+System_Transmission* system_transmission_new();
+
 /**
 * @brief Load all the systems in a game
 * @return NULL on error, 1 if successful
@@ -21,7 +40,7 @@ int load_systems(SJson* game_json);
 * @brief Perform actions when a system is clicked
 * @return NULL on error
 */
-void system_onClick(struct Entity* self);
+void system_onClick(struct Entity* self, Game_Event* event_reciever);
 
 /**
 * @brief Turn a star system to a json object

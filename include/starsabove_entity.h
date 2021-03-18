@@ -8,6 +8,8 @@
 
 #include "simple_json.h"
 
+#include "starsabove_game_resources.h"
+
 #include "starsabove_collision.h"
 #include "starsabove_nation.h"
 
@@ -40,6 +42,8 @@ typedef struct Entity_s{
 	void (*onClick)(struct Entity_s* self);
 
 	SJson* (*toJson)(struct Entity_s* self);
+	
+	void (*reciever)(struct Entity_s* self, Game_Event* event_reciever);
 
 	void* data;
 
@@ -125,6 +129,12 @@ Bool entity_clickable(Entity* ent, float mX, float mY);
 * @brief what to do with an entity that has been clicked
 * @param ent the entity that has been clicked
 */
-void entity_onClick(Entity* ent);
+void entity_onClick(Entity* ent, Game_Event* event_reciever);
+
+/**
+* @brief recieve a button transmission
+* @param transmission The transmission struct to process
+*/
+//void entity_reciever(Entity* self, void* transmission);
 
 #endif

@@ -27,11 +27,16 @@ UI_Element* textbox_init(Vector2D position, Vector2D size, char* text, Font* fon
 
     //Load text rendering info
     gfc_line_cpy(element->text, text);
+
     element->font = font;
-    element->text_position_relative = 
-        vector2d(
-            15,
-            (element->spriteBorder->frame_h - font->ptsize) / 2);
+
+    vector2d_copy(
+        element->text_position_relative, 
+            vector2d(
+                15,
+                (element->spriteBorder->frame_h - font->ptsize) / 2
+            )
+        );
 
     element->text_color = gfc_color(29 / 255, 50 / 255, 54 / 255, 0);
 
@@ -51,6 +56,8 @@ UI_Element* textbox_init(Vector2D position, Vector2D size, char* text, Font* fon
 
     vector2d_copy(element->collider_box->size, boxsize);
 
+    element->onClick = textbox_onClick;
+
     slog("Textbox created with text \"%s\"!", text);
     return element;
 }
@@ -67,6 +74,7 @@ Menu* menu_init(UI_Element* title, UI_Element* beginning, Vector2D position, int
 
     newMenu->beginning = malloc(sizeof(UI_Node));
     newMenu->beginning->element = beginning;
+    newMenu->beginning->next = NULL;
 
     newMenu->position = position;
 
@@ -88,7 +96,7 @@ Menu_State* menu_state_new(Menu_State* previous_menu_state, UI_Element* title, U
     return new_state;
 }
 
-Menu_State* menu_state_addTo(Menu_State* old, Menu* new)
+Menu_State* menu_state_addTo(Menu_State* old, Menu* newMenu)
 {
 
 }
@@ -100,7 +108,7 @@ Menu_State* menu_state_back(Menu_State* menu)
 
 void ui_node_addTo(Menu* menu, UI_Node* node, UI_Element* element)
 {
-    if (node->next == NULL)
+    if (node->next != NULL)
     {
         ui_node_addTo(menu, node->next, element);
         return;
@@ -117,7 +125,8 @@ void ui_node_addTo(Menu* menu, UI_Node* node, UI_Element* element)
     );
 
     node->next = malloc(sizeof(UI_Node));
-    node->next = element;
+    node->next->element = element;
+    node->next->next = NULL;
 }
 
 void menu_addTo(Menu* menu, UI_Element* element)
@@ -153,4 +162,22 @@ void menu_state_free(Menu_State* menu_state)
     menu_state_free(menu_state->previous_menu_state);
 
     free(menu_state);
+}
+
+void textbox_onClick(UI_Element* element, Game_Event* event_reciever)
+{
+    if (element == NULL)
+    {
+        slog("Cannot click on null element!");
+        return;
+    }
+
+    if (element->signal)
+    {
+        gfc_line_cpy(event_reciever->command, element->signal->command);
+        gfc_line_cpy(event_reciever->target_id, element->signal->target_id);
+        gfc_line_cpy(event_reciever->descriptor, element->signal->descriptor);
+        event_reciever->qty = element->signal->qty;
+        event_reciever->_sent = 1;
+    }
 }

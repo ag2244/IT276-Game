@@ -65,10 +65,11 @@ int main(int argc, char * argv[])
         gf2d_sprite_draw_image(sprite,vector2d(0,0));
             
             //Stars Above stuff
+            processKeys(keys, mouse);
 
             starsabove_loop();
 
-            //draw UI elements last
+            //Mouse position, sprite
             if (starsabove_hoverDetection(mx, my)) {
                 mouseSprite = mouseClickable;
             }
@@ -86,9 +87,6 @@ int main(int argc, char * argv[])
                 NULL,
                 NULL,
                 0);
-
-            //Process keys
-            processKeys(keys, mouse);
 
         gf2d_grahics_next_frame();// render current draw frame and skip to the next frame
         

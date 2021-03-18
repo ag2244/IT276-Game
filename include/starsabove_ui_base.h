@@ -7,6 +7,8 @@
 
 #include "gf2d_sprite.h"
 
+#include "starsabove_game_resources.h"
+
 #include "starsabove_collision.h"
 #include "starsabove_text.h"
 
@@ -40,10 +42,12 @@ typedef struct UI_Element_s
 	void (*draw)(struct Entity_s* self);
 	void (*free)(struct Entity_s* self);
 
-	void (*onClick)(struct Entity_s* self);
+	void (*onClick)(struct Entity_s* self, Game_Event* event_reciever);
 
 	Collider_Circle* collider_circle;
 	Collider_Box* collider_box;
+
+	Game_Event* signal;
 
 	void* data;
 
@@ -110,9 +114,16 @@ void ui_draw(UI_Element* element);
 Bool ui_clickable(UI_Element* element, float mX, float mY);
 
 /**
+* @brief Add an event to be triggered by an element on some condition(s)
+* @param self the element to attach the signal to
+* @param signal The event to be triggered on some trigger
+*/
+void ui_addevent(UI_Element* self, Game_Event* signal);
+
+/**
 * @brief what to do with a ui element that has been clicked
 * @param element the element that has been clicked
 */
-void ui_onClick(UI_Element* element);
+void ui_onClick(UI_Element* element, Game_Event* event_reciever);
 
 #endif

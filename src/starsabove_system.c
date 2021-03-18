@@ -12,6 +12,16 @@ System_Data* system_data_new()
     return malloc(sizeof(System_Data));
 }
 
+System_Transmission* system_transmission_new()
+{
+    return malloc(sizeof(System_Transmission));
+}
+
+System_Transmission* system_transmission_get(void* transmission)
+{
+    return (System_Transmission*)transmission;
+}
+
 int load_systems(SJson* game_json)
 {
     //The star systems in this game
@@ -97,7 +107,7 @@ int load_systems(SJson* game_json)
     return 1;
 }
 
-void system_onClick(Entity* self) {
+void system_onClick(Entity* self, Game_Event* event_reciever) {
     if (self == NULL)
     {
         slog("Cannot click on NULL entity!");
@@ -146,6 +156,11 @@ SJson* system_toJson(Entity* self)
     return sj_object_new();
 }
 
+void system_reciever(Entity* self, Game_Event* event)
+{
+    printf(event->command);
+}
+
 Entity* system_spawn(char* name, Vector2D position, Nation* owner)
 {
 
@@ -191,6 +206,7 @@ Entity* system_spawn(char* name, Vector2D position, Nation* owner)
 
     ent->onClick = system_onClick;
     ent->toJson = system_toJson;
+    ent->reciever = system_reciever;
 
     //Done!
     //slog("System \"%s\" created!", ent->name);

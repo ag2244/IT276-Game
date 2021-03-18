@@ -11,6 +11,8 @@
 
 #include "simple_json.h"
 
+#include "starsabove_game_resources.h"
+
 #include "starsabove_entity.h"
 #include "starsabove_system.h"
 #include "starsabove_nation.h"
@@ -26,6 +28,9 @@ typedef struct GameState_s
 	Entity* currentClickable_entity;
 
 	Menu_State* player_menustate;
+
+	Bool _hasevent;
+	Game_Event frame_event;
 
 } GameState;
 

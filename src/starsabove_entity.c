@@ -262,7 +262,8 @@ Bool entity_clickable(Entity* ent, float mX, float mY) {
 
 }
 
-void entity_onClick(Entity* ent) {
+void entity_onClick(Entity* ent, Game_Event* event_reciever)
+{
 
 	if (!ent)
 	{
@@ -272,6 +273,26 @@ void entity_onClick(Entity* ent) {
 
 	//If there's a custom draw
 	if (ent->onClick) ent->onClick(ent);
+
+	else {
+
+		//TODO
+
+	}
+
+}
+
+void entity_reciever(Entity* self, Game_Event* event)
+{
+
+	if (!self)
+	{
+		slog("Cannot recieve for a NULL entity");
+		return;
+	}
+
+	//If there's a custom draw
+	if (self->reciever) self->reciever(self, event);
 
 	else {
 

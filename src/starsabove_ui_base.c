@@ -241,7 +241,20 @@ Bool ui_clickable(UI_Element* element, float mX, float mY) {
 
 }
 
-void ui_onClick(UI_Element* element) {
+void ui_addevent(UI_Element* self, Game_Event* signal)
+{
+	self->signal = malloc(sizeof(Game_Event));
+
+	strcpy(self->signal->target_id, signal->target_id);
+	strcpy(self->signal->command, signal->command);
+	strcpy(self->signal->descriptor, signal->descriptor);
+	self->signal->qty = signal->qty;
+
+	self->signal->_sent = 0;
+}
+
+void ui_onClick(UI_Element* element, Game_Event* event_reciever) 
+{
 
 	if (!element)
 	{
@@ -249,10 +262,14 @@ void ui_onClick(UI_Element* element) {
 		return;
 	}
 
-	//If there's a custom draw
-	if (element->onClick) element->onClick(element);
+	//If there's a custom onClick
+	if (element->onClick)
+	{
+		element->onClick(element, event_reciever);
+	}
 
-	else {
+	else 
+	{
 
 		//TODO
 
