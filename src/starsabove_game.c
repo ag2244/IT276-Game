@@ -101,8 +101,6 @@ void test_ui()
 	UI_Element* title;
 	UI_Element* beginning;
 
-	Game_Event* game_event = malloc(sizeof(Game_Event));
-
 	//Make a menu
 	title = textbox_init(vector2d(10, 10), vector2d(200, 50), "TITLE", font_load("resources/fonts/futur.ttf", 16));
 	beginning = textbox_init(vector2d(0, 0), vector2d(200, 50), "BEGINNING", font_load("resources/fonts/futur.ttf", 12));
@@ -121,12 +119,16 @@ void test_ui()
 		textbox_init(vector2d(0, 0), vector2d(200, 50), "ADDED", font_load("resources/fonts/futur.ttf", 12))
 	);
 
-	//Attach a signal
-	strcpy(game_event->command, "COMMAND");
-	strcpy(game_event->target_id, "System1");
-	strcpy(game_event->descriptor, "DESCRIPTOR");
-
-	ui_addevent(beginning, game_event);
+	ui_addevent(beginning,
+		new_gameevent(
+			"System1",
+			"SUB_TARGET_ID",
+			"COMMAND",
+			"DESCRIPTOR",
+			123,
+			gameState.player_menustate
+		)
+	);
 	
 }
 
