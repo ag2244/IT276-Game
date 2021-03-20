@@ -3,7 +3,9 @@
 #include "simple_logger.h"
 
 #include "starsabove_game.h"
+
 GameState gameState = { 0 };
+Bool KEYS[322];
 
 //Font* font;
 
@@ -342,6 +344,7 @@ void processKeys(Uint8 keys, Uint32 mouse) {
 
 	SDL_Event frame_event;
 
+	//Process the frame event itself
 	while (SDL_PollEvent(&frame_event)) {
 
 		switch (frame_event.type) {
@@ -350,6 +353,32 @@ void processKeys(Uint8 keys, Uint32 mouse) {
 
 			if (frame_event.button.button == SDL_BUTTON_LEFT)
 				onClick_left();
+
+			break;
+
+		case SDL_KEYDOWN:
+
+			if (frame_event.key.keysym.sym == SDLK_BACKSPACE)
+			{
+				if (gameState.frame_event.menu_state != NULL)
+				{
+					menu_state_hide(gameState.frame_event.menu_state);
+
+					gameState.frame_event.menu_state = menu_state_back(gameState.frame_event.menu_state);
+
+					if (gameState.frame_event.menu_state != NULL)
+						menu_state_show(gameState.frame_event.menu_state);
+
+				}
+			}
+
+			else
+				KEYS[frame_event.key.keysym.sym] = 1;
+
+			break;
+
+		case SDL_KEYUP:
+			KEYS[frame_event.key.keysym.sym] = 0;
 
 			break;
 
