@@ -50,6 +50,8 @@ typedef struct Entity_s{
 	Collider_Circle* collider_circle;
 	Collider_Box* collider_box;
 
+	Game_Event* clickEvent;
+
 } Entity; //Finally naming it Entity
 
 

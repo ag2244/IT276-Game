@@ -121,6 +121,8 @@ UI_Element* ui_new()
 		ui_manager.element_list[i].text_position_relative = vector2d(0, 0);
 		ui_manager.element_list[i].text_color = gfc_color(1, 1, 1, 0);
 
+		ui_manager.element_list[i].hidden = 0;
+
 		return &ui_manager.element_list[i];
 	}
 
@@ -160,8 +162,13 @@ void ui_draw(UI_Element* element)
 		return;
 	}
 
+	if (element->hidden == 1)
+	{
+		return;
+	}
+
 	//If there's a custom draw
-	if (element->draw) element->draw(element);
+	else if (element->draw) element->draw(element);
 
 	else {
 
@@ -221,6 +228,11 @@ Bool ui_clickable(UI_Element* element, float mX, float mY) {
 
 	Vector2D pos = vector2d(mX, mY);
 
+	if (element->hidden == 1)
+	{
+		return 0;
+	}
+
 	if (element->collider_box != NULL)
 	{
 		if (box_clickable(element->collider_box, pos) != 0)
@@ -249,6 +261,7 @@ void ui_addevent(UI_Element* self, Game_Event* signal)
 	strcpy(self->signal->command, signal->command);
 	strcpy(self->signal->descriptor, signal->descriptor);
 	self->signal->qty = signal->qty;
+	self->signal->menu_state = signal->menu_state;
 
 	self->signal->_sent = 0;
 }

@@ -4,31 +4,21 @@
 #define __SYSTEM_H__
 
 #include "starsabove_entity.h"
+#include "starsabove_planet.h"
 
 typedef struct System_Data_s
 {
-	float placeholder;
+	int num_planets;
+	Planet* planets;
 
 } System_Data;
 
-typedef struct
-{
-	
-	char message[128];
-
-} System_Transmission;
-
 /**
 * @brief Allocate a system data struct
+* @param numPlanets the number of planets this system will have
 * @return NULL on error, or a pointer to a new system_data struct
 */
-System_Data* system_data_new();
-
-/**
-* @brief Allocate a system transmission
-* @return NULL on error, or a pointer to a new system_transmission struct
-*/
-System_Transmission* system_transmission_new();
+System_Data* system_data_new(Uint32 numPlanets);
 
 /**
 * @brief Load all the systems in a game
@@ -56,6 +46,13 @@ SJson* system_toJson(struct Entity* self);
 * @param owner The nation that owns this system
 * @return NULL on error, or a pointer to a new system entity
 */
-Entity* system_spawn(char* name, Vector2D position, Nation* owner);
+Entity* system_spawn(char* name, Vector2D position, Nation* owner, System_Data* systemdata);
+
+/**
+* @brief get the number of planets from a system
+* @param system The system to get the number of planets from
+* @return NULL on error, or the number of planets
+*/
+int system_num_planets(Entity* system);
 
 #endif

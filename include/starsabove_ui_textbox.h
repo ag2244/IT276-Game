@@ -18,7 +18,7 @@ typedef struct UI_Node_s
 //A linked list of related textboxes
 typedef struct
 {
-	UI_Element title;
+	UI_Element* title;
 
 	UI_Node* beginning;
 	Vector2D position;
@@ -26,8 +26,8 @@ typedef struct
 	int spacing_x;
 	int spacing_y;
 
-	UI_Element previous_button;
-	UI_Element next_button;
+	UI_Element* previous_button;
+	UI_Element* next_button;
 
 } Menu;
 
@@ -85,12 +85,28 @@ void menu_addTo(Menu* menu, UI_Element* element);
 */
 Menu_State* menu_state_new(Menu_State* previous_menu_state, UI_Element* title, UI_Element* beginning, Vector2D position, int spacing_x, int spacing_y);
 
+/*
+* @brief make all the previous menus invisible and thus uninteractable
+* @param menu_state the menu_state to hide as well as all its previous menus
+*/
+void menu_state_hide(Menu_State* menu_state);
+
+/*
+* @brief make all the previous menus visible and interactible
+* @param menu_state the menu_state to show as well as all its previous menus
+*/
+void menu_state_show(Menu_State* menu_state);
+
 /**
 * @brief Free a menu_state
 * @param menu_state The menu state
 */
 void menu_state_free(Menu_State* menu_state);
 
+/**
+* @brief textbox->onClick
+* @param element the element that has been clicked
+*/
 void textbox_onClick(UI_Element* element, Game_Event* event_reciever);
 
 

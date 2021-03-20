@@ -4,22 +4,74 @@
 		{
 			"name": "System1",
 			"position": [400, 500],
-			"owner": "Nation1"
+			"owner": "Nation1",
+			"planets":
+			[
+				{
+					"name": "System1 I",
+					"resources":
+						{
+						
+						}
+				},
+				{
+					"name": "System1 II"
+				},
+				{
+					"name": "System1 III"
+				}
+			]
 		},
 		{
 			"name": "System2",
 			"position": [300, 400],
-			"owner": "Nation1"
+			"owner": "Nation1",
+			"planets":
+			[
+				{
+					"name": "System2 I"
+				},
+				{
+					"name": "System2 II"
+				},
+				{
+					"name": "System2 III"
+				}
+			]
 		},
 		{
 			"name": "System3",
 			"position": [800, 200],
-			"owner": "null"
+			"owner": "null",
+			"planets":
+			[
+				{
+					"name": "System3 I"
+				},
+				{
+					"name": "System3 II"
+				},
+				{
+					"name": "System3 III"
+				}
+			]
 		},
 		{
 			"name": "System4",
 			"position": [600, 250],
-			"owner": "null"
+			"owner": "null",
+			"planets":
+			[
+				{
+					"name": "System4 I"
+				},
+				{
+					"name": "System4 II"
+				},
+				{
+					"name": "System4 III"
+				}
+			]
 		}
 	],
 	

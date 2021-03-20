@@ -90,14 +90,16 @@ void test()
 
 	save_game("TESTOUT.json");
 
-	test_ui();
+	//test_ui();
+
+	strcpy(gameState.playerNation, "Nation1");
 
 	slog("Test Setup is done!");
 }
 
 void test_ui()
 {
-	Menu_State* nullmenustate = NULL;
+	Menu_State* testmenustate = NULL;
 	UI_Element* title;
 	UI_Element* beginning;
 
@@ -105,8 +107,8 @@ void test_ui()
 	title = textbox_init(vector2d(10, 10), vector2d(200, 50), "TITLE", font_load("resources/fonts/futur.ttf", 16));
 	beginning = textbox_init(vector2d(0, 0), vector2d(200, 50), "BEGINNING", font_load("resources/fonts/futur.ttf", 12));
 
-	gameState.player_menustate = menu_state_new(
-		nullmenustate,
+	testmenustate = menu_state_new(
+		NULL,
 		title,
 		beginning,
 		vector2d(10, 10),
@@ -115,7 +117,7 @@ void test_ui()
 	);
 
 	menu_addTo(
-		gameState.player_menustate->current_menu, 
+		testmenustate->current_menu,
 		textbox_init(vector2d(0, 0), vector2d(200, 50), "ADDED", font_load("resources/fonts/futur.ttf", 12))
 	);
 
@@ -126,9 +128,12 @@ void test_ui()
 			"COMMAND",
 			"DESCRIPTOR",
 			123,
-			gameState.player_menustate
+			testmenustate
 		)
 	);
+
+	menu_state_hide(testmenustate);
+	menu_state_show(testmenustate);
 	
 }
 

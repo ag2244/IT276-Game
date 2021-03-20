@@ -7,19 +7,22 @@
 //Use for pointing to the data for an individual system
 System_Data* system_data;
 
-System_Data* system_data_new()
+System_Data* system_data_new(Uint32 numPlanets)
 {
-    return malloc(sizeof(System_Data));
-}
 
-System_Transmission* system_transmission_new()
-{
-    return malloc(sizeof(System_Transmission));
-}
+    System_Data* systemdata;
+    Planet* planets;
 
-System_Transmission* system_transmission_get(void* transmission)
-{
-    return (System_Transmission*)transmission;
+    if (numPlanets == NULL)
+        numPlanets = 0;
+
+    planets = gfc_allocate_array(sizeof(Planet), numPlanets);
+    systemdata = malloc(sizeof(System_Data));
+
+    systemdata->num_planets = numPlanets;
+    systemdata->planets = planets;
+
+    return systemdata;
 }
 
 int load_systems(SJson* game_json)
@@ -27,6 +30,9 @@ int load_systems(SJson* game_json)
     //The star systems in this game
     SJson* systems;
     SJson* currentSystem;
+    SJson* planets;
+
+    System_Data* systemdata;
 
     char* name = NULL;
     char* temp = NULL;
@@ -37,7 +43,8 @@ int load_systems(SJson* game_json)
     Vector2D pos;
     float x, y;
 
-    int i;
+    int i, j;
+    int numPlanets;
 
     //game["Systems"]
     systems = sj_object_get_value(game_json, "Systems");
@@ -76,7 +83,27 @@ int load_systems(SJson* game_json)
 
         }
 
-        //Get the owner
+        //Get the planets
+
+        planets = sj_object_get_value(currentSystem, "planets");
+
+        if (!sj_is_array(planets))
+        {
+            slog("Star System Planets is not an array!"); return NULL;
+        }
+
+        numPlanets = sj_array_get_count(planets);
+
+        systemdata = system_data_new(numPlanets);
+
+        for (j = 0; j < numPlanets; j++)
+        {
+
+            systemdata->planets[j] = *planet_fromJson(sj_array_get_nth(planets, j));
+
+        }
+
+        //Get the owner nation
 
         temp = sj_get_string_value(sj_object_get_value(currentSystem, "owner"));
 
@@ -99,7 +126,7 @@ int load_systems(SJson* game_json)
 
         else nation = NULL;
 
-        system_spawn(name, pos, nation);
+        system_spawn(name, pos, nation, systemdata);
 
     }
 
@@ -107,15 +134,21 @@ int load_systems(SJson* game_json)
     return 1;
 }
 
-void system_onClick(Entity* self, Game_Event* event_reciever) {
+void system_onClick(Entity* self, Game_Event* event_reciever) 
+{
     if (self == NULL)
     {
         slog("Cannot click on NULL entity!");
         return NULL;
     }
 
-    /*if (self->name != NULL)
-        slog("Clicked on STAR SYSTEM \"%s\"", self->name);*/
+    strcpy(event_reciever->command, self->clickEvent->command);
+    strcpy(event_reciever->target_id, self->clickEvent->target_id);
+    gfc_linestrcpy_cpy(event_reciever->descriptor, self->clickEvent->descriptor);
+    event_reciever->qty = self->clickEvent->qty;
+    event_reciever->menu_state = self->clickEvent->menu_state;
+
+    event_reciever->_sent = 1;
 }
 
 SJson* system_toJson(Entity* self)
@@ -161,11 +194,10 @@ void system_reciever(Entity* self, Game_Event* event)
     slog(event->command);
 }
 
-Entity* system_spawn(char* name, Vector2D position, Nation* owner)
+Entity* system_spawn(char* name, Vector2D position, Nation* owner, System_Data* systemdata)
 {
 
     Entity* ent = NULL;
-    System_Data* thisSystem = system_data_new(name);
 
     //Create the new entity
     ent = entity_new_name(name);
@@ -200,7 +232,7 @@ Entity* system_spawn(char* name, Vector2D position, Nation* owner)
     
     ent->owner = owner; //Can be null!
 
-    (struct System_Data*)ent->data = thisSystem;
+    ent->data = systemdata;
 
     //Functions
 
@@ -208,9 +240,21 @@ Entity* system_spawn(char* name, Vector2D position, Nation* owner)
     ent->toJson = system_toJson;
     ent->reciever = system_reciever;
 
+    //Create clickSignal
+
     //Done!
-    //slog("System \"%s\" created!", ent->name);
+    slog("System \"%s\" created!", ent->name);
     return ent;
+}
+
+int system_data_numPlanets(System_Data* systemdata)
+{
+    return systemdata->num_planets;
+}
+
+int system_num_planets(Entity* system)
+{
+    return system_data_numPlanets(((struct System_Data *) system->data));
 }
 
 /*Bottom*/

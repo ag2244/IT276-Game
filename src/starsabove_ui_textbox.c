@@ -66,7 +66,7 @@ Menu* menu_init(UI_Element* title, UI_Element* beginning, Vector2D position, int
 {
     Menu* newMenu = malloc(sizeof(Menu));
 
-    newMenu->title = *title;
+    newMenu->title = title;
 
     //Set up the beginning textbox
     beginning->position = vector2d(position.x + spacing_x, position.y + title->size.y + spacing_y);
@@ -91,19 +91,31 @@ Menu_State* menu_state_new(Menu_State* previous_menu_state, UI_Element* title, U
     Menu* newMenu = menu_init(title, beginning, position, spacing_x, spacing_y);
 
     new_state->current_menu = newMenu;
-    new_state->previous_menu_state = &previous_menu_state;
+
+    new_state->previous_menu_state = previous_menu_state;
+
+    if (new_state->previous_menu_state != NULL)
+        menu_state_hide(new_state->previous_menu_state);
 
     return new_state;
 }
 
 Menu_State* menu_state_addTo(Menu_State* old, Menu* newMenu)
 {
+    Menu_State* new_state = malloc(sizeof(new_state));
 
+    new_state->current_menu = newMenu;
+    new_state->previous_menu_state = old;
+
+    menu_state_hide(new_state->previous_menu_state);
+    menu_state_show(new_state);
+
+    return new_state;
 }
 
 Menu_State* menu_state_back(Menu_State* menu)
 {
-
+    return menu->previous_menu_state;
 }
 
 void ui_node_addTo(Menu* menu, UI_Node* node, UI_Element* element)
@@ -133,6 +145,97 @@ void menu_addTo(Menu* menu, UI_Element* element)
 {
     ui_node_addTo(menu, menu->beginning, element);
 }
+
+//Hide a menu state, its menu, and its elements
+
+void ui_node_hide(UI_Node* node)
+{
+
+    if (node == NULL)
+    {
+        slog("Cannot hide NULL node"); return;
+    }
+
+    node->element->hidden = 1;
+    
+    if (node->next != NULL)
+    {
+        ui_node_hide(node->next);
+    }
+}
+
+void menu_hide(Menu* menu)
+{
+    if (menu == NULL)
+    {
+        slog("Cannot hide NULL menu"); return;
+    }
+
+    menu->title->hidden = 1;
+
+    if (menu->beginning != NULL)
+        ui_node_hide(menu->beginning);
+}
+
+void menu_state_hide(Menu_State* menu_state)
+{
+    if (menu_state == NULL)
+    {
+        slog("Cannot hide NULL menu_state"); return;
+    }
+
+    if (menu_state->current_menu != NULL)
+        menu_hide(menu_state->current_menu);
+
+    if(menu_state->previous_menu_state != NULL)
+        menu_state_hide(menu_state->previous_menu_state);
+
+}
+
+//Show a menu state, its menu, and its elements
+
+void ui_node_show(UI_Node* node)
+{
+
+    if (node == NULL)
+    {
+        slog("Cannot show NULL node"); return;
+    }
+
+    node->element->hidden = 0;
+
+    if (node->next != NULL)
+    {
+        ui_node_show(node->next);
+    }
+}
+
+void menu_show(Menu* menu)
+{
+    if (menu == NULL)
+    {
+        slog("Cannot show NULL menu"); return;
+    }
+
+    menu->title->hidden = 0;
+    ui_node_show(menu->beginning);
+}
+
+void menu_state_show(Menu_State* menu_state)
+{
+    if (menu_state == NULL)
+    {
+        slog("Cannot show NULL menu_state"); return;
+    }
+
+    menu_show(menu_state->current_menu);
+
+    if (menu_state->previous_menu_state != NULL)
+        menu_state_hide(menu_state->previous_menu_state);
+
+}
+
+//Free structs
 
 void ui_node_free(UI_Node node)
 {
@@ -178,6 +281,8 @@ void textbox_onClick(UI_Element* element, Game_Event* event_reciever)
         gfc_line_cpy(event_reciever->target_id, element->signal->target_id);
         gfc_line_cpy(event_reciever->descriptor, element->signal->descriptor);
         event_reciever->qty = element->signal->qty;
+        event_reciever->menu_state = element->signal->menu_state;
+
         event_reciever->_sent = 1;
     }
 }

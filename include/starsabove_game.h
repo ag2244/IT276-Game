@@ -24,6 +24,9 @@
 
 typedef struct GameState_s
 {
+
+	char playerNation[128];
+
 	UI_Element* currentClickable_ui;
 	Entity* currentClickable_entity;
 
