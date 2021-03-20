@@ -146,7 +146,7 @@ void prepare_game()
     entity_manager_init(100);
 
 	// Starting the ui manager
-	ui_manager_init(50);
+	ui_manager_init(300);
 
 	// Starting the font manager, loading fonts
 	font_init(50);
@@ -220,8 +220,10 @@ void event_relay()
 	int i;
 	EntityManager* entity_manager;
 
+	//If the new event's menu state isn't null
 	if (gameState.frame_event.menu_state != NULL)
 	{
+		//Set the player's menu state to that of the new event and show it
 		gameState.player_menustate = gameState.frame_event.menu_state;
 		menu_state_show(gameState.player_menustate);
 	}
@@ -313,9 +315,9 @@ void onClick_left()
 
 		if (gameState.frame_event._sent == 1)
 		{
-			gameState.frame_event._sent = 0;
-
 			event_relay();
+
+			gameState.frame_event._sent = 0;
 		}
 
 		return;
@@ -327,9 +329,9 @@ void onClick_left()
 
 		if (gameState.frame_event._sent == 1)
 		{
-			gameState.frame_event._sent = 0;
-
 			event_relay();
+			
+			gameState.frame_event._sent = 0;
 		}
 
 		return;

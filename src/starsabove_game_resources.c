@@ -33,7 +33,8 @@ void gameevent_copy(Game_Event* dst, Game_Event* src)
 	if (src->descriptor != NULL) { strcpy(dst->descriptor, src->descriptor); }
 	dst->qty = src->qty;
 
-	menu_state_hide(dst->menu_state);
+	if (dst->menu_state != NULL)
+		menu_state_hide(dst->menu_state);
 
 	dst->menu_state = src->menu_state;
 

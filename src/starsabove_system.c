@@ -215,6 +215,8 @@ Entity* system_spawn(char* name, Vector2D position, Nation* owner, System_Data* 
 
     Entity* ent = NULL;
 
+    UI_Element* planet_textbox;
+
     //Create the new entity
     ent = entity_new_name(name);
 
@@ -280,21 +282,39 @@ Entity* system_spawn(char* name, Vector2D position, Nation* owner, System_Data* 
         1
     );
 
-    Menu* menu;
-
     for (i = 0; i < systemdata->num_planets; i++)
-    {;
+    {
 
+        //Create the planet title textbox for the system menu
+        planet_textbox = textbox_init
+        (
+            vector2d(10, 10),
+            vector2d(200, 50),
+            systemdata->planets[i].name,
+            font_load("resources/fonts/futur.ttf", 12)
+        );
+
+        //Add this planet as a textbox to the system menu
         menu_addTo(
             menu_state_getsafe(ent->clickEvent->menu_state)->current_menu,
-            textbox_init
-            (
-                vector2d(0, 0),
-                vector2d(200, 50),
+            planet_textbox
+        );
+
+        //Add a game_event to planet_textbox when its clicked to initiate the planet menu_state
+        ui_addevent(planet_textbox,
+            new_gameevent(
+                ent->name,
                 systemdata->planets[i].name,
-                font_load("resources/fonts/futur.ttf", 12)
+                "COMMAND",
+                "DESCRIPTOR",
+                123,
+                //Get the menustate for this planet
+                planet_menustate_init(&systemdata->planets[i], ent->clickEvent->menu_state, ent->name),
+                0
             )
         );
+
+        //ent->clickEvent->menu_state = planet_menustate_init(&systemdata->planets[i], ent->clickEvent->menu_state, ent->name);
     }
 
     menu_state_hide(ent->clickEvent->menu_state);

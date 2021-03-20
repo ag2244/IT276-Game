@@ -8,6 +8,8 @@
 
 #include "gfc_types.h"
 
+#include "starsabove_ui_textbox.h"
+
 typedef struct
 {
 	char name[128];
@@ -27,6 +29,13 @@ Planet* planet_fromJson(SJson* planetjson);
 * @return NULL on error or a pointer to the saved json object
 */
 SJson* planet_toJson(Planet* planet);
+
+/*
+* @brief save a planet to a json
+* @param planet The planet to save
+* @return NULL on error or a pointer to the saved json object
+*/
+Menu_State* planet_menustate_init(Planet* planet, Menu_State* system_menustate, char* system_name);
 
 /*
 * @brief creates a new planet

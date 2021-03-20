@@ -199,6 +199,7 @@ void menu_hide(Menu* menu)
 
 void menu_state_hide(Menu_State* menu_state)
 {
+
     if (menu_state == NULL)
     {
         slog("Cannot hide NULL menu_state"); return;
@@ -243,7 +244,9 @@ void menu_show(Menu* menu)
     }
 
     menu->title->hidden = 0;
-    ui_node_show(menu->beginning);
+
+    if (menu->beginning->element != NULL)
+        ui_node_show(menu->beginning);
 }
 
 void menu_state_show(Menu_State* menu_state)
@@ -302,12 +305,6 @@ void textbox_onClick(UI_Element* element, Game_Event* event_reciever)
 
     if (element->signal)
     {
-        gfc_line_cpy(event_reciever->command, element->signal->command);
-        gfc_line_cpy(event_reciever->target_id, element->signal->target_id);
-        gfc_line_cpy(event_reciever->descriptor, element->signal->descriptor);
-        event_reciever->qty = element->signal->qty;
-        event_reciever->menu_state = element->signal->menu_state;
-
-        event_reciever->_sent = 1;
+        gameevent_copy(event_reciever, element->signal);
     }
 }
