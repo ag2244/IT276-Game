@@ -11,7 +11,12 @@
 					"name": "System1 I",
 					"resources":
 						{
-						
+							"Food": 0,
+							"Iron": 0,
+							"Uranium": 0,
+							"Gold": 0,
+							"Silicon": 0,
+							"Plastoil": 0
 						}
 				},
 				{

@@ -22,6 +22,13 @@ typedef struct
 Planet* planet_fromJson(SJson* planetjson);
 
 /*
+* @brief save a planet to a json
+* @param planet The planet to save
+* @return NULL on error or a pointer to the saved json object
+*/
+SJson* planet_toJson(Planet* planet);
+
+/*
 * @brief creates a new planet
 * @param name name of the planet
 * @return NULL on error or a pointer to a new planet

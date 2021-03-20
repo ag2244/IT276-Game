@@ -144,7 +144,7 @@ void system_onClick(Entity* self, Game_Event* event_reciever)
 
     strcpy(event_reciever->command, self->clickEvent->command);
     strcpy(event_reciever->target_id, self->clickEvent->target_id);
-    gfc_linestrcpy_cpy(event_reciever->descriptor, self->clickEvent->descriptor);
+    strcpy(event_reciever->descriptor, self->clickEvent->descriptor);
     event_reciever->qty = self->clickEvent->qty;
     event_reciever->menu_state = self->clickEvent->menu_state;
 
@@ -153,13 +153,21 @@ void system_onClick(Entity* self, Game_Event* event_reciever)
 
 SJson* system_toJson(Entity* self)
 {
+    int i;
+
     SJson* systemJson;
+
     SJson* array_position;
+    SJson* array_planets;
 
     char* owner;
 
+    system_data = (struct System_Data*)self->data;
+
     systemJson = sj_object_new();
+
     array_position = sj_array_new();
+    array_planets = sj_array_new();
 
     if (self == NULL)
     {
@@ -183,6 +191,13 @@ SJson* system_toJson(Entity* self)
     sj_array_append(array_position, sj_new_float(self->position.y));
 
     sj_object_insert(systemJson, "position", array_position);
+
+    //Add planets
+    
+    for (i = 0; i < system_data->num_planets; i++)
+        sj_array_append(array_planets, planet_toJson(&system_data->planets[i]));
+
+    sj_object_insert(systemJson, "planets", array_planets);
 
     return systemJson;
 
@@ -254,7 +269,7 @@ int system_data_numPlanets(System_Data* systemdata)
 
 int system_num_planets(Entity* system)
 {
-    return system_data_numPlanets(((struct System_Data *) system->data));
+    return system_data_numPlanets((struct System_Data *) system->data);
 }
 
 /*Bottom*/

@@ -12,6 +12,13 @@ Planet* planet_fromJson(SJson* planetjson) {
 
 }
 
+SJson* planet_toJson(Planet* planet)
+{
+	SJson* planet_json = sj_object_new();
+
+	sj_object_insert(planet_json, "name", sj_new_str(planet->name));
+}
+
 Planet* planet_new(char* name)
 {
 	Planet* planet = malloc(sizeof(Planet));
