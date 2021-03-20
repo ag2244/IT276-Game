@@ -68,14 +68,18 @@ Menu* menu_init(UI_Element* title, UI_Element* beginning, Vector2D position, int
 
     newMenu->title = title;
 
-    //Set up the beginning textbox
-    beginning->position = vector2d(position.x + spacing_x, position.y + title->size.y + spacing_y);
-    vector2d_copy(beginning->collider_box->position, beginning->position);
-
     newMenu->beginning = malloc(sizeof(UI_Node));
-    newMenu->beginning->element = beginning;
-    newMenu->beginning->next = NULL;
 
+    //Set up the beginning textbox
+
+    newMenu->beginning->element = beginning;
+    if (newMenu->beginning->element != NULL)
+    {
+        newMenu->beginning->element->position = vector2d(position.x + spacing_x, position.y + title->size.y + spacing_y);
+        vector2d_copy(newMenu->beginning->element->collider_box->position, newMenu->beginning->element->position);
+    }
+
+    newMenu->beginning->next = NULL;
     newMenu->position = position;
 
     newMenu->spacing_x = spacing_x;
@@ -98,6 +102,12 @@ Menu_State* menu_state_new(Menu_State* previous_menu_state, UI_Element* title, U
         menu_state_hide(new_state->previous_menu_state);
 
     return new_state;
+}
+
+Menu_State* menu_state_getsafe(Menu_State* menustate)
+{
+    Menu_State* menustate_ptr = menustate;
+    return menustate_ptr;
 }
 
 Menu_State* menu_state_addTo(Menu_State* old, Menu* newMenu)
@@ -143,14 +153,22 @@ void ui_node_addTo(Menu* menu, UI_Node* node, UI_Element* element)
 
 void menu_addTo(Menu* menu, UI_Element* element)
 {
-    ui_node_addTo(menu, menu->beginning, element);
+    if (menu->beginning->element == NULL)
+    {
+        element->position = vector2d(menu->position.x + menu->spacing_x, menu->position.y + menu->title->size.y + menu->spacing_y);
+        vector2d_copy(element->collider_box->position, element->position);
+
+        menu->beginning->element = element;
+    }
+    
+    else
+        ui_node_addTo(menu, menu->beginning, element);
 }
 
 //Hide a menu state, its menu, and its elements
 
 void ui_node_hide(UI_Node* node)
 {
-
     if (node == NULL)
     {
         slog("Cannot hide NULL node"); return;
@@ -173,8 +191,10 @@ void menu_hide(Menu* menu)
 
     menu->title->hidden = 1;
 
-    if (menu->beginning != NULL)
+    if (menu->beginning->element != NULL)
+    {
         ui_node_hide(menu->beginning);
+    }
 }
 
 void menu_state_hide(Menu_State* menu_state)
@@ -185,10 +205,15 @@ void menu_state_hide(Menu_State* menu_state)
     }
 
     if (menu_state->current_menu != NULL)
+    {
         menu_hide(menu_state->current_menu);
+    }
+        
 
-    if(menu_state->previous_menu_state != NULL)
+    if (menu_state->previous_menu_state != NULL)
+    {
         menu_state_hide(menu_state->previous_menu_state);
+    }
 
 }
 

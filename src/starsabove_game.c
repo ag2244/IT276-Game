@@ -128,7 +128,8 @@ void test_ui()
 			"COMMAND",
 			"DESCRIPTOR",
 			123,
-			testmenustate
+			testmenustate,
+			1
 		)
 	);
 
@@ -219,7 +220,12 @@ void event_relay()
 	int i;
 	EntityManager* entity_manager;
 
-	//Now to do the same but for the entity manager
+	if (gameState.frame_event.menu_state != NULL)
+	{
+		gameState.player_menustate = gameState.frame_event.menu_state;
+		menu_state_show(gameState.player_menustate);
+	}
+
 	entity_manager = entity_manager_get();
 
 	if (!entity_manager) {
@@ -319,7 +325,7 @@ void onClick_left()
 	if (gameState.currentClickable_entity) {
 		entity_onClick(gameState.currentClickable_entity, &gameState.frame_event);
 
-		if (gameState.frame_event._sent)
+		if (gameState.frame_event._sent == 1)
 		{
 			gameState.frame_event._sent = 0;
 

@@ -271,8 +271,8 @@ void entity_onClick(Entity* ent, Game_Event* event_reciever)
 		return;
 	}
 
-	//If there's a custom draw
-	if (ent->onClick) ent->onClick(ent);
+	//If there's a custom click
+	if (ent->onClick) ent->onClick(ent, event_reciever);
 
 	else {
 

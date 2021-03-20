@@ -86,6 +86,13 @@ void menu_addTo(Menu* menu, UI_Element* element);
 Menu_State* menu_state_new(Menu_State* previous_menu_state, UI_Element* title, UI_Element* beginning, Vector2D position, int spacing_x, int spacing_y);
 
 /*
+* @brief Get a menu state pointer from an "incomplete type" menu state struct
+* @param menustate the old menu state
+* @return NULL on error, or a pointer to the menustate
+*/
+Menu_State* menu_state_getsafe(Menu_State* menustate);
+
+/*
 * @brief make all the previous menus invisible and thus uninteractable
 * @param menu_state the menu_state to hide as well as all its previous menus
 */

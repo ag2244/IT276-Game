@@ -142,13 +142,13 @@ void system_onClick(Entity* self, Game_Event* event_reciever)
         return NULL;
     }
 
-    strcpy(event_reciever->command, self->clickEvent->command);
-    strcpy(event_reciever->target_id, self->clickEvent->target_id);
-    strcpy(event_reciever->descriptor, self->clickEvent->descriptor);
-    event_reciever->qty = self->clickEvent->qty;
-    event_reciever->menu_state = self->clickEvent->menu_state;
+    if (self == NULL)
+    {
+        slog("Cannot pass signal to on NULL event!");
+        return NULL;
+    }
 
-    event_reciever->_sent = 1;
+    gameevent_copy(event_reciever, self->clickEvent);
 }
 
 SJson* system_toJson(Entity* self)
@@ -206,11 +206,12 @@ SJson* system_toJson(Entity* self)
 
 void system_reciever(Entity* self, Game_Event* event)
 {
-    slog(event->command);
+    slog(event->target_id);
 }
 
 Entity* system_spawn(char* name, Vector2D position, Nation* owner, System_Data* systemdata)
 {
+    int i = 0;
 
     Entity* ent = NULL;
 
@@ -256,6 +257,47 @@ Entity* system_spawn(char* name, Vector2D position, Nation* owner, System_Data* 
     ent->reciever = system_reciever;
 
     //Create clickSignal
+    ent->clickEvent = new_gameevent(
+        "GAME UI",
+        NULL,
+        NULL,
+        NULL,
+        0,
+        menu_state_new(
+            NULL,
+            textbox_init
+            (
+                vector2d(10, 10),
+                vector2d(200, 50),
+                ent->name,
+                font_load("resources/fonts/futur.ttf", 16)
+            ),
+            NULL,
+            vector2d(10, 10),
+            0,
+            5
+        ),
+        1
+    );
+
+    Menu* menu;
+
+    for (i = 0; i < systemdata->num_planets; i++)
+    {;
+
+        menu_addTo(
+            menu_state_getsafe(ent->clickEvent->menu_state)->current_menu,
+            textbox_init
+            (
+                vector2d(0, 0),
+                vector2d(200, 50),
+                systemdata->planets[i].name,
+                font_load("resources/fonts/futur.ttf", 12)
+            )
+        );
+    }
+
+    menu_state_hide(ent->clickEvent->menu_state);
 
     //Done!
     slog("System \"%s\" created!", ent->name);

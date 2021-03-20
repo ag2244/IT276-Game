@@ -6,6 +6,8 @@
 #include "starsabove_entity.h"
 #include "starsabove_planet.h"
 
+#include "starsabove_ui_textbox.h"
+
 typedef struct System_Data_s
 {
 	int num_planets;

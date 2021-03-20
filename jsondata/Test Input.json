@@ -20,10 +20,28 @@
 						}
 				},
 				{
-					"name": "System1 II"
+					"name": "System1 II",
+					"resources":
+						{
+							"Food": 0,
+							"Iron": 0,
+							"Uranium": 0,
+							"Gold": 0,
+							"Silicon": 0,
+							"Plastoil": 0
+						}
 				},
 				{
-					"name": "System1 III"
+					"name": "System1 III",
+					"resources":
+						{
+							"Food": 0,
+							"Iron": 0,
+							"Uranium": 0,
+							"Gold": 0,
+							"Silicon": 0,
+							"Plastoil": 0
+						}
 				}
 			]
 		},
@@ -34,13 +52,40 @@
 			"planets":
 			[
 				{
-					"name": "System2 I"
+					"name": "System2 I",
+					"resources":
+						{
+							"Food": 0,
+							"Iron": 0,
+							"Uranium": 0,
+							"Gold": 0,
+							"Silicon": 0,
+							"Plastoil": 0
+						}
 				},
 				{
-					"name": "System2 II"
+					"name": "System2 II",
+					"resources":
+						{
+							"Food": 0,
+							"Iron": 0,
+							"Uranium": 0,
+							"Gold": 0,
+							"Silicon": 0,
+							"Plastoil": 0
+						}
 				},
 				{
-					"name": "System2 III"
+					"name": "System2 III",
+					"resources":
+						{
+							"Food": 0,
+							"Iron": 0,
+							"Uranium": 0,
+							"Gold": 0,
+							"Silicon": 0,
+							"Plastoil": 0
+						}
 				}
 			]
 		},
@@ -51,13 +96,40 @@
 			"planets":
 			[
 				{
-					"name": "System3 I"
+					"name": "System3 I",
+					"resources":
+						{
+							"Food": 0,
+							"Iron": 0,
+							"Uranium": 0,
+							"Gold": 0,
+							"Silicon": 0,
+							"Plastoil": 0
+						}
 				},
 				{
-					"name": "System3 II"
+					"name": "System3 II",
+					"resources":
+						{
+							"Food": 0,
+							"Iron": 0,
+							"Uranium": 0,
+							"Gold": 0,
+							"Silicon": 0,
+							"Plastoil": 0
+						}
 				},
 				{
-					"name": "System3 III"
+					"name": "System3 III",
+					"resources":
+						{
+							"Food": 0,
+							"Iron": 0,
+							"Uranium": 0,
+							"Gold": 0,
+							"Silicon": 0,
+							"Plastoil": 0
+						}
 				}
 			]
 		},
@@ -68,13 +140,40 @@
 			"planets":
 			[
 				{
-					"name": "System4 I"
+					"name": "System4 I",
+					"resources":
+						{
+							"Food": 0,
+							"Iron": 0,
+							"Uranium": 0,
+							"Gold": 0,
+							"Silicon": 0,
+							"Plastoil": 0
+						}
 				},
 				{
-					"name": "System4 II"
+					"name": "System4 II",
+					"resources":
+						{
+							"Food": 0,
+							"Iron": 0,
+							"Uranium": 0,
+							"Gold": 0,
+							"Silicon": 0,
+							"Plastoil": 0
+						}
 				},
 				{
-					"name": "System4 III"
+					"name": "System4 III",
+					"resources":
+						{
+							"Food": 0,
+							"Iron": 0,
+							"Uranium": 0,
+							"Gold": 0,
+							"Silicon": 0,
+							"Plastoil": 0
+						}
 				}
 			]
 		}
