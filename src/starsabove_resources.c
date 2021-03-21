@@ -1,5 +1,17 @@
 #include "starsabove_resources.h"
 
+float num_resources = 6;
+
+char resource_names[6][128] =
+{
+	"Food",
+	"Iron",
+	"Uranium",
+	"Gold",
+	"Silicon",
+	"Plastoil"
+};
+
 float* resources_fromJson(SJson* resources_json)
 {
 	float* food = 0; 
@@ -9,12 +21,12 @@ float* resources_fromJson(SJson* resources_json)
 	float* silicon = 0;
 	float* plastoil = 0;
 
-	sj_get_float_value(sj_array_get_nth(resources_json, RES_FOOD), food);
-	sj_get_float_value(sj_array_get_nth(resources_json, RES_IRON), iron);
-	sj_get_float_value(sj_array_get_nth(resources_json, RES_URANIUM), uranium);
-	sj_get_float_value(sj_array_get_nth(resources_json, RES_GOLD), gold);
-	sj_get_float_value(sj_array_get_nth(resources_json, RES_SILICON), silicon);
-	sj_get_float_value(sj_array_get_nth(resources_json, RES_PLASTOIL), plastoil);
+	sj_get_float_value(sj_object_get_value(resources_json, "Food"), food);
+	sj_get_float_value(sj_object_get_value(resources_json, "Iron"), iron);
+	sj_get_float_value(sj_object_get_value(resources_json, "Uranium"), uranium);
+	sj_get_float_value(sj_object_get_value(resources_json, "Gold"), gold);
+	sj_get_float_value(sj_object_get_value(resources_json, "Silicon"), silicon);
+	sj_get_float_value(sj_object_get_value(resources_json, "Plastoil"), plastoil);
 
 	return resourcelist_new
 	(
@@ -39,6 +51,57 @@ SJson* resources_toJson(float* resources)
 	sj_object_insert(resources_json, "plastoil", sj_new_float(resources[RES_PLASTOIL]));
 
 	return resources_json;
+}
+
+Menu_State* resources_menustate_init(float* resources, Menu_State* previous_menustate, char* name)
+{
+	int i;
+
+	char textbox_name[128];
+
+	Menu_State* resources_menustate;
+
+	//Create the planet menu state
+	resources_menustate = menu_state_new(
+		previous_menustate,
+		textbox_init
+		(
+			vector2d(10, 10),
+			vector2d(200, 50),
+			name,
+			font_load("resources/fonts/futur.ttf", 16)
+		),
+		NULL,
+		vector2d(10, 10),
+		0,
+		5
+	);
+
+	for (i = 0; i < num_resources; i++)
+	{
+
+		sprintf(textbox_name, "%s: %f", resource_names + i, resources[i]);
+
+		menu_addTo
+		(
+			resources_menustate->current_menu,
+			textbox_init
+			(
+				vector2d(10, 10),
+				vector2d(200, 50),
+				textbox_name,
+				font_load("resources/fonts/futur.ttf", 12)
+			)
+		);
+
+		strcpy(textbox_name, "");
+
+	}
+
+	//Hide the planet_menustate
+	menu_state_hide(resources_menustate);
+
+	return resources_menustate;
 }
 
 float* resourcelist_new(float food, float iron, float uranium, float gold, float silicon, float plastoil)

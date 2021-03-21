@@ -148,7 +148,7 @@ void prepare_game()
     entity_manager_init(100);
 
 	// Starting the ui manager
-	ui_manager_init(300);
+	ui_manager_init(200);
 
 	// Starting the font manager, loading fonts
 	font_init(50);

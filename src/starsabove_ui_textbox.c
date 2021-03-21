@@ -58,7 +58,7 @@ UI_Element* textbox_init(Vector2D position, Vector2D size, char* text, Font* fon
 
     element->onClick = textbox_onClick;
 
-    slog("Textbox created with text \"%s\"!", text);
+    //slog("Textbox created with text \"%s\"!", text);
     return element;
 }
 

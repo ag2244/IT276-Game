@@ -126,7 +126,7 @@ UI_Element* ui_new()
 		return &ui_manager.element_list[i];
 	}
 
-	slog("No free entities available");
+	slog("No free UI elements available");
 	return NULL;
 }
 

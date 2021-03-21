@@ -29,6 +29,9 @@ Menu_State* planet_menustate_init(Planet* planet, Menu_State* system_menustate, 
 {
     Menu_State* planet_menustate;
 
+    UI_Element* resources_button;
+    char resource_button_name[128];
+
     //Create the planet menu state
     planet_menustate = menu_state_new(
         system_menustate,
@@ -45,16 +48,30 @@ Menu_State* planet_menustate_init(Planet* planet, Menu_State* system_menustate, 
         5
     );
 
+    resources_button = textbox_init
+    (
+        vector2d(10, 10),
+        vector2d(200, 50),
+        "Resources",
+        font_load("resources/fonts/futur.ttf", 12)
+    );
+
+    sprintf(resource_button_name, "%s Resources per Turn", planet->name);
+
+    resources_button->signal = new_gameevent(
+        system_name,
+        planet->name,
+        "GETRESOURCES",
+        NULL,
+        0,
+        resources_menustate_init(planet->resources_mining, planet_menustate, resource_button_name),
+        0
+    );
+
     menu_addTo
     (
         planet_menustate->current_menu,
-        textbox_init
-        (
-            vector2d(10, 10),
-            vector2d(200, 50),
-            "Resources",
-            font_load("resources/fonts/futur.ttf", 12)
-        )
+        resources_button
     );
 
     //Hide the planet_menustate
