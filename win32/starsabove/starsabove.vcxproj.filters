@@ -108,6 +108,9 @@
     <ClInclude Include="..\..\include\starsabove_planet.h">
       <Filter>Header Files\Stars Above</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\starsabove_resources.h">
+      <Filter>Header Files\Stars Above</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\gfc\simple_logger\src\simple_logger.c">
@@ -205,6 +208,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\starsabove_planet.c">
       <Filter>Header Files\Stars Above</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\starsabove_resources.c">
+      <Filter>Source Files\Stars Above</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

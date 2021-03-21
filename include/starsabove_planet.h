@@ -9,10 +9,13 @@
 #include "gfc_types.h"
 
 #include "starsabove_ui_textbox.h"
+#include "starsabove_resources.h"
 
 typedef struct
 {
 	char name[128];
+	
+	float* resources_mining;
 
 } Planet;
 

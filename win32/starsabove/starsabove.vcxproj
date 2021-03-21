@@ -175,6 +175,7 @@
     <ClInclude Include="..\..\include\starsabove_game_resources.h" />
     <ClInclude Include="..\..\include\starsabove_nation.h" />
     <ClInclude Include="..\..\include\starsabove_planet.h" />
+    <ClInclude Include="..\..\include\starsabove_resources.h" />
     <ClInclude Include="..\..\include\starsabove_system.h" />
     <ClInclude Include="..\..\include\starsabove_text.h" />
     <ClInclude Include="..\..\include\starsabove_ui_base.h" />
@@ -209,6 +210,7 @@
     <ClCompile Include="..\..\src\starsabove_game_resources.c" />
     <ClCompile Include="..\..\src\starsabove_nation.c" />
     <ClCompile Include="..\..\src\starsabove_planet.c" />
+    <ClCompile Include="..\..\src\starsabove_resources.c" />
     <ClCompile Include="..\..\src\starsabove_system.c" />
     <ClCompile Include="..\..\src\starsabove_text.c" />
     <ClCompile Include="..\..\src\starsabove_ui_base.c" />
