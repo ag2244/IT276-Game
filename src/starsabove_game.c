@@ -219,17 +219,26 @@ void starsabove_loop()
 
 void event_relay()
 {
+
 	int i;
 	EntityManager* entity_manager;
 
-	if (gameState.player_menustate) { slog(gameState.player_menustate->current_menu->title->text); } else { slog("NULL"); }
+	//if (gameState.player_menustate) { slog(gameState.player_menustate->current_menu->title->text); } else { slog("NULL"); }
 
 	//If the new event's menu state isn't null
 	if (gameState.frame_event.menu_state != NULL)
 	{
-		if ((gameState.frame_event._menubase == 1) && (gameState.player_menustate))
+
+		if (gameState.player_menustate)
 		{
-			menu_state_free(menu_state_root(gameState.player_menustate));
+
+			menu_state_hide(gameState.player_menustate);
+
+			if (gameState.frame_event._menubase == 1)
+			{
+				menu_state_free(menu_state_root(gameState.player_menustate));
+			}
+
 		}
 
 		//Set the player's menu state to that of the new event and show it
@@ -340,6 +349,7 @@ void onClick_left()
 
 		if (gameState.frame_event._sent == 1)
 		{
+
 			event_relay();
 			
 			gameState.frame_event._sent = 0;

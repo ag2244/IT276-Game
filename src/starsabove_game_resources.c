@@ -22,14 +22,15 @@ Game_Event* new_gameevent(char* target_id, char* sub_target_id, char* command, c
 
 void gameevent_copy(Game_Event* dst, Game_Event* src)
 {
-	
 	if (src->command != NULL) { strcpy(dst->command, src->command); }
 	if (src->target_id != NULL) { strcpy(dst->target_id, src->target_id); }
 	if (src->descriptor != NULL) { strcpy(dst->descriptor, src->descriptor); }
 	dst->qty = src->qty;
 
-	if (dst->menu_state != NULL)
+	/*if (dst->menu_state != NULL)
+	{
 		menu_state_hide(dst->menu_state);
+	}*/
 
 	dst->menu_state = src->menu_state;
 

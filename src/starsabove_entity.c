@@ -264,7 +264,6 @@ Bool entity_clickable(Entity* ent, float mX, float mY) {
 
 void entity_onClick(Entity* ent, Game_Event* event_reciever)
 {
-
 	if (!ent)
 	{
 		slog("Cannot click on a NULL entity");
@@ -272,7 +271,7 @@ void entity_onClick(Entity* ent, Game_Event* event_reciever)
 	}
 
 	//If there's a custom click
-	if (ent->onClick) ent->onClick(ent, event_reciever);
+	if (ent->onClick) { ent->onClick(ent, event_reciever); }
 
 	else {
 
