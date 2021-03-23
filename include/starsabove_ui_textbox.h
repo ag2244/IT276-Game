@@ -63,6 +63,13 @@ Menu_State* menu_state_addTo(Menu_State* old, Menu* newMenu);
 */
 Menu_State* menu_state_back(Menu_State* menu);
 
+/*
+* @brief Get to the root menu_state of the stack
+* @param menu_state The menu_state to get the root of
+* @return NULL on error, or a pointer to the root menu state
+*/
+Menu_State* menu_state_root(Menu_State* menu_state);
+
 /**
 * @brief Add a UI element to the menu
 * @param menu The menu to add to

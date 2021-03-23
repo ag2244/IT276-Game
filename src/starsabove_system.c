@@ -148,7 +148,83 @@ void system_onClick(Entity* self, Game_Event* event_reciever)
         return NULL;
     }
 
+    system_gameevent_init(self);
+
     gameevent_copy(event_reciever, self->clickEvent);
+}
+
+void system_gameevent_init(Entity* ent)
+{
+    int i = 0;
+
+    char temp[128];
+
+    System_Data* systemdata = ent->data;
+
+    UI_Element* planet_textbox;
+
+    ent->clickEvent = new_gameevent(
+        "GAME UI",
+        NULL,
+        NULL,
+        NULL,
+        0,
+        menu_state_new(
+            NULL,
+            textbox_init
+            (
+                vector2d(10, 10),
+                vector2d(200, 50),
+                ent->name,
+                font_load("resources/fonts/futur.ttf", 16)
+            ),
+            NULL,
+            vector2d(10, 10),
+            0,
+            5
+        ),
+        1
+    );
+
+    for (i = 0; i < systemdata->num_planets; i++)
+    {
+
+        //Planet textbox name
+        sprintf(temp, "> %s", systemdata->planets[i].name);
+
+        //Create the planet title textbox for the system menu
+        planet_textbox = textbox_init
+        (
+            vector2d(10, 10),
+            vector2d(200, 50),
+            temp,
+            font_load("resources/fonts/futur.ttf", 12)
+        );
+
+        //Add this planet as a textbox to the system menu
+        menu_addTo(
+            menu_state_getsafe(ent->clickEvent->menu_state)->current_menu,
+            planet_textbox
+        );
+
+        //Add a game_event to planet_textbox when its clicked to initiate the planet menu_state
+        ui_addevent(planet_textbox,
+            new_gameevent(
+                ent->name,
+                systemdata->planets[i].name,
+                "COMMAND",
+                "DESCRIPTOR",
+                123,
+                //Get the menustate for this planet
+                planet_menustate_init(&systemdata->planets[i], ent->clickEvent->menu_state, ent->name),
+                0
+            )
+        );
+
+        //ent->clickEvent->menu_state = planet_menustate_init(&systemdata->planets[i], ent->clickEvent->menu_state, ent->name);
+    }
+
+    menu_state_hide(ent->clickEvent->menu_state);
 }
 
 SJson* system_toJson(Entity* self)
@@ -195,7 +271,9 @@ SJson* system_toJson(Entity* self)
     //Add planets
     
     for (i = 0; i < system_data->num_planets; i++)
+    {
         sj_array_append(array_planets, planet_toJson(&system_data->planets[i]));
+    }
 
     sj_object_insert(systemJson, "planets", array_planets);
 
@@ -214,8 +292,6 @@ Entity* system_spawn(char* name, Vector2D position, Nation* owner, System_Data* 
     int i = 0;
 
     Entity* ent = NULL;
-
-    UI_Element* planet_textbox;
 
     //Create the new entity
     ent = entity_new_name(name);
@@ -259,65 +335,7 @@ Entity* system_spawn(char* name, Vector2D position, Nation* owner, System_Data* 
     ent->reciever = system_reciever;
 
     //Create clickSignal
-    ent->clickEvent = new_gameevent(
-        "GAME UI",
-        NULL,
-        NULL,
-        NULL,
-        0,
-        menu_state_new(
-            NULL,
-            textbox_init
-            (
-                vector2d(10, 10),
-                vector2d(200, 50),
-                ent->name,
-                font_load("resources/fonts/futur.ttf", 16)
-            ),
-            NULL,
-            vector2d(10, 10),
-            0,
-            5
-        ),
-        1
-    );
-
-    for (i = 0; i < systemdata->num_planets; i++)
-    {
-
-        //Create the planet title textbox for the system menu
-        planet_textbox = textbox_init
-        (
-            vector2d(10, 10),
-            vector2d(200, 50),
-            systemdata->planets[i].name,
-            font_load("resources/fonts/futur.ttf", 12)
-        );
-
-        //Add this planet as a textbox to the system menu
-        menu_addTo(
-            menu_state_getsafe(ent->clickEvent->menu_state)->current_menu,
-            planet_textbox
-        );
-
-        //Add a game_event to planet_textbox when its clicked to initiate the planet menu_state
-        ui_addevent(planet_textbox,
-            new_gameevent(
-                ent->name,
-                systemdata->planets[i].name,
-                "COMMAND",
-                "DESCRIPTOR",
-                123,
-                //Get the menustate for this planet
-                planet_menustate_init(&systemdata->planets[i], ent->clickEvent->menu_state, ent->name),
-                0
-            )
-        );
-
-        //ent->clickEvent->menu_state = planet_menustate_init(&systemdata->planets[i], ent->clickEvent->menu_state, ent->name);
-    }
-
-    menu_state_hide(ent->clickEvent->menu_state);
+    
 
     //Done!
     slog("System \"%s\" created!", ent->name);

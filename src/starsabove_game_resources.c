@@ -14,11 +14,6 @@ Game_Event* new_gameevent(char* target_id, char* sub_target_id, char* command, c
 
 	game_event->menu_state = menu_state;
 
-	if (_menubase == NULL)
-	{
-		_menubase = 0;
-	}
-
 	game_event->_menubase = _menubase;
 
 	return game_event;
@@ -38,5 +33,18 @@ void gameevent_copy(Game_Event* dst, Game_Event* src)
 
 	dst->menu_state = src->menu_state;
 
+	dst->_menubase = src->_menubase;
+
 	dst->_sent = 1;
+}
+
+void gameevent_free(Game_Event* gameevent)
+{
+
+	menu_state_free(gameevent->menu_state);
+
+	gameevent->menu_state == NULL;
+
+	free(gameevent);
+
 }

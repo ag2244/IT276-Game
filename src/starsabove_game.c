@@ -148,7 +148,7 @@ void prepare_game()
     entity_manager_init(100);
 
 	// Starting the ui manager
-	ui_manager_init(200);
+	ui_manager_init(500);
 
 	// Starting the font manager, loading fonts
 	font_init(50);
@@ -158,7 +158,7 @@ void prepare_game()
 	nations_list_init(24);
 
 	// Initialize the player's menu state
-	gameState.player_menustate = malloc(sizeof(Menu_State));
+	gameState.player_menustate = NULL;
 
 	// Set up the debug world
 	test();
@@ -222,17 +222,26 @@ void event_relay()
 	int i;
 	EntityManager* entity_manager;
 
+	if (gameState.player_menustate) { slog(gameState.player_menustate->current_menu->title->text); } else { slog("NULL"); }
+
 	//If the new event's menu state isn't null
 	if (gameState.frame_event.menu_state != NULL)
 	{
+		if ((gameState.frame_event._menubase == 1) && (gameState.player_menustate))
+		{
+			menu_state_free(menu_state_root(gameState.player_menustate));
+		}
+
 		//Set the player's menu state to that of the new event and show it
 		gameState.player_menustate = gameState.frame_event.menu_state;
+
 		menu_state_show(gameState.player_menustate);
 	}
 
 	entity_manager = entity_manager_get();
 
-	if (!entity_manager) {
+	if (!entity_manager) 
+	{
 		return NULL;
 	}
 
@@ -344,6 +353,8 @@ void processKeys(Uint8 keys, Uint32 mouse) {
 
 	SDL_Event frame_event;
 
+	Menu_State* temp;
+
 	//Process the frame event itself
 	while (SDL_PollEvent(&frame_event)) {
 
@@ -360,14 +371,19 @@ void processKeys(Uint8 keys, Uint32 mouse) {
 
 			if (frame_event.key.keysym.sym == SDLK_BACKSPACE)
 			{
-				if (gameState.frame_event.menu_state != NULL)
+				if (gameState.player_menustate != NULL)
 				{
-					menu_state_hide(gameState.frame_event.menu_state);
 
-					gameState.frame_event.menu_state = menu_state_back(gameState.frame_event.menu_state);
+					//Go back one menu_state
+					gameState.player_menustate = menu_state_back(gameState.player_menustate);
 
-					if (gameState.frame_event.menu_state != NULL)
-						menu_state_show(gameState.frame_event.menu_state);
+					//If the new menu_state exists, show it
+					if (gameState.player_menustate != NULL)
+					{
+						menu_state_show(gameState.player_menustate);
+					}
+
+					//Otherwise, set our current menu_state to NULL
 
 				}
 			}

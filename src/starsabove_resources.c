@@ -14,28 +14,28 @@ char resource_names[6][128] =
 
 float* resources_fromJson(SJson* resources_json)
 {
-	float* food = 0; 
-	float* iron = 0;
-	float* uranium = 0;
-	float* gold = 0;
-	float* silicon = 0;
-	float* plastoil = 0;
+	float food = 0; 
+	float iron = 0;
+	float uranium = 0;
+	float gold = 0;
+	float silicon = 0;
+	float plastoil = 0;
 
-	sj_get_float_value(sj_object_get_value(resources_json, "Food"), food);
-	sj_get_float_value(sj_object_get_value(resources_json, "Iron"), iron);
-	sj_get_float_value(sj_object_get_value(resources_json, "Uranium"), uranium);
-	sj_get_float_value(sj_object_get_value(resources_json, "Gold"), gold);
-	sj_get_float_value(sj_object_get_value(resources_json, "Silicon"), silicon);
-	sj_get_float_value(sj_object_get_value(resources_json, "Plastoil"), plastoil);
+	sj_get_float_value(sj_object_get_value(resources_json, "Food"), &food);
+	sj_get_float_value(sj_object_get_value(resources_json, "Iron"), &iron);
+	sj_get_float_value(sj_object_get_value(resources_json, "Uranium"), &uranium);
+	sj_get_float_value(sj_object_get_value(resources_json, "Gold"), &gold);
+	sj_get_float_value(sj_object_get_value(resources_json, "Silicon"), &silicon);
+	sj_get_float_value(sj_object_get_value(resources_json, "Plastoil"), &plastoil);
 
 	return resourcelist_new
 	(
-		*food,
-		*iron,
-		*uranium,
-		*gold,
-		*silicon,
-		*plastoil
+		food,
+		iron,
+		uranium,
+		gold,
+		silicon,
+		plastoil
 	);
 }
 
@@ -106,7 +106,7 @@ Menu_State* resources_menustate_init(float* resources, Menu_State* previous_menu
 
 float* resourcelist_new(float food, float iron, float uranium, float gold, float silicon, float plastoil)
 {
-	float resources[6];
+	float* resources = malloc(6 * sizeof(float));
 
 	resources[RES_FOOD] = food;
 	resources[RES_IRON] = iron;

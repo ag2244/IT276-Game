@@ -43,8 +43,9 @@ Menu_State* planet_menustate_init(Planet* planet, Menu_State* system_menustate, 
 /*
 * @brief creates a new planet
 * @param name name of the planet
+* @param resources_arr array of resource values
 * @return NULL on error or a pointer to a new planet
 */
-Planet* planet_new(char* name);
+Planet* planet_new(char* name, float* resources_arr);
 
 #endif

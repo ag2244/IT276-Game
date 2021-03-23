@@ -42,6 +42,13 @@ void system_onClick(struct Entity* self, Game_Event* event_reciever);
 SJson* system_toJson(struct Entity* self);
 
 /**
+* @brief Get the gameevent for this system
+* @param ent The system to get the gameevent for
+* @return NULL on error, or a pointer to a new Game_Event
+*/
+void system_gameevent_init(struct Entity* ent);
+
+/**
 * @brief Spawn a star system entity
 * @param name the name of the system
 * @param position The screen position to spawn the system at

@@ -45,4 +45,10 @@ Game_Event* new_gameevent(char* target_id, char* sub_target_id, char* command, c
 */
 void gameevent_copy(Game_Event* dst, Game_Event* src);
 
+/*
+* @brief Free a game_event
+* @param gameevent The Game_Event to free
+*/
+void gameevent_free(Game_Event* gameevent);
+
 #endif

@@ -15,7 +15,7 @@ UI_Element* textbox_init(Vector2D position, Vector2D size, char* text, Font* fon
 
     if (!element)
     {
-        slog("Failed to spawn a system");
+        slog("Failed to create a textbox");
         return NULL;
     }
 
@@ -50,11 +50,11 @@ UI_Element* textbox_init(Vector2D position, Vector2D size, char* text, Font* fon
     //Get a collider
     element->collider_box = box_new();
 
-    vector2d_copy(boxsize, vector2d(element->spriteBorder->frame_w, element->spriteBorder->frame_h));
+    //vector2d_copy(boxsize, vector2d(element->spriteBorder->frame_w, element->spriteBorder->frame_h));
 
     vector2d_copy(element->collider_box->position, element->position);
 
-    vector2d_copy(element->collider_box->size, boxsize);
+    vector2d_copy(element->collider_box->size, vector2d(element->spriteBorder->frame_w, element->spriteBorder->frame_h));
 
     element->onClick = textbox_onClick;
 
@@ -84,6 +84,9 @@ Menu* menu_init(UI_Element* title, UI_Element* beginning, Vector2D position, int
 
     newMenu->spacing_x = spacing_x;
     newMenu->spacing_y = spacing_y;
+
+    newMenu->next_button = NULL;
+    newMenu->previous_button = NULL;
 
     return newMenu;
 }
@@ -125,7 +128,17 @@ Menu_State* menu_state_addTo(Menu_State* old, Menu* newMenu)
 
 Menu_State* menu_state_back(Menu_State* menu)
 {
-    return menu->previous_menu_state;
+    Menu_State* prev = menu->previous_menu_state;
+
+    menu->previous_menu_state = NULL;
+    menu_state_hide(menu);
+
+    if (prev == NULL)
+    {
+        menu_state_free(menu);
+    }
+
+    return prev;
 }
 
 void ui_node_addTo(Menu* menu, UI_Node* node, UI_Element* element)
@@ -163,6 +176,17 @@ void menu_addTo(Menu* menu, UI_Element* element)
     
     else
         ui_node_addTo(menu, menu->beginning, element);
+}
+
+//Get to the root of a Menu_State super-structure
+Menu_State* menu_state_root(Menu_State* menu_state)
+{
+    if (menu_state->previous_menu_state != NULL)
+    {
+        return menu_state_root(menu_state->previous_menu_state);
+    }
+
+    return menu_state;
 }
 
 //Hide a menu state, its menu, and its elements
@@ -265,34 +289,61 @@ void menu_state_show(Menu_State* menu_state)
 
 //Free structs
 
-void ui_node_free(UI_Node node)
+void ui_node_free(UI_Node* node)
 {
-    if (node.next != NULL) 
-        ui_node_free(*node.next);
 
-    ui_free(node.element);
+    if (node->next != NULL)
+    {
+        ui_node_free(node->next);
+    }
 
-    free(&node);
+    ui_free(node->element);
 }
 
 void menu_free(Menu* menu)
 {
-    ui_free(&menu->title);
-    ui_free(&menu->next_button);
-    ui_free(&menu->previous_button);
 
-    ui_node_free(*menu->beginning);
+    if (!menu)
+    {
+        slog("CANNOT FREE NULL MENU"); return;
+    }
+
+    if(menu->previous_button != NULL)
+    {
+        ui_free(menu->previous_button);
+    }
+
+    if (menu->next_button != NULL)
+    {
+        ui_free(menu->next_button);
+    }
+
+    if (menu->title != NULL)
+    {
+        ui_free(menu->title);
+    }
+
+    if (menu->beginning != NULL)
+    {
+        ui_node_free(menu->beginning);
+    }
 
     free(menu);
+
 }
 
 void menu_state_free(Menu_State* menu_state)
 {
+
+    if (!menu_state)
+    {
+        slog("CANNOT FREE NULL MENU_STATE"); return;
+    }
+
     menu_free(menu_state->current_menu);
 
-    menu_state_free(menu_state->previous_menu_state);
-
     free(menu_state);
+
 }
 
 void textbox_onClick(UI_Element* element, Game_Event* event_reciever)

@@ -29,7 +29,6 @@ void box_free(Collider_Box* box)
 		slog("Cannot free NULL box!");
 		return NULL;
 	}
-
 	free(box);
 }
 

@@ -7,6 +7,8 @@
 
 #include "starsabove_ui_base.h"
 
+#include "starsabove_game_resources.h"
+
 UI_Manager ui_manager = { 0 };
 
 void ui_manager_init(Uint32 max_elements)
@@ -132,25 +134,38 @@ UI_Element* ui_new()
 
 void ui_free(UI_Element* element)
 {
+
 	if (!element)
 	{
 		slog("Cannot free a NULL UI_Element");
 		return;
 	}
 
+	if (element->signal)
+	{
+		gameevent_free(element->signal);
+		element->signal == NULL;
+	}
+
 	if (element->collider_box)
 	{
 		box_free(element->collider_box);
+		element->collider_box == NULL;
 	}
 
 	if (element->collider_circle)
 	{
 		box_free(element->collider_circle);
+		element->collider_circle == NULL;
 	}
 
+
 	gf2d_sprite_free(element->spriteMain);
+	gf2d_sprite_free(element->spriteBorder);
+
 	element->spriteBorder = NULL;
 	element->spriteMain = NULL;
+
 	element->_inuse = 0;
 }
 

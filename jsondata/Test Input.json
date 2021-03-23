@@ -11,36 +11,36 @@
 					"name": "System1 I",
 					"resources":
 						{
-							"Food": 0,
-							"Iron": 0,
-							"Uranium": 0,
-							"Gold": 0,
-							"Silicon": 0,
-							"Plastoil": 0
+							"Food": 7,
+							"Iron": 7,
+							"Uranium": 7,
+							"Gold": 7,
+							"Silicon": 7,
+							"Plastoil": 7
 						}
 				},
 				{
 					"name": "System1 II",
 					"resources":
 						{
-							"Food": 0,
-							"Iron": 0,
-							"Uranium": 0,
-							"Gold": 0,
-							"Silicon": 0,
-							"Plastoil": 0
+							"Food": 3,
+							"Iron": 3,
+							"Uranium": 3,
+							"Gold": 3,
+							"Silicon": 3,
+							"Plastoil": 3
 						}
 				},
 				{
 					"name": "System1 III",
 					"resources":
 						{
-							"Food": 0,
-							"Iron": 0,
-							"Uranium": 0,
-							"Gold": 0,
-							"Silicon": 0,
-							"Plastoil": 0
+							"Food": 3,
+							"Iron": 3,
+							"Uranium": 3,
+							"Gold": 3,
+							"Silicon": 3,
+							"Plastoil": 3
 						}
 				}
 			]
@@ -55,36 +55,36 @@
 					"name": "System2 I",
 					"resources":
 						{
-							"Food": 0,
-							"Iron": 0,
-							"Uranium": 0,
-							"Gold": 0,
-							"Silicon": 0,
-							"Plastoil": 0
+							"Food": 3,
+							"Iron": 3,
+							"Uranium": 3,
+							"Gold": 3,
+							"Silicon": 3,
+							"Plastoil": 3
 						}
 				},
 				{
 					"name": "System2 II",
 					"resources":
 						{
-							"Food": 0,
-							"Iron": 0,
-							"Uranium": 0,
-							"Gold": 0,
-							"Silicon": 0,
-							"Plastoil": 0
+							"Food": 3,
+							"Iron": 3,
+							"Uranium": 3,
+							"Gold": 3,
+							"Silicon": 3,
+							"Plastoil": 3
 						}
 				},
 				{
 					"name": "System2 III",
 					"resources":
 						{
-							"Food": 0,
-							"Iron": 0,
-							"Uranium": 0,
-							"Gold": 0,
-							"Silicon": 0,
-							"Plastoil": 0
+							"Food": 3,
+							"Iron": 3,
+							"Uranium": 3,
+							"Gold": 3,
+							"Silicon": 3,
+							"Plastoil": 3
 						}
 				}
 			]
@@ -99,36 +99,36 @@
 					"name": "System3 I",
 					"resources":
 						{
-							"Food": 0,
-							"Iron": 0,
-							"Uranium": 0,
-							"Gold": 0,
-							"Silicon": 0,
-							"Plastoil": 0
+							"Food": 3,
+							"Iron": 3,
+							"Uranium": 3,
+							"Gold": 3,
+							"Silicon": 3,
+							"Plastoil": 3
 						}
 				},
 				{
 					"name": "System3 II",
 					"resources":
 						{
-							"Food": 0,
-							"Iron": 0,
-							"Uranium": 0,
-							"Gold": 0,
-							"Silicon": 0,
-							"Plastoil": 0
+							"Food": 3,
+							"Iron": 3,
+							"Uranium": 3,
+							"Gold": 3,
+							"Silicon": 3,
+							"Plastoil": 3
 						}
 				},
 				{
 					"name": "System3 III",
 					"resources":
 						{
-							"Food": 0,
-							"Iron": 0,
-							"Uranium": 0,
-							"Gold": 0,
-							"Silicon": 0,
-							"Plastoil": 0
+							"Food": 3,
+							"Iron": 3,
+							"Uranium": 3,
+							"Gold": 3,
+							"Silicon": 3,
+							"Plastoil": 3
 						}
 				}
 			]
@@ -143,36 +143,36 @@
 					"name": "System4 I",
 					"resources":
 						{
-							"Food": 0,
-							"Iron": 0,
-							"Uranium": 0,
-							"Gold": 0,
-							"Silicon": 0,
-							"Plastoil": 0
+							"Food": 3,
+							"Iron": 3,
+							"Uranium": 3,
+							"Gold": 3,
+							"Silicon": 3,
+							"Plastoil": 3
 						}
 				},
 				{
 					"name": "System4 II",
 					"resources":
 						{
-							"Food": 0,
-							"Iron": 0,
-							"Uranium": 0,
-							"Gold": 0,
-							"Silicon": 0,
-							"Plastoil": 0
+							"Food": 3,
+							"Iron": 3,
+							"Uranium": 3,
+							"Gold": 3,
+							"Silicon": 3,
+							"Plastoil": 3
 						}
 				},
 				{
 					"name": "System4 III",
 					"resources":
 						{
-							"Food": 0,
-							"Iron": 0,
-							"Uranium": 0,
-							"Gold": 0,
-							"Silicon": 0,
-							"Plastoil": 0
+							"Food": 3,
+							"Iron": 3,
+							"Uranium": 3,
+							"Gold": 3,
+							"Silicon": 3,
+							"Plastoil": 3
 						}
 				}
 			]

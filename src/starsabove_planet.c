@@ -4,11 +4,23 @@
 
 Planet* planet_fromJson(SJson* planetjson) {
 
+    float* temp;
+
 	Planet* planet = planet_new(
-		sj_get_string_value(sj_object_get_value(planetjson, "name"))
+		sj_get_string_value(sj_object_get_value(planetjson, "name")), 
+        resources_fromJson(sj_object_get_value(planetjson, "resources"))
 	);
 
-    planet->resources_mining = resources_fromJson(sj_object_get_value(planetjson, "resources"));
+    temp = resources_fromJson(sj_object_get_value(planetjson, "resources"));
+
+    planet->resources_mining = malloc(6 * sizeof(float));
+
+    for (int i = 0; i < 6; i++)
+    {
+        planet->resources_mining[i] = temp[i];
+    }
+
+    free(temp);
 
 	return planet;
 
@@ -56,7 +68,7 @@ Menu_State* planet_menustate_init(Planet* planet, Menu_State* system_menustate, 
         font_load("resources/fonts/futur.ttf", 12)
     );
 
-    sprintf(resource_button_name, "%s Resources per Turn", planet->name);
+    sprintf(resource_button_name, "%s Resources", planet->name);
 
     resources_button->signal = new_gameevent(
         system_name,
@@ -80,7 +92,7 @@ Menu_State* planet_menustate_init(Planet* planet, Menu_State* system_menustate, 
     return planet_menustate;
 }
 
-Planet* planet_new(char* name)
+Planet* planet_new(char* name, float* resource_arr)
 {
 	Planet* planet = malloc(sizeof(Planet));
 
