@@ -186,6 +186,8 @@ void prepare_game()
 {
 	int i = 0; EntityManager* entity_manager = entity_manager_get();
 
+	gameState.gamedict = sj_load("jsondata/gamedict.json");
+
     // Starting the entity manager
     entity_manager_init(100);
 
@@ -451,6 +453,7 @@ void processKeys(Uint8 keys, Uint32 mouse) {
 
 		case SDL_KEYDOWN:
 
+			//IF BACKSPACE
 			if (frame_event.key.keysym.sym == SDLK_BACKSPACE)
 			{
 				if (gameState.player_menustate != NULL)

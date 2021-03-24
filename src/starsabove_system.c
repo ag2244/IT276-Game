@@ -161,6 +161,8 @@ float* system_onNewTurn(Entity* self)
     int i;
     float* resources_total = malloc(6 * sizeof(float));
 
+    for (i = 0; i < 6; i++) { resources_total[i] = 0; }
+
     System_Data* systemdata = self->data;
 
     for (i = 0; i < system_data->num_planets; i++)

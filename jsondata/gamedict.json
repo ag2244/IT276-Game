@@ -1,0 +1,46 @@
+{
+
+	"Buildables":
+	[
+		{
+			"name": "Factory",
+			"input":
+			{
+				"uranium": 1
+			},
+			
+			"output":
+			{
+				"plastoil": 100
+			}
+		},
+		
+		{
+			"name": "Electronics Factory",
+			"input":
+			{
+				"uranium": 1,
+				"plastoil": 1
+			},
+			
+			"output":
+			{
+				"silicon": 100
+			}
+		},
+		
+		{
+			"name": "Iron Mine",
+			"input":
+			{
+				"food": 1
+			},
+			
+			"output":
+			{
+				"iron": 100
+			}
+		}
+	]
+
+}

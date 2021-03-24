@@ -35,6 +35,8 @@ typedef struct GameState_s
 	Bool _hasevent;
 	Game_Event frame_event;
 
+	SJson* gamedict;
+
 } GameState;
 
 /**

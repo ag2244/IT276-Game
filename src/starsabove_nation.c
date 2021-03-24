@@ -199,6 +199,8 @@ void nation_onNewTurn(Nation* nation)
 
 	float* resources = malloc(6 * sizeof(float));
 
+	for (i = 0; i < 6; i++) { resources[i] = 0; }
+
 	for (i = 0; i < entitymgr.max_entities; i++)
 	{
 
@@ -262,6 +264,7 @@ struct Menu_State* nation_menustate(Nation* nation, Bool _isPlayer)
 		5
 	);
 
+	/*
 	menu_addTo(
 		nation_menustate->current_menu,
 		textbox_init
@@ -271,7 +274,7 @@ struct Menu_State* nation_menustate(Nation* nation, Bool _isPlayer)
 			"Owned Systems",
 			font_load("resources/fonts/futur.ttf", 12)
 		)
-	);
+	);*/
 
 	//Add resources
 
