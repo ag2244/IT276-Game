@@ -35,6 +35,12 @@ int load_systems(SJson* game_json);
 void system_onClick(struct Entity* self, Game_Event* event_reciever);
 
 /**
+* @brief Perform actions when a system is clicked
+* @return NULL on error
+*/
+float* system_onNewTurn(struct Entity* self);
+
+/**
 * @brief Turn a star system to a json object
 * @param self the entity to convert
 * @return NULL on error, or a pointer to a json object

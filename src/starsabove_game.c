@@ -85,6 +85,48 @@ void save_game(char* savefile_name)
 
 }
 
+UI_Element* newturnbutton_init()
+{
+	UI_Element* element = NULL;
+	Vector2D boxsize;
+
+	//Create the new elementity
+	element = ui_new();
+
+	if (!element)
+	{
+		slog("Failed to spawn a system");
+		return NULL;
+	}
+
+	element->spriteMain = gf2d_sprite_load_all("images/ui/newturn_button.png", 250, 150, 1);
+
+	vector2d_copy(element->position, vector2d(1250, 750));
+
+	element->frameRate = 0;
+	element->frameCount = 1;
+
+	element->collider_box = box_new();
+
+	vector2d_copy(element->collider_box->position, element->position);
+
+	vector2d_copy(element->collider_box->size, vector2d(element->spriteMain->frame_w, element->spriteMain->frame_h));
+
+	slog("New Turn button created!");
+
+	element->signal = new_gameevent(
+		"STARSABOVE",
+		NULL,
+		"NEW TURN",
+		NULL,
+		NULL,
+		NULL,
+		NULL
+	);
+
+	return element;
+}
+
 void test() 
 {
 
@@ -157,6 +199,8 @@ void prepare_game()
 	// Starting the nations list
 	nations_list_init(24);
 
+	newturnbutton_init();
+
 	// Initialize the player's menu state
 	gameState.player_menustate = NULL;
 
@@ -217,6 +261,16 @@ void starsabove_loop()
 	ui_manager_draw();
 }
 
+void newTurn()
+{
+	int i;
+
+	nations_list_onNewTurn();
+
+	gameState.turn++;
+
+}
+
 void event_relay()
 {
 
@@ -245,6 +299,18 @@ void event_relay()
 		gameState.player_menustate = gameState.frame_event.menu_state;
 
 		menu_state_show(gameState.player_menustate);
+	}
+
+	//If this is a general game event
+	if (strcmp(gameState.frame_event.target_id, "STARSABOVE") == 0)
+	{
+
+		//If it is a new turn event
+		if (strcmp(gameState.frame_event.command, "NEW TURN") == 0)
+		{
+			newTurn();
+		}
+
 	}
 
 	entity_manager = entity_manager_get();

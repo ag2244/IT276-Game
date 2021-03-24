@@ -44,7 +44,7 @@ void gameevent_free(Game_Event* gameevent)
 
 	menu_state_free(gameevent->menu_state);
 
-	gameevent->menu_state == NULL;
+	gameevent->menu_state = NULL;
 
 	free(gameevent);
 

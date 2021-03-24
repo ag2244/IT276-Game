@@ -49,4 +49,10 @@ Menu_State* resources_menustate_init(float* resources, Menu_State* previous_menu
 */
 float* resourcelist_new(float food, float iron, float uranium, float gold, float silicon, float plastoil);
 
+/*
+* @brief Add two resource arrays
+* @return NULL on error, or an array of floats, with keys being the enum values in resources
+*/
+float* resourcelist_add(float* arr0, float* arr1);
+
 #endif

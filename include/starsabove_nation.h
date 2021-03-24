@@ -6,9 +6,10 @@
 typedef struct Nation_s
 {
 	Bool _inuse;
+	
 	char name[256];
 
-	void (*onNewTurn)(struct Nation* self);
+	float* resources_total;
 
 	SJson* (*toJson)(struct Nation* self);
 
@@ -60,14 +61,24 @@ void nations_list_free();
 * @param max_systems the maximum number of systems it can own
 * @return NULL on error, or a pointer to a json object
 */
-Nation* nation_new(Nation* nation, char* name);
+Nation* nation_new(Nation* nation, char* name, float* resources);
 
 /**
 * @brief Add a nation to the nations list
 * @param name the name of the nation
 * @return NULL on error, or a pointer to a json object
 */
-Nation* nation_add(char* name);
+Nation* nation_add(char* name, float* resources);
+
+/*
+* @brief Do new turn functions for a nation
+*/
+void nation_onNewTurn(Nation* nation);
+
+/*
+* @brief Go through all nations and call nation_onNewTurn() for each
+*/
+void nations_list_onNewTurn();
 
 /**
 * @brief Turn a nation to a json object

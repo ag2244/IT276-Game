@@ -299,7 +299,10 @@ void ui_onClick(UI_Element* element, Game_Event* event_reciever)
 	else 
 	{
 
-		//TODO
+		if (element->signal)
+		{
+			gameevent_copy(event_reciever, element->signal);
+		}
 
 	}
 

@@ -80,7 +80,7 @@ Menu_State* resources_menustate_init(float* resources, Menu_State* previous_menu
 	for (i = 0; i < num_resources; i++)
 	{
 
-		sprintf(textbox_name, "%s: %f", resource_names + i, resources[i]);
+		sprintf(textbox_name, "%s: %.3f", resource_names + i, resources[i]);
 
 		menu_addTo
 		(
@@ -106,7 +106,7 @@ Menu_State* resources_menustate_init(float* resources, Menu_State* previous_menu
 
 float* resourcelist_new(float food, float iron, float uranium, float gold, float silicon, float plastoil)
 {
-	float* resources = malloc(6 * sizeof(float));
+	float* resources = malloc(num_resources * sizeof(float));
 
 	resources[RES_FOOD] = food;
 	resources[RES_IRON] = iron;
@@ -116,4 +116,18 @@ float* resourcelist_new(float food, float iron, float uranium, float gold, float
 	resources[RES_PLASTOIL] = plastoil;
 
 	return resources;
+}
+
+float* resourcelist_add(float* arr0, float* arr1)
+{
+	int i;
+
+	float* sum = malloc(num_resources * sizeof(float));
+
+	for (i = 0; i < num_resources; i++)
+	{
+		sum[i] = arr0[i] + arr1[i];
+	}
+
+	return sum;
 }

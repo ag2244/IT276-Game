@@ -38,7 +38,7 @@ UI_Element* textbox_init(Vector2D position, Vector2D size, char* text, Font* fon
             )
         );
 
-    element->text_color = gfc_color(29 / 255, 50 / 255, 54 / 255, 0);
+    element->text_color = gfc_color(0, 0, 0, 0);
 
     //Load position, size
     vector2d_copy(element->position, position);

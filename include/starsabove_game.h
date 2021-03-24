@@ -24,7 +24,7 @@
 
 typedef struct GameState_s
 {
-
+	int turn;
 	char playerNation[128];
 
 	UI_Element* currentClickable_ui;
@@ -55,6 +55,11 @@ void new_game();
 */
 void save_game(char* savefile_name);
 
+/*
+* @brief Initialize the UI_Element that is the new turn button
+*/
+UI_Element* newturnbutton_init();
+
 /**
 * @brief Do stuff before the game loop begins
 * @return NULL on error
@@ -66,6 +71,11 @@ void prepare_game();
 * @return NULL on error
 */
 void starsabove_loop();
+
+/**
+* @brief End the turn and begin a new one
+*/
+void newTurn();
 
 /**
 * @brief take in the keys and mouse states and perform actions based on them

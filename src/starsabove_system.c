@@ -4,6 +4,8 @@
 
 #include "starsabove_system.h"
 
+#include "starsabove_resources.h"
+
 //Use for pointing to the data for an individual system
 System_Data* system_data;
 
@@ -151,6 +153,23 @@ void system_onClick(Entity* self, Game_Event* event_reciever)
     system_gameevent_init(self);
 
     gameevent_copy(event_reciever, self->clickEvent);
+}
+
+float* system_onNewTurn(Entity* self)
+{
+
+    int i;
+    float* resources_total = malloc(6 * sizeof(float));
+
+    System_Data* systemdata = self->data;
+
+    for (i = 0; i < system_data->num_planets; i++)
+    {
+        resources_total = resourcelist_add(resources_total, systemdata->planets[i].resources_mining);
+    }
+
+    return resources_total;
+
 }
 
 void system_gameevent_init(Entity* ent)
@@ -333,9 +352,7 @@ Entity* system_spawn(char* name, Vector2D position, Nation* owner, System_Data* 
     ent->onClick = system_onClick;
     ent->toJson = system_toJson;
     ent->reciever = system_reciever;
-
-    //Create clickSignal
-    
+    ent->onNewTurn = system_onNewTurn;
 
     //Done!
     slog("System \"%s\" created!", ent->name);

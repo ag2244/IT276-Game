@@ -11,10 +11,15 @@
 
 #include "starsabove_nation.h"
 
+#include "starsabove_resources.h"
+#include "starsabove_entity.h"
+
 Nation_List nation_list = { 0 };
 
 int load_nations(SJson* game_json)
 {
+	Nation* nation = NULL;
+
 	//The nations in this game
 	SJson* nations;
 	SJson* currentNation;
@@ -42,14 +47,7 @@ int load_nations(SJson* game_json)
 	{
 		currentNation = sj_array_get_nth(nations, i);
 
-		/*slog("ASD");
-		//Get the name: string value of json object containing the value at currentSystem["name"]
-		temp = sj_get_string_value(sj_object_get_value(currentSystem, "name"));
-		slog("QWE");
-
-		strcpy(name, temp);
-		slog(name);*/
-
+		//Get the name
 		name = sj_get_string_value(sj_object_get_value(currentNation, "name"));
 
 		if (name == 0) {
@@ -58,7 +56,13 @@ int load_nations(SJson* game_json)
 
 		}
 
-		nation_add(name);
+		nation = nation_add(name, resources_fromJson(sj_object_get_value(currentNation, "resources")));
+
+		if (!nation)
+		{
+			slog("Could not add nation \"%s\"", name); return NULL;
+		}
+
 
 	}
 
@@ -141,17 +145,25 @@ void nations_list_free()
 	slog("Nations List freed");
 }
 
-Nation* nation_new(Nation* nation, char* name)
+Nation* nation_new(Nation* nation, char* name, float* resources)
 {
 
 	gfc_line_cpy(nation->name, name);
+
+	nation->resources_total = malloc(6 * sizeof(float));
+
+	for (int i = 0; i < 6; i++)
+	{
+		slog("%i", resources[1]);
+		nation->resources_total[i] = resources[i];
+	}
 
 	nation->toJson = nation_toJson;
 
 	return nation;
 }
 
-Nation* nation_add(char* name)
+Nation* nation_add(char* name, float* resources)
 {
 	int i;
 
@@ -168,7 +180,7 @@ Nation* nation_add(char* name)
 
 		nation_list.nations[i]._inuse = 1;
 
-		nation_new(&nation_list.nations[i], name, 100);
+		nation_new(&nation_list.nations[i], name, resources);
 
 		return &nation_list.nations[i];
 	}
@@ -177,12 +189,52 @@ Nation* nation_add(char* name)
 	return NULL;
 }
 
+void nation_onNewTurn(Nation* nation)
+{
+	int i;
+
+	EntityManager entitymgr = *entity_manager_get();
+	Entity* thisSystem;
+
+	float* resources = malloc(6 * sizeof(float));
+
+	for (i = 0; i < entitymgr.max_entities; i++)
+	{
+
+		if (entitymgr.entity_list[i]._inuse == 0) {continue; }
+
+		thisSystem = &entitymgr.entity_list[i];
+
+		if (thisSystem->owner == nation)
+		{
+			resources = resourcelist_add(thisSystem->onNewTurn(thisSystem), resources);
+		}
+
+	}
+}
+
+void nations_list_onNewTurn()
+{
+	int i;
+
+	//Go through each nation and perform their onNewTurn() function
+	for (i = 0; i < nation_list.max_nations; i++)
+	{
+		if (nation_list.nations[i]._inuse)
+		{
+			nation_onNewTurn(&nation_list.nations[i]);
+		}
+	}
+}
+
 SJson* nation_toJson(Nation* self)
 {
 	int i = 0;
 	SJson* nation_json = sj_object_new();
 
 	sj_object_insert(nation_json, "name", sj_new_str(self->name));
+
+	sj_object_insert(nation_json, "resources", resources_toJson(self->resources_total));
 
 	return nation_json;
 }

@@ -200,7 +200,7 @@ void entity_free(Entity* ent)
 
 	if (ent->collider_circle)
 	{
-		box_free(ent->collider_circle);
+		circle_free(ent->collider_circle);
 	}
 
 	gf2d_sprite_free(ent->sprite);
