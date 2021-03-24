@@ -3,6 +3,8 @@
 #ifndef __NATION_H__
 #define __NATION_H__
 
+typedef struct Menu_State;
+
 typedef struct Nation_s
 {
 	Bool _inuse;
@@ -72,6 +74,7 @@ Nation* nation_add(char* name, float* resources);
 
 /*
 * @brief Do new turn functions for a nation
+* @param nation The nation to do new turn functions for
 */
 void nation_onNewTurn(Nation* nation);
 
@@ -79,6 +82,13 @@ void nation_onNewTurn(Nation* nation);
 * @brief Go through all nations and call nation_onNewTurn() for each
 */
 void nations_list_onNewTurn();
+
+/*
+* @brief Get the menustate for a nation
+* @param nation The nation to get the menustate for
+* @param _isPlayer Is the nation the same as the player nation?
+*/
+struct Menu_State* nation_menustate(Nation* nation, Bool _isPlayer);
 
 /**
 * @brief Turn a nation to a json object

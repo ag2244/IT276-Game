@@ -13,6 +13,7 @@
 
 #include "starsabove_resources.h"
 #include "starsabove_entity.h"
+#include "starsabove_ui_textbox.h"
 
 Nation_List nation_list = { 0 };
 
@@ -211,6 +212,13 @@ void nation_onNewTurn(Nation* nation)
 		}
 
 	}
+
+	resources = resourcelist_add(nation->resources_total, resources);
+
+	for (i = 0; i < 6; i++)
+	{
+		nation->resources_total[i] = resources[i];
+	}
 }
 
 void nations_list_onNewTurn()
@@ -225,6 +233,74 @@ void nations_list_onNewTurn()
 			nation_onNewTurn(&nation_list.nations[i]);
 		}
 	}
+}
+
+struct Menu_State* nation_menustate(Nation* nation, Bool _isPlayer)
+{
+
+	int i;
+
+	char temp[128];
+
+	UI_Element* system_textbox;
+	UI_Element* resources_textbox;
+
+	Menu_State* nation_menustate;
+
+	nation_menustate = menu_state_new(
+		NULL,
+		textbox_init
+		(
+			vector2d(10, 10),
+			vector2d(200, 50),
+			nation->name,
+			font_load("resources/fonts/futur.ttf", 20)
+		),
+		NULL,
+		vector2d(10, 10),
+		0,
+		5
+	);
+
+	menu_addTo(
+		nation_menustate->current_menu,
+		textbox_init
+		(
+			vector2d(10, 10),
+			vector2d(250, 50),
+			"Owned Systems",
+			font_load("resources/fonts/futur.ttf", 12)
+		)
+	);
+
+	//Add resources
+
+	resources_textbox = textbox_init
+	(
+		vector2d(10, 10),
+		vector2d(250, 50),
+		"Total Resources",
+		font_load("resources/fonts/futur.ttf", 12)
+	);
+
+	resources_textbox->signal = new_gameevent(
+		nation->name,
+		NULL,
+		"GETRESOURCES",
+		NULL,
+		0,
+		resources_menustate_init(nation->resources_total, nation_menustate, "Total Resources"),
+		0
+	);
+
+	menu_addTo(
+		nation_menustate->current_menu,
+		resources_textbox
+	);
+
+	menu_state_show(nation_menustate);
+
+	return nation_menustate;
 }
 
 SJson* nation_toJson(Nation* self)

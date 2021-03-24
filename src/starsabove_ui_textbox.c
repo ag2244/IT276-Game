@@ -115,7 +115,7 @@ Menu_State* menu_state_getsafe(Menu_State* menustate)
 
 Menu_State* menu_state_addTo(Menu_State* old, Menu* newMenu)
 {
-    Menu_State* new_state = malloc(sizeof(new_state));
+    Menu_State* new_state = malloc(sizeof(Menu_State));
 
     new_state->current_menu = newMenu;
     new_state->previous_menu_state = old;

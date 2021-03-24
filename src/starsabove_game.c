@@ -207,6 +207,8 @@ void prepare_game()
 	// Set up the debug world
 	test();
 
+	gameState.player_menustate = nation_menustate(get_nation_by_name(gameState.playerNation), 1);
+
 	atexit(starsabove_exit);
 
 	slog("============ GAME LOADED! ============");
@@ -268,6 +270,10 @@ void newTurn()
 	nations_list_onNewTurn();
 
 	gameState.turn++;
+
+	menu_state_free(gameState.player_menustate);
+
+	gameState.player_menustate = nation_menustate(get_nation_by_name(gameState.playerNation), 1);
 
 }
 
@@ -453,13 +459,13 @@ void processKeys(Uint8 keys, Uint32 mouse) {
 					//Go back one menu_state
 					gameState.player_menustate = menu_state_back(gameState.player_menustate);
 
-					//If the new menu_state exists, show it
-					if (gameState.player_menustate != NULL)
+					//If the new menu_state doesnt exist, set our current menu_state to the nation menu_state
+					if (gameState.player_menustate == NULL)
 					{
-						menu_state_show(gameState.player_menustate);
+						gameState.player_menustate = nation_menustate(get_nation_by_name(gameState.playerNation), 1);
 					}
 
-					//Otherwise, set our current menu_state to NULL
+					menu_state_show(gameState.player_menustate);
 
 				}
 			}
