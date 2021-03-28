@@ -26,6 +26,8 @@ typedef struct Entity_s{
 
 	Vector2D position;
 	Vector2D velocity;
+	Vector3D rotation;
+
 	Sprite* sprite;
 
 	Nation* owner;
@@ -39,12 +41,12 @@ typedef struct Entity_s{
 	void (*draw)(struct Entity_s* self);
 	void (*free)(struct Entity_s* self);
 	
-	void (*onClick)(struct Entity_s* self);
+	void (*onClick)(struct Entity_s* self, Game_Event* event_reciever, Bool playerowned);
 	float* (*onNewTurn)(struct Entity_s* self);
 
 	SJson* (*toJson)(struct Entity_s* self);
 	
-	void (*reciever)(struct Entity_s* self, Game_Event* event_reciever);
+	void (*reciever)(struct Entity_s* self, Game_Event* event_reciever, Bool playerowned);
 
 	void* data;
 
@@ -132,7 +134,7 @@ Bool entity_clickable(Entity* ent, float mX, float mY);
 * @brief what to do with an entity that has been clicked
 * @param ent the entity that has been clicked
 */
-void entity_onClick(Entity* ent, Game_Event* event_reciever);
+void entity_onClick(Entity* ent, Game_Event* event_reciever, Bool playerowned);
 
 /**
 * @brief recieve a button transmission

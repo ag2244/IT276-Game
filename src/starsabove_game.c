@@ -285,6 +285,8 @@ void event_relay()
 	int i;
 	EntityManager* entity_manager;
 
+	Bool entity_playerowned = 0;
+
 	//if (gameState.player_menustate) { slog(gameState.player_menustate->current_menu->title->text); } else { slog("NULL"); }
 
 	//If the new event's menu state isn't null
@@ -336,9 +338,13 @@ void event_relay()
 
 		if (strcmp(entity_manager->entity_list[i].name, gameState.frame_event.target_id) == 0)
 		{
+
+			//If the player nation owns this entity
+			if (strcmp(entity_manager->entity_list[i].owner->name, gameState.playerNation) == 0) { entity_playerowned = 1; }
+
 			if (entity_manager->entity_list[i].reciever)
 			{
-				entity_manager->entity_list[i].reciever(&entity_manager->entity_list[i], &gameState.frame_event);
+				entity_manager->entity_list[i].reciever(&entity_manager->entity_list[i], &gameState.frame_event, entity_playerowned);
 			}
 		}
 	}
@@ -404,6 +410,9 @@ Bool starsabove_hoverDetection(float mX, float mY) {
 
 void onClick_left() 
 {
+
+	Bool ownedbyplayer = 0;
+
 	if (gameState.currentClickable_ui) {
 		ui_onClick(gameState.currentClickable_ui, &gameState.frame_event);
 
@@ -419,7 +428,10 @@ void onClick_left()
 	};
 	
 	if (gameState.currentClickable_entity) {
-		entity_onClick(gameState.currentClickable_entity, &gameState.frame_event);
+
+		if (strcmp(gameState.currentClickable_entity->owner->name, gameState.playerNation) == 0) { ownedbyplayer = 1; }
+
+		entity_onClick(gameState.currentClickable_entity, &gameState.frame_event, ownedbyplayer);
 
 		if (gameState.frame_event._sent == 1)
 		{

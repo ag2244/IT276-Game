@@ -10,6 +10,8 @@
 
 #include "starsabove_ui_textbox.h"
 
+const int numresources; //Number of resources there are
+
 enum resources
 {
 	RES_FOOD = 0,
@@ -51,6 +53,12 @@ float* resourcelist_new(float food, float iron, float uranium, float gold, float
 
 /*
 * @brief Add two resource arrays
+* @return NULL on error, or an array of floats, with keys being the enum values in resources
+*/
+float* resourcelist_add(float* arr0, float* arr1);
+
+/*
+* @brief Subtract one resource array from another
 * @return NULL on error, or an array of floats, with keys being the enum values in resources
 */
 float* resourcelist_add(float* arr0, float* arr1);

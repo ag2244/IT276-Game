@@ -126,7 +126,7 @@ int load_systems(SJson* game_json)
             }
         }
 
-        else nation = NULL;
+        else nation = "";
 
         system_spawn(name, pos, nation, systemdata);
 
@@ -136,7 +136,7 @@ int load_systems(SJson* game_json)
     return 1;
 }
 
-void system_onClick(Entity* self, Game_Event* event_reciever) 
+void system_onClick(Entity* self, Game_Event* event_reciever, Bool playerowned)
 {
     if (self == NULL)
     {
@@ -150,7 +150,7 @@ void system_onClick(Entity* self, Game_Event* event_reciever)
         return NULL;
     }
 
-    system_gameevent_init(self);
+    system_gameevent_init(self, playerowned);
 
     gameevent_copy(event_reciever, self->clickEvent);
 }
@@ -174,7 +174,7 @@ float* system_onNewTurn(Entity* self)
 
 }
 
-void system_gameevent_init(Entity* ent)
+void system_gameevent_init(Entity* ent, Bool playerOwned)
 {
     int i = 0;
 
@@ -237,7 +237,7 @@ void system_gameevent_init(Entity* ent)
                 "DESCRIPTOR",
                 123,
                 //Get the menustate for this planet
-                planet_menustate_init(&systemdata->planets[i], ent->clickEvent->menu_state, ent->name),
+                planet_menustate_init(&systemdata->planets[i], ent->clickEvent->menu_state, ent->name, playerOwned),
                 0
             )
         );

@@ -38,7 +38,7 @@ SJson* planet_toJson(Planet* planet);
 * @param planet The planet to save
 * @return NULL on error or a pointer to the saved json object
 */
-Menu_State* planet_menustate_init(Planet* planet, Menu_State* system_menustate, char* system_name);
+Menu_State* planet_menustate_init(Planet* planet, Menu_State* system_menustate, char* system_name, Bool playerOwned);
 
 /*
 * @brief creates a new planet

@@ -230,7 +230,7 @@ void entity_draw(Entity* ent)
 			ent->position,
 			NULL,
 			NULL,
-			NULL,
+			&ent->rotation,
 			NULL,
 			NULL,
 			(Uint32)ent->frame );
@@ -262,7 +262,7 @@ Bool entity_clickable(Entity* ent, float mX, float mY) {
 
 }
 
-void entity_onClick(Entity* ent, Game_Event* event_reciever)
+void entity_onClick(Entity* ent, Game_Event* event_reciever, Bool playerowned)
 {
 	if (!ent)
 	{
@@ -271,7 +271,7 @@ void entity_onClick(Entity* ent, Game_Event* event_reciever)
 	}
 
 	//If there's a custom click
-	if (ent->onClick) { ent->onClick(ent, event_reciever); }
+	if (ent->onClick) { ent->onClick(ent, event_reciever, playerowned); }
 
 	else {
 
@@ -281,7 +281,7 @@ void entity_onClick(Entity* ent, Game_Event* event_reciever)
 
 }
 
-void entity_reciever(Entity* self, Game_Event* event)
+void entity_reciever(Entity* self, Game_Event* event, Bool playerowned)
 {
 
 	if (!self)
@@ -291,7 +291,7 @@ void entity_reciever(Entity* self, Game_Event* event)
 	}
 
 	//If there's a custom draw
-	if (self->reciever) self->reciever(self, event);
+	if (self->reciever) self->reciever(self, event, playerowned);
 
 	else {
 

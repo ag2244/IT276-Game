@@ -131,3 +131,17 @@ float* resourcelist_add(float* arr0, float* arr1)
 
 	return sum;
 }
+
+float* resourcelist_subtract(float* arr0, float* arr1)
+{
+	int i;
+
+	float* difference = malloc(num_resources * sizeof(float));
+
+	for (i = 0; i < num_resources; i++)
+	{
+		difference[i] = arr0[i] - arr1[i];
+	}
+
+	return difference;
+}

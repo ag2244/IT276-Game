@@ -37,12 +37,30 @@ SJson* planet_toJson(Planet* planet)
     return planet_json;
 }
 
-Menu_State* planet_menustate_init(Planet* planet, Menu_State* system_menustate, char* system_name)
+Menu_State* planet_menustate_init(Planet* planet, Menu_State* system_menustate, char* system_name, Bool playerOwned)
 {
     Menu_State* planet_menustate;
 
+    UI_Element* buildings_button;
+    UI_Element* construction_button;
+
     UI_Element* resources_button;
     char resource_button_name[128];
+
+    if (planet == NULL)
+    {
+        slog("Cannot initialize planet Menu_State for NULL planet"); return NULL;
+    }
+
+    if (system_menustate == NULL)
+    {
+        slog("Cannot initialize planet Menu_State to add to NULL system_menustate"); return NULL;
+    }
+
+    if (!system_name)
+    {
+        slog("Cannot initialize planet Menu_State with NULL system_name"); return NULL;
+    }
 
     //Create the planet menu state
     planet_menustate = menu_state_new(
@@ -60,6 +78,7 @@ Menu_State* planet_menustate_init(Planet* planet, Menu_State* system_menustate, 
         5
     );
 
+    //Create resources button
     resources_button = textbox_init
     (
         vector2d(10, 10),
@@ -85,6 +104,59 @@ Menu_State* planet_menustate_init(Planet* planet, Menu_State* system_menustate, 
         planet_menustate->current_menu,
         resources_button
     );
+
+    if (playerOwned)
+    {
+        //Create buildings button
+        buildings_button = textbox_init
+        (
+            vector2d(10, 10),
+            vector2d(200, 50),
+            "Buildings",
+            font_load("resources/fonts/futur.ttf", 12)
+        );
+
+        buildings_button->signal = new_gameevent(
+            system_name,
+            planet->name,
+            "GETBUILDINGS",
+            NULL,
+            0,
+            NULL, //resources_menustate_init(planet->resources_mining, planet_menustate, resource_button_name),
+            0
+        );
+
+        menu_addTo
+        (
+            planet_menustate->current_menu,
+            buildings_button
+        );
+
+        //Create construction button
+        construction_button = textbox_init
+        (
+            vector2d(10, 10),
+            vector2d(200, 50),
+            "Construction",
+            font_load("resources/fonts/futur.ttf", 12)
+        );
+
+        construction_button->signal = new_gameevent(
+            system_name,
+            planet->name,
+            "CONSTRUCTION",
+            NULL,
+            0,
+            NULL, //resources_menustate_init(planet->resources_mining, planet_menustate, resource_button_name),
+            0
+        );
+
+        menu_addTo
+        (
+            planet_menustate->current_menu,
+            construction_button
+        );
+    }
 
     //Hide the planet_menustate
     menu_state_hide(planet_menustate);

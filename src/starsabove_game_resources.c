@@ -42,9 +42,12 @@ void gameevent_copy(Game_Event* dst, Game_Event* src)
 void gameevent_free(Game_Event* gameevent)
 {
 
-	menu_state_free(gameevent->menu_state);
+	if (gameevent->menu_state) 
+	{
+		menu_state_free(gameevent->menu_state);
 
-	gameevent->menu_state = NULL;
+		gameevent->menu_state = NULL;
+	}
 
 	free(gameevent);
 

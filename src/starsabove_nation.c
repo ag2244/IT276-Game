@@ -153,9 +153,8 @@ Nation* nation_new(Nation* nation, char* name, float* resources)
 
 	nation->resources_total = malloc(6 * sizeof(float));
 
-	for (int i = 0; i < 6; i++)
+	for (int i = 0; i < numresources; i++)
 	{
-		slog("%i", resources[1]);
 		nation->resources_total[i] = resources[i];
 	}
 

@@ -32,7 +32,7 @@ int load_systems(SJson* game_json);
 * @brief Perform actions when a system is clicked
 * @return NULL on error
 */
-void system_onClick(struct Entity* self, Game_Event* event_reciever);
+void system_onClick(struct Entity* self, Game_Event* event_reciever, Bool playerowned);
 
 /**
 * @brief Perform actions when a system is clicked
