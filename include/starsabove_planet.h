@@ -8,6 +8,8 @@
 
 #include "gfc_types.h"
 
+#include "starsabove_buildable.h"
+
 #include "starsabove_ui_textbox.h"
 #include "starsabove_resources.h"
 
@@ -16,6 +18,9 @@ typedef struct
 	char name[128];
 	
 	float* resources_mining;
+
+	int num_buildings;
+	Buildable* buildings;
 
 } Planet;
 

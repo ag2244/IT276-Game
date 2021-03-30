@@ -9,6 +9,27 @@ Bool KEYS[322];
 
 //Font* font;
 
+void load_gamerule(char* filename)
+{
+	SJson* gamerule;
+
+	if (filename == NULL)
+	{
+		slog("Cannot load a game dictionary with NULL filename"); return NULL;
+	}
+
+	gamerule = sj_load(filename);
+
+	if (!gamerule)
+	{
+		slog("Cannot load the file at \"%s\"", filename); return NULL;
+	}
+
+	buildabledict_load(sj_object_get_value(gamerule, "Buildables"));
+
+	sj_free(gamerule);
+}
+
 void load_game(char* filename)
 {
 	SJson* game;
@@ -129,6 +150,7 @@ UI_Element* newturnbutton_init()
 
 void test() 
 {
+	load_gamerule("jsondata/gamedict.json");
 
 	load_game("jsondata/Test Input.json");
 
@@ -185,8 +207,6 @@ void test_ui()
 void prepare_game()
 {
 	int i = 0; EntityManager* entity_manager = entity_manager_get();
-
-	gameState.gamedict = sj_load("jsondata/gamedict.json");
 
     // Starting the entity manager
     entity_manager_init(100);

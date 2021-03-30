@@ -18,6 +18,22 @@
 							"Silicon": 7,
 							"Plastoil": 7
 						}
+					"buildings":
+						[
+							{
+								"name": "Factory",
+								"status": 1,
+								"input":
+								{
+									"uranium": 1
+								},
+								
+								"output":
+								{
+									"plastoil": 100
+								}
+							}
+						]
 				},
 				{
 					"name": "System1 II",

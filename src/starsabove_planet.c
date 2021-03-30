@@ -2,6 +2,31 @@
 
 #include "starsabove_planet.h"
 
+void planet_fromJson_buildings(SJson* planetjson, Planet* planet)
+{
+    int i;
+
+    SJson* buildings = sj_object_get_value(planetjson, "buildings");
+
+    if (buildings) 
+    { 
+        planet->num_buildings = sj_array_get_count(buildings);
+
+        planet->buildings = malloc(num_ingame_buildables() * sizeof(Buildable));
+
+        for (i = 0; i < planet->num_buildings; i++)
+        {
+            planet->buildings[i] = *buildable_fromJson(sj_array_get_nth(buildings, i));
+
+            slog(" - %s", planet->buildings[i].name);
+        }
+
+    }
+
+    else { planet->buildings = NULL; planet->num_buildings = 0; }
+
+}
+
 Planet* planet_fromJson(SJson* planetjson) {
 
     float* temp;
@@ -11,11 +36,15 @@ Planet* planet_fromJson(SJson* planetjson) {
         resources_fromJson(sj_object_get_value(planetjson, "resources"))
 	);
 
+    //Load buildings
+    planet_fromJson_buildings(planetjson, planet);
+
+    //Load resources
     temp = resources_fromJson(sj_object_get_value(planetjson, "resources"));
 
-    planet->resources_mining = malloc(6 * sizeof(float));
+    planet->resources_mining = malloc(numresources * sizeof(float));
 
-    for (int i = 0; i < 6; i++)
+    for (int i = 0; i < numresources; i++)
     {
         planet->resources_mining[i] = temp[i];
     }
@@ -28,21 +57,81 @@ Planet* planet_fromJson(SJson* planetjson) {
 
 SJson* planet_toJson(Planet* planet)
 {
+    int i;
+
 	SJson* planet_json = sj_object_new();
+    SJson* buildings = sj_object_new();
 
 	sj_object_insert(planet_json, "name", sj_new_str(planet->name));
 
     sj_object_insert(planet_json, "resources", resources_toJson(planet->resources_mining));
 
+    for (i = 0; i < planet->num_buildings; i++)
+    { 
+        sj_array_append(buildings, sj_new_str(planet->buildings[i].name));
+    }
+
+    if (buildings) { sj_object_insert(planet_json, "buildings", buildings); }
+
     return planet_json;
+}
+
+//Create the planet's menu state
+UI_Element* planet_menustate_buildingsbutton(Planet* planet, Menu_State* planet_menustate, char* system_name)
+{
+    UI_Element* buildings_button;
+
+    //Create buildings button
+    buildings_button = textbox_init
+    (
+        vector2d(10, 10),
+        vector2d(200, 50),
+        "Buildings",
+        font_load("resources/fonts/futur.ttf", 12)
+    );
+
+    buildings_button->signal = new_gameevent(
+        system_name,
+        planet->name,
+        "GETBUILDINGS",
+        NULL,
+        0,
+        NULL, //resources_menustate_init(planet->resources_mining, planet_menustate, resource_button_name),
+        0
+    );
+
+    return buildings_button;
+}
+
+UI_Element* planet_menustate_constructionbutton(Planet* planet, Menu_State* planet_menustate, char* system_name)
+{
+    UI_Element* construction_button;
+
+    //Create construction button
+    construction_button = textbox_init
+    (
+        vector2d(10, 10),
+        vector2d(200, 50),
+        "Construction",
+        font_load("resources/fonts/futur.ttf", 12)
+    );
+
+    construction_button->signal = new_gameevent(
+        system_name,
+        planet->name,
+        "CONSTRUCTION",
+        NULL,
+        0,
+        NULL, //resources_menustate_init(planet->resources_mining, planet_menustate, resource_button_name),
+        0
+    );
+
+    return construction_button;
 }
 
 Menu_State* planet_menustate_init(Planet* planet, Menu_State* system_menustate, char* system_name, Bool playerOwned)
 {
     Menu_State* planet_menustate;
-
-    UI_Element* buildings_button;
-    UI_Element* construction_button;
 
     UI_Element* resources_button;
     char resource_button_name[128];
@@ -107,54 +196,18 @@ Menu_State* planet_menustate_init(Planet* planet, Menu_State* system_menustate, 
 
     if (playerOwned)
     {
-        //Create buildings button
-        buildings_button = textbox_init
-        (
-            vector2d(10, 10),
-            vector2d(200, 50),
-            "Buildings",
-            font_load("resources/fonts/futur.ttf", 12)
-        );
-
-        buildings_button->signal = new_gameevent(
-            system_name,
-            planet->name,
-            "GETBUILDINGS",
-            NULL,
-            0,
-            NULL, //resources_menustate_init(planet->resources_mining, planet_menustate, resource_button_name),
-            0
-        );
 
         menu_addTo
         (
             planet_menustate->current_menu,
-            buildings_button
+            planet_menustate_buildingsbutton(planet, planet_menustate, system_name)
         );
 
-        //Create construction button
-        construction_button = textbox_init
-        (
-            vector2d(10, 10),
-            vector2d(200, 50),
-            "Construction",
-            font_load("resources/fonts/futur.ttf", 12)
-        );
-
-        construction_button->signal = new_gameevent(
-            system_name,
-            planet->name,
-            "CONSTRUCTION",
-            NULL,
-            0,
-            NULL, //resources_menustate_init(planet->resources_mining, planet_menustate, resource_button_name),
-            0
-        );
 
         menu_addTo
         (
             planet_menustate->current_menu,
-            construction_button
+            planet_menustate_constructionbutton(planet, planet_menustate, system_name)
         );
     }
 

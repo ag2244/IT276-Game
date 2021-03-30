@@ -16,6 +16,7 @@
 #include "starsabove_entity.h"
 #include "starsabove_system.h"
 #include "starsabove_nation.h"
+#include "starsabove_buildable.h"
 
 #include "starsabove_ui_base.h"
 #include "starsabove_ui_textbox.h"
@@ -35,13 +36,15 @@ typedef struct GameState_s
 	Bool _hasevent;
 	Game_Event frame_event;
 
-	SJson* gamedict;
-
 } GameState;
 
 /**
+* @brief Load a game dictionary from a filename
+*/
+void load_gamerule(char* filename);
+
+/**
 * @brief Load a game from a filename
-* @return NULL on error
 */
 void load_game(char* filename);
 
