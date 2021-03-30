@@ -84,7 +84,10 @@ Buildable* buildable_fromJson(SJson* buildable_json)
 
 	strcpy(name, sj_get_string_value(sj_object_get_value(buildable_json, "name")));
 
-	sj_get_integer_value(sj_object_get_value(buildable_json, "status"), status); slog("%i", status);
+	if (sj_object_get_value(buildable_json, "status"))
+	{
+		sj_get_integer_value(sj_object_get_value(buildable_json, "status"), status); slog("%i", status);
+	}
 
 	return buildable_new(
 		status,

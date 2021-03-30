@@ -10,7 +10,7 @@
 
 #include "starsabove_ui_textbox.h"
 
-const int numresources; //Number of resources there are
+static const int numresources = 6; //Number of resources there are
 
 enum resources
 {

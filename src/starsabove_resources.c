@@ -1,7 +1,5 @@
 #include "starsabove_resources.h"
 
-float num_resources = 6;
-
 char resource_names[6][128] =
 {
 	"Food",
@@ -41,14 +39,20 @@ float* resources_fromJson(SJson* resources_json)
 
 SJson* resources_toJson(float* resources)
 {
+	int i;
 	SJson* resources_json = sj_object_new(); 
 
-	sj_object_insert(resources_json, "food", sj_new_float(resources[RES_FOOD]));
+	/*sj_object_insert(resources_json, "food", sj_new_float(resources[RES_FOOD]));
 	sj_object_insert(resources_json, "iron", sj_new_float(resources[RES_IRON]));
 	sj_object_insert(resources_json, "uranium", sj_new_float(resources[RES_URANIUM]));
 	sj_object_insert(resources_json, "gold", sj_new_float(resources[RES_GOLD]));
 	sj_object_insert(resources_json, "silicon", sj_new_float(resources[RES_SILICON]));
-	sj_object_insert(resources_json, "plastoil", sj_new_float(resources[RES_PLASTOIL]));
+	sj_object_insert(resources_json, "plastoil", sj_new_float(resources[RES_PLASTOIL]));*/
+
+	for (i = 0; i < numresources; i++)
+	{
+		sj_object_insert(resources_json, resource_names[i], sj_new_float(resources[i]));
+	}
 
 	return resources_json;
 }
@@ -77,7 +81,7 @@ Menu_State* resources_menustate_init(float* resources, Menu_State* previous_menu
 		5
 	);
 
-	for (i = 0; i < num_resources; i++)
+	for (i = 0; i < numresources; i++)
 	{
 
 		sprintf(textbox_name, "%s: %.3f", resource_names + i, resources[i]);
@@ -106,7 +110,7 @@ Menu_State* resources_menustate_init(float* resources, Menu_State* previous_menu
 
 float* resourcelist_new(float food, float iron, float uranium, float gold, float silicon, float plastoil)
 {
-	float* resources = malloc(num_resources * sizeof(float));
+	float* resources = malloc(numresources * sizeof(float));
 
 	resources[RES_FOOD] = food;
 	resources[RES_IRON] = iron;
@@ -122,9 +126,9 @@ float* resourcelist_add(float* arr0, float* arr1)
 {
 	int i;
 
-	float* sum = malloc(num_resources * sizeof(float));
+	float* sum = malloc(numresources * sizeof(float));
 
-	for (i = 0; i < num_resources; i++)
+	for (i = 0; i < numresources; i++)
 	{
 		sum[i] = arr0[i] + arr1[i];
 	}
@@ -136,9 +140,9 @@ float* resourcelist_subtract(float* arr0, float* arr1)
 {
 	int i;
 
-	float* difference = malloc(num_resources * sizeof(float));
+	float* difference = malloc(numresources * sizeof(float));
 
-	for (i = 0; i < num_resources; i++)
+	for (i = 0; i < numresources; i++)
 	{
 		difference[i] = arr0[i] - arr1[i];
 	}

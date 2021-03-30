@@ -18,7 +18,7 @@ void planet_fromJson_buildings(SJson* planetjson, Planet* planet)
         {
             planet->buildings[i] = *buildable_fromJson(sj_array_get_nth(buildings, i));
 
-            slog(" - %s", planet->buildings[i].name);
+            slog(" - %i", planet->buildings[i].status);
         }
 
     }
