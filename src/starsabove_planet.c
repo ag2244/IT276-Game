@@ -17,8 +17,6 @@ void planet_fromJson_buildings(SJson* planetjson, Planet* planet)
         for (i = 0; i < planet->num_buildings; i++)
         {
             planet->buildings[i] = *buildable_fromJson(sj_array_get_nth(buildings, i));
-
-            slog(" - %i", planet->buildings[i].status);
         }
 
     }
@@ -60,7 +58,7 @@ SJson* planet_toJson(Planet* planet)
     int i;
 
 	SJson* planet_json = sj_object_new();
-    SJson* buildings = sj_object_new();
+    SJson* buildings = sj_array_new();
 
 	sj_object_insert(planet_json, "name", sj_new_str(planet->name));
 
@@ -68,10 +66,10 @@ SJson* planet_toJson(Planet* planet)
 
     for (i = 0; i < planet->num_buildings; i++)
     { 
-        sj_array_append(buildings, sj_new_str(planet->buildings[i].name));
+        sj_array_append(buildings, buildable_toJson(&planet->buildings[i]));
     }
 
-    if (buildings) { sj_object_insert(planet_json, "buildings", buildings); }
+    if (planet->num_buildings) { sj_object_insert(planet_json, "buildings", buildings); }
 
     return planet_json;
 }

@@ -80,13 +80,14 @@ int num_ingame_buildables() { if (&buildabledict) { return buildabledict.num_bui
 Buildable* buildable_fromJson(SJson* buildable_json)
 {
 	char name[128];
-	int status = 0;
+	int* status = -1;
 
 	strcpy(name, sj_get_string_value(sj_object_get_value(buildable_json, "name")));
 
 	if (sj_object_get_value(buildable_json, "status"))
 	{
-		sj_get_integer_value(sj_object_get_value(buildable_json, "status"), status); slog("%i", status);
+		sj_echo(sj_object_get_value(buildable_json, "status"));
+		sj_get_integer_value(sj_object_get_value(buildable_json, "status"), &status);
 	}
 
 	return buildable_new(
