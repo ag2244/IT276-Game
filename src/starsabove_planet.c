@@ -77,7 +77,60 @@ SJson* planet_toJson(Planet* planet)
 //Create the planet's menu state
 UI_Element* planet_menustate_buildingsbutton(Planet* planet, Menu_State* planet_menustate, char* system_name)
 {
+    int i;
+
     UI_Element* buildings_button;
+    UI_Element* building_option;
+
+    Menu_State* buildings_menu = NULL;
+
+    char buildings_menu_title[128] = "";
+
+    sprintf(buildings_menu_title, "%s Buildings", planet->name);
+
+    buildings_menu = menu_state_new(
+        planet_menustate,
+        textbox_init(
+            vector2d(10, 10),
+            vector2d(200, 50),
+            buildings_menu_title,
+            font_load("resources/fonts/futur.ttf", 14)
+        ),
+        NULL,
+        vector2d(10, 10),
+        0,
+        5
+    );
+    
+    for (i = 0; i < planet->num_buildings; i++) 
+    {
+
+        building_option = textbox_init
+        (
+            vector2d(10, 10),
+            vector2d(200, 50),
+            planet->buildings[i].name,
+            font_load("resources/fonts/futur.ttf", 12)
+        );
+
+        building_option->signal = new_gameevent
+        (
+            system_name,
+            planet->name,
+            "SHOW ALL BUILDINGS",
+            NULL,
+            NULL,
+            buildable_menustate_init(&planet->buildings[i], planet_menustate),
+            0
+        );
+
+        menu_addTo(
+            buildings_menu->current_menu,
+            building_option
+        );
+    }
+    
+    menu_state_hide(buildings_menu);
 
     //Create buildings button
     buildings_button = textbox_init
@@ -94,7 +147,7 @@ UI_Element* planet_menustate_buildingsbutton(Planet* planet, Menu_State* planet_
         "GETBUILDINGS",
         NULL,
         0,
-        NULL, //resources_menustate_init(planet->resources_mining, planet_menustate, resource_button_name),
+        buildings_menu,
         0
     );
 
@@ -202,11 +255,11 @@ Menu_State* planet_menustate_init(Planet* planet, Menu_State* system_menustate, 
         );
 
 
-        menu_addTo
+        /*menu_addTo
         (
             planet_menustate->current_menu,
             planet_menustate_constructionbutton(planet, planet_menustate, system_name)
-        );
+        );*/
     }
 
     //Hide the planet_menustate

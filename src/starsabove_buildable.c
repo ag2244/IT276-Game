@@ -155,3 +155,48 @@ void buildable_free(Buildable* buildable)
 	free(buildable->resource_input);
 	free(buildable->resource_output);
 }
+
+/* Create a menustate for a building */
+Menu_State* buildable_menustate_init(Buildable* buildable, Menu_State* previous_menustate)
+{
+	Menu_State* building_menustate = NULL;
+
+	UI_Element* inputresources_textbox;
+	UI_Element* outputresources_textbox;
+
+	if (!buildable)
+	{
+		slog("CANNOT MAKE MENUSTATE FOR NULL BUILDING"); return;
+	}
+
+	building_menustate = menu_state_new
+	(
+		previous_menustate,
+		textbox_init(
+			vector2d(10, 10),
+			vector2d(200, 50),
+			buildable->name,
+			font_load("resources/fonts/futur.ttf", 14)
+		),
+		NULL,
+		vector2d(10, 10),
+		0,
+		5
+	);
+
+	menu_addTo
+	(
+		building_menustate->current_menu,
+		textbox_init(
+			vector2d(10, 10),
+			vector2d(200, 50),
+			"TEST",
+			font_load("resources/fonts/futur.ttf", 14)
+		)
+	);
+
+	menu_state_hide(building_menustate);
+
+	return building_menustate;
+
+}

@@ -7,11 +7,20 @@
 
 #include "starsabove_resources.h"
 
-enum buildableStatus
+#include "starsabove_ui_textbox.h"
+
+static enum buildableStatus
 {
 	BLD_CONSTRUCTING = -1,
 	BLD_ACTIVE,
 	BLD_DISABLED
+};
+
+static char status_names[3][128] =
+{
+	"Constructing",
+	"Active",
+	"Disabled"
 };
 
 typedef struct
@@ -83,5 +92,12 @@ void buildable_free(Buildable* buildable);
 * @return NULL or a pointer to a new SJson object
 */
 SJson* buildable_toJson(Buildable* buildable);
+
+/*
+* @brief Initializes a buildable's Menu_State
+* @param buildable The buildable to initialize a Menu_State for
+* @param previous_menustate The previous (planet) menustate to this one
+*/
+Menu_State* buildable_menustate_init(Buildable* buildable, Menu_State* previous_menustate);
 
 #endif
