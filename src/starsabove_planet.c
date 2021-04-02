@@ -247,13 +247,14 @@ Menu_State* planet_menustate_init(Planet* planet, Menu_State* system_menustate, 
 
     if (playerOwned)
     {
-
-        menu_addTo
-        (
-            planet_menustate->current_menu,
-            planet_menustate_buildingsbutton(planet, planet_menustate, system_name)
-        );
-
+        if (planet->num_buildings > 0)
+        {
+            menu_addTo
+            (
+                planet_menustate->current_menu,
+                planet_menustate_buildingsbutton(planet, planet_menustate, system_name)
+            );
+        }
 
         /*menu_addTo
         (

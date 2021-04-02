@@ -6,12 +6,12 @@
 			"name": "Factory",
 			"input":
 			{
-				"uranium": 1
+				"Uranium": 1
 			},
 			
 			"output":
 			{
-				"plastoil": 100
+				"Plastoil": 100
 			}
 		},
 		
@@ -19,13 +19,13 @@
 			"name": "Electronics Factory",
 			"input":
 			{
-				"uranium": 1,
-				"plastoil": 1
+				"Uranium": 1,
+				"Plastoil": 1
 			},
 			
 			"output":
 			{
-				"silicon": 100
+				"Silicon": 100
 			}
 		},
 		
@@ -33,12 +33,12 @@
 			"name": "Iron Mine",
 			"input":
 			{
-				"food": 1
+				"Food": 1
 			},
 			
 			"output":
 			{
-				"iron": 100
+				"Iron": 100
 			}
 		}
 	]

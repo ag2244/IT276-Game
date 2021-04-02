@@ -25,12 +25,12 @@
 								"status": 1,
 								"input":
 								{
-									"uranium": 1
+									"Uranium": 1
 								},
 								
 								"output":
 								{
-									"plastoil": 100
+									"Plastoil": 100
 								}
 							}
 						]

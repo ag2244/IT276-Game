@@ -81,7 +81,6 @@ Buildable* buildable_fromJson(SJson* buildable_json)
 {
 	char name[128];
 	int* status = -1;
-
 	strcpy(name, sj_get_string_value(sj_object_get_value(buildable_json, "name")));
 
 	if (sj_object_get_value(buildable_json, "status"))
@@ -126,16 +125,16 @@ Buildable* buildable_new(int status, char* name, float* input, float* output)
 	buildable->resource_input = malloc(6 * sizeof(float));
 	buildable->resource_output = malloc(6 * sizeof(float));;
 
-	for (i = 0; i < 6; i++)
+	for (i = 0; i < numresources; i++)
 	{
 		buildable->resource_input[i] = 0;
 		buildable->resource_output[i] = 0;
 	}
 
-	for (i = 0; i < 6; i++)
+	for (i = 0; i < numresources; i++)
 	{
 		buildable->resource_input[i] = input[i];
-		buildable->resource_output[i] = input[i];
+		buildable->resource_output[i] = output[i];
 	}
 
 	return buildable;
@@ -164,11 +163,14 @@ Menu_State* buildable_menustate_init(Buildable* buildable, Menu_State* previous_
 	UI_Element* inputresources_textbox;
 	UI_Element* outputresources_textbox;
 
+	char temp_text[128];
+
 	if (!buildable)
 	{
 		slog("CANNOT MAKE MENUSTATE FOR NULL BUILDING"); return;
 	}
 
+	//Initialize Building Menu_State
 	building_menustate = menu_state_new
 	(
 		previous_menustate,
@@ -176,7 +178,7 @@ Menu_State* buildable_menustate_init(Buildable* buildable, Menu_State* previous_
 			vector2d(10, 10),
 			vector2d(200, 50),
 			buildable->name,
-			font_load("resources/fonts/futur.ttf", 14)
+			font_load("resources/fonts/futur.ttf", 16)
 		),
 		NULL,
 		vector2d(10, 10),
@@ -184,15 +186,72 @@ Menu_State* buildable_menustate_init(Buildable* buildable, Menu_State* previous_
 		5
 	);
 
+	//Add status textbox
+	sprintf(temp_text, "Status: %s", status_names[buildable->status]);
+
 	menu_addTo
 	(
 		building_menustate->current_menu,
 		textbox_init(
 			vector2d(10, 10),
 			vector2d(200, 50),
-			"TEST",
-			font_load("resources/fonts/futur.ttf", 14)
+			temp_text,
+			font_load("resources/fonts/futur.ttf", 12)
 		)
+	);
+
+	//Input Resources
+	inputresources_textbox = textbox_init
+	(
+		vector2d(10, 10),
+		vector2d(200, 50),
+		"Input Resources",
+		font_load("resources/fonts/futur.ttf", 12)
+	);
+
+	sprintf(temp_text, "%s Inputs", buildable->name);
+
+	inputresources_textbox->signal = new_gameevent(
+		NULL,
+		NULL,
+		"GETRESOURCES",
+		NULL,
+		0,
+		resources_menustate_init(buildable->resource_input, building_menustate, temp_text),
+		0
+	);
+
+	menu_addTo
+	(
+		building_menustate->current_menu,
+		inputresources_textbox
+	);
+
+	//Output Resources
+	outputresources_textbox = textbox_init
+	(
+		vector2d(10, 10),
+		vector2d(200, 50),
+		"Output Resources",
+		font_load("resources/fonts/futur.ttf", 12)
+	);
+
+	sprintf(temp_text, "%s Outputs", buildable->name);
+
+	outputresources_textbox->signal = new_gameevent(
+		NULL,
+		NULL,
+		"GETRESOURCES",
+		NULL,
+		0,
+		resources_menustate_init(buildable->resource_output, building_menustate, temp_text),
+		0
+	);
+
+	menu_addTo
+	(
+		building_menustate->current_menu,
+		outputresources_textbox
 	);
 
 	menu_state_hide(building_menustate);
