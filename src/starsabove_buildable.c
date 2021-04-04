@@ -1,6 +1,7 @@
 #include "simple_logger.h"
 
 #include "starsabove_buildable.h"
+#include "starsabove_planet.h"
 
 typedef struct
 {
@@ -34,6 +35,8 @@ void buildabledict_load(SJson* buildabledict_json)
 	for (i = 0; i < buildabledict.num_buildables; i++)
 	{
 		buildabledict.buildables[i] = *buildable_fromJson(sj_array_get_nth(buildabledict_json, i));
+
+		buildabledict.buildables[i].status = BLD_TEMPLATE;
 	}
 
 	atexit(buildabledict_free);
@@ -155,6 +158,7 @@ void buildable_free(Buildable* buildable)
 	free(buildable->resource_output);
 }
 
+
 /* Create a menustate for a building */
 Menu_State* buildable_menustate_init(Buildable* buildable, Menu_State* previous_menustate)
 {
@@ -231,7 +235,7 @@ Menu_State* buildable_menustate_init(Buildable* buildable, Menu_State* previous_
 	outputresources_textbox = textbox_init
 	(
 		vector2d(10, 10),
-		vector2d(200, 50),
+		vector2d(250, 50),
 		"Output Resources",
 		font_load("resources/fonts/futur.ttf", 12)
 	);
@@ -258,4 +262,150 @@ Menu_State* buildable_menustate_init(Buildable* buildable, Menu_State* previous_
 
 	return building_menustate;
 
+}
+
+Menu_State* buildable_construction_menustate_all(Menu_State* previous_menustate, Planet* planet, char* system_name)
+{
+	int i;
+	int j;
+	Bool hasbuildable;
+
+	Menu_State* construction_menu;
+	Menu_State* this_buildable_menu;
+
+	UI_Element* buildable_textbox;
+	UI_Element* info_textbox;
+	UI_Element* construct_textbox;
+
+	Buildable* this_buildable;
+
+	construction_menu = menu_state_new(
+		previous_menustate,
+		textbox_init(
+			vector2d(10, 10),
+			vector2d(200, 50),
+			"Construct a Building",
+			font_load("resources/fonts/futur.ttf", 16)
+		),
+		NULL,
+		vector2d(10, 10),
+		0,
+		5
+	);
+
+	for (i = 0; i < num_ingame_buildables(); i++)
+	{
+		this_buildable = &buildabledict.buildables[i];
+
+		//Check if the planet has this buildable
+		hasbuildable = 0;
+
+		for (j = 0; j < planet->num_buildings; j++)
+		{
+			if (strcmp(planet->buildings[j].name, this_buildable->name) == 0)
+			{
+				hasbuildable = 1;
+				break;
+			}
+		}
+
+		if (hasbuildable == 0)
+		{
+			/*Create the buildable textbox and menustate*/
+			buildable_textbox = textbox_init
+			(
+				vector2d(10, 10),
+				vector2d(200, 50),
+				this_buildable->name,
+				font_load("resources/fonts/futur.ttf", 12)
+			);
+
+			this_buildable_menu = menu_state_new
+			(
+				construction_menu,
+				textbox_init
+				(
+					vector2d(10, 10),
+					vector2d(200, 50),
+					this_buildable->name,
+					font_load("resources/fonts/futur.ttf", 16)
+				),
+				NULL,
+				vector2d(10, 10),
+				0,
+				5
+			);
+
+
+			/*Create the buildable's construct button*/
+
+			construct_textbox = textbox_init
+			(
+				vector2d(10, 10),
+				vector2d(200, 50),
+				"Construct Building",
+				font_load("resources/fonts/futur.ttf", 12)
+			);
+
+			construct_textbox->signal = new_gameevent
+			(
+				system_name,
+				planet->name,
+				"BUILDING_CONSTRUCT",
+				this_buildable->name,
+				0,
+				NULL,
+				0
+			);
+
+			menu_addTo(this_buildable_menu->current_menu, construct_textbox);
+
+
+			/*Create the buildable's info textbox*/
+			
+			info_textbox = textbox_init
+			(
+				vector2d(10, 10),
+				vector2d(200, 50),
+				"Building Information",
+				font_load("resources/fonts/futur.ttf", 12)
+			);
+
+			info_textbox->signal = new_gameevent
+			(
+				system_name,
+				planet->name,
+				"BUILDING_INFO",
+				this_buildable->name,
+				0,
+				buildable_menustate_init(this_buildable, this_buildable_menu),
+				0
+			);
+
+			menu_addTo(this_buildable_menu->current_menu, info_textbox);
+
+
+			/*Wrapping things up, connect to the buildable main menu*/
+
+			menu_state_hide(this_buildable_menu);
+
+			buildable_textbox->signal = new_gameevent
+			(
+				system_name,
+				planet->name,
+				"BUILDINGCONSTRUCTION_INFO",
+				this_buildable->name,
+				0,
+				this_buildable_menu,
+				0
+			);
+
+			menu_addTo(construction_menu->current_menu, buildable_textbox);
+		}
+
+	}
+
+	menu_state_hide(construction_menu);
+
+	return construction_menu;
 }

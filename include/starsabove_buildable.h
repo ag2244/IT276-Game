@@ -9,15 +9,19 @@
 
 #include "starsabove_ui_textbox.h"
 
+typedef struct Planet;
+
 static enum buildableStatus
 {
-	BLD_CONSTRUCTING = -1,
+	BLD_TEMPLATE,
+	BLD_CONSTRUCTING,
 	BLD_ACTIVE,
 	BLD_DISABLED
 };
 
-static char status_names[3][128] =
+static char status_names[4][128] =
 {
+	"Unbuilt",
 	"Constructing",
 	"Active",
 	"Disabled"
@@ -47,6 +51,7 @@ void buildabledict_free();
 
 /*
 * @brief Get the number of buildables in the game (buildabledict.num_buildables)
+* @return An int representing the number of buildables
 */
 int num_ingame_buildables();
 
@@ -99,5 +104,14 @@ SJson* buildable_toJson(Buildable* buildable);
 * @param previous_menustate The previous (planet) menustate to this one
 */
 Menu_State* buildable_menustate_init(Buildable* buildable, Menu_State* previous_menustate);
+
+/*
+* @brief Get a Menu_State for all buildings, including construction commands.
+* @param previous_menustate The previous (planet) menustate to this one
+* @param planet The planet to construct a buildable for
+* @param system_name The name of the system the planet belongs to
+* @return NULL on error, or a pointer to a new Menu_State
+*/
+Menu_State* buildable_construction_menustate_all(Menu_State* previous_menustate, struct Planet* planet, char* system_name);
 
 #endif

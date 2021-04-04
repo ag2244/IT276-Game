@@ -156,10 +156,21 @@ UI_Element* planet_menustate_buildingsbutton(Planet* planet, Menu_State* planet_
 
 UI_Element* planet_menustate_constructionbutton(Planet* planet, Menu_State* planet_menustate, char* system_name)
 {
-    UI_Element* construction_button;
+    int i;
 
-    //Create construction button
-    construction_button = textbox_init
+    UI_Element* construct_button;
+    UI_Element* construction_option;
+
+    Menu_State* construction_menu = NULL;
+
+    char buildings_menu_title[128] = "";
+
+    construction_menu = buildable_construction_menustate_all(planet_menustate, planet, system_name);
+
+    menu_state_hide(construction_menu);
+
+    //Create buildings button
+    construct_button = textbox_init
     (
         vector2d(10, 10),
         vector2d(200, 50),
@@ -167,17 +178,17 @@ UI_Element* planet_menustate_constructionbutton(Planet* planet, Menu_State* plan
         font_load("resources/fonts/futur.ttf", 12)
     );
 
-    construction_button->signal = new_gameevent(
+    construct_button->signal = new_gameevent(
         system_name,
         planet->name,
-        "CONSTRUCTION",
+        "CONSTRUCTIONMENU",
         NULL,
         0,
-        NULL, //resources_menustate_init(planet->resources_mining, planet_menustate, resource_button_name),
+        construction_menu,
         0
     );
 
-    return construction_button;
+    return construct_button;
 }
 
 Menu_State* planet_menustate_init(Planet* planet, Menu_State* system_menustate, char* system_name, Bool playerOwned)
@@ -256,11 +267,11 @@ Menu_State* planet_menustate_init(Planet* planet, Menu_State* system_menustate, 
             );
         }
 
-        /*menu_addTo
+        menu_addTo
         (
             planet_menustate->current_menu,
             planet_menustate_constructionbutton(planet, planet_menustate, system_name)
-        );*/
+        );
     }
 
     //Hide the planet_menustate
