@@ -320,7 +320,6 @@ void event_relay()
 
 			if (gameState.frame_event._menubase == 1)
 			{
-				slog("ASD");
 				menu_state_free(menu_state_root(gameState.player_menustate));
 			}
 

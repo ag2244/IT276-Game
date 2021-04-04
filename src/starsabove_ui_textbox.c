@@ -130,7 +130,7 @@ Menu_State* menu_state_back(Menu_State* menu)
 {
     Menu_State* prev = menu->previous_menu_state;
 
-    menu->previous_menu_state = NULL;
+    //menu->previous_menu_state = NULL;
     menu_state_hide(menu);
 
     if (prev == NULL)
