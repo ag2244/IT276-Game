@@ -30,6 +30,8 @@ static char status_names[4][128] =
 typedef struct
 {
 
+	//Bool _inuse;
+
 	int status;
 
 	char name[128];
@@ -84,7 +86,7 @@ Buildable* buildable_new(int status, char* name, float* input, float* output);
 * @param dst Destination
 * @param src Source
 */
-void buildable_copy(Buildable* dst, Buildable* src);
+Buildable* buildable_copy(Buildable* src);
 
 /*
 * @brief Free a buildable object

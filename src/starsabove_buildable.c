@@ -140,16 +140,14 @@ Buildable* buildable_new(int status, char* name, float* input, float* output)
 		buildable->resource_output[i] = output[i];
 	}
 
+	//buildable->_inuse = 0;
+
 	return buildable;
 }
 
-void buildable_copy(Buildable* dst, Buildable* src)
+Buildable* buildable_copy(Buildable* src)
 {
-	slog(src->name);
-
-	dst = buildable_new(src->status, src->name, src->resource_input, src->resource_output);
-
-	slog(dst->name);
+	return buildable_new(src->status, src->name, src->resource_input, src->resource_output);
 }
 
 void buildable_free(Buildable* buildable)
@@ -351,7 +349,7 @@ Menu_State* buildable_construction_menustate_all(Menu_State* previous_menustate,
 			(
 				system_name,
 				planet->name,
-				"BUILDING_CONSTRUCT",
+				"CONSTRUCT_BUILDING",
 				this_buildable->name,
 				0,
 				NULL,

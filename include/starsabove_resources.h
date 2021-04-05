@@ -61,6 +61,12 @@ float* resourcelist_add(float* arr0, float* arr1);
 * @brief Subtract one resource array from another
 * @return NULL on error, or an array of floats, with keys being the enum values in resources
 */
-float* resourcelist_add(float* arr0, float* arr1);
+float* resourcelist_subtract(float* arr0, float* arr1);
+
+/*
+* @brief Copy one resource array to another new one
+* @return NULL on error, or an array of floats, with keys being the enum values in resources
+*/
+float* resourcelist_copy(float* arr);
 
 #endif

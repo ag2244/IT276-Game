@@ -6,8 +6,9 @@ Game_Event* new_gameevent(char* target_id, char* sub_target_id, char* command, c
 
 	Game_Event* game_event = malloc(sizeof(Game_Event));
 
-	if (command != NULL) strcpy(game_event->command, command);
 	if (target_id != NULL) strcpy(game_event->target_id, target_id);
+	if (sub_target_id != NULL) strcpy(game_event->sub_target_id, sub_target_id);
+	if (command != NULL) strcpy(game_event->command, command);
 	if (descriptor != NULL) strcpy(game_event->descriptor, descriptor);
 
 	game_event->qty = qty;
@@ -23,7 +24,8 @@ Game_Event* new_gameevent(char* target_id, char* sub_target_id, char* command, c
 void gameevent_copy(Game_Event* dst, Game_Event* src)
 {
 	if (src->command != NULL) { strcpy(dst->command, src->command); }
-	if (src->target_id != NULL) { strcpy(dst->target_id, src->target_id); }
+	if (src->sub_target_id != NULL) { strcpy(dst->target_id, src->target_id); }
+	if (src->target_id != NULL) { strcpy(dst->sub_target_id, src->sub_target_id); }
 	if (src->descriptor != NULL) { strcpy(dst->descriptor, src->descriptor); }
 	dst->qty = src->qty;
 

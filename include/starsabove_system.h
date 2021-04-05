@@ -70,4 +70,12 @@ Entity* system_spawn(char* name, Vector2D position, Nation* owner, System_Data* 
 */
 int system_num_planets(Entity* system);
 
+/*
+* @brief Get a planet in the system by name
+* @param system The system to get the planet for
+* @param planet_name The planet to get
+* @return NULL on error or the planet with the specified name
+*/
+Planet* system_planet_byname(Entity* system, char* planet_name);
+
 #endif

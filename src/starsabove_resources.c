@@ -149,3 +149,17 @@ float* resourcelist_subtract(float* arr0, float* arr1)
 
 	return difference;
 }
+
+float* resourcelist_copy(float* arr)
+{
+	int i;
+
+	float* copy = malloc(numresources * sizeof(float));
+
+	for (i = 0; i < numresources; i++)
+	{
+		copy[i] = arr[i];
+	}
+
+	return copy;
+}

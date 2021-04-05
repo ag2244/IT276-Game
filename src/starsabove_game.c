@@ -104,6 +104,8 @@ void save_game(char* savefile_name)
 
 	sj_save(savefile, filename);
 
+	slog("Saved Game Successfully!");
+
 }
 
 UI_Element* newturnbutton_init()
@@ -524,6 +526,9 @@ void processKeys(Uint8 keys, Uint32 mouse) {
 
 void starsabove_exit()
 {
+
+	save_game("TESTOUT.json");
+
 	gameState.currentClickable_entity = NULL;
 	gameState.currentClickable_ui = NULL;
 

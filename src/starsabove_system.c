@@ -6,6 +6,8 @@
 
 #include "starsabove_resources.h"
 
+#include "starsabove_buildable.h"
+
 //Use for pointing to the data for an individual system
 System_Data* system_data;
 
@@ -126,7 +128,10 @@ int load_systems(SJson* game_json)
             }
         }
 
-        else nation = "";
+        else 
+        {
+            nation = NULL;
+        }
 
         system_spawn(name, pos, nation, systemdata);
 
@@ -258,6 +263,7 @@ SJson* system_toJson(Entity* self)
     SJson* array_planets;
 
     char* owner;
+    char nullstr[128] = "null";
 
     system_data = (struct System_Data*)self->data;
 
@@ -277,9 +283,9 @@ SJson* system_toJson(Entity* self)
 
     //Insert the name of the system's owner
 
-    if (self->owner != NULL) owner = sj_new_str(self->owner->name);
+    if (self->owner != NULL) { owner = sj_new_str(self->owner->name); }
 
-    else owner = sj_new_str("null");
+    else { owner = sj_new_str(nullstr); }
 
     sj_object_insert(systemJson, "owner", owner);
 
@@ -305,7 +311,16 @@ SJson* system_toJson(Entity* self)
 
 void system_reciever(Entity* self, Game_Event* event)
 {
+
+    Buildable* bldng = NULL;
+
     //slog(event->target_id);
+    if (strcmp(event->command, "CONSTRUCT_BUILDING") == 0)
+    {
+        bldng = buildable_copy(buildable_get_byname(event->descriptor));
+
+        planet_construct(system_planet_byname(self, event->sub_target_id), bldng);
+    }
 }
 
 Entity* system_spawn(char* name, Vector2D position, Nation* owner, System_Data* systemdata)
@@ -361,6 +376,7 @@ Entity* system_spawn(char* name, Vector2D position, Nation* owner, System_Data* 
     return ent;
 }
 
+//Get number of planets
 int system_data_numPlanets(System_Data* systemdata)
 {
     return systemdata->num_planets;
@@ -369,6 +385,29 @@ int system_data_numPlanets(System_Data* systemdata)
 int system_num_planets(Entity* system)
 {
     return system_data_numPlanets((struct System_Data *) system->data);
+}
+
+
+//Get a specific planet
+Planet* system_data_planet_byname(System_Data* systemdata, char* planet_name)
+{
+    int i;
+
+    for (i = 0; i < systemdata->num_planets; i++)
+    {
+        if (strcmp(systemdata->planets[i].name, planet_name) == 0)
+        {
+            return &systemdata->planets[i];
+        }
+    }
+
+    slog("Planet not found!");
+    return NULL;
+}
+
+Planet* system_planet_byname(Entity* system, char* planet_name)
+{
+    return system_data_planet_byname((struct System_Data*)system->data, planet_name);
 }
 
 /*Bottom*/

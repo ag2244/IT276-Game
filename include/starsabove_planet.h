@@ -39,6 +39,13 @@ Planet* planet_fromJson(SJson* planetjson);
 SJson* planet_toJson(Planet* planet);
 
 /*
+* @brief Construct a building on a planet
+* @param planet The planet to construct it on
+* @param building The building to construct
+*/
+void planet_construct(Planet* planet, Buildable* building);
+
+/*
 * @brief save a planet to a json
 * @param planet The planet to save
 * @return NULL on error or a pointer to the saved json object

@@ -8,20 +8,26 @@ void planet_fromJson_buildings(SJson* planetjson, Planet* planet)
 
     SJson* buildings = sj_object_get_value(planetjson, "buildings");
 
+    planet->buildings = malloc(num_ingame_buildables() * sizeof(Buildable));
+
+    /*for (i = 0; i < num_ingame_buildables(); i++)
+    {
+        planet->buildings[i]._inuse = 0;
+    }*/
+
     if (buildings) 
     { 
         planet->num_buildings = sj_array_get_count(buildings);
 
-        planet->buildings = malloc(num_ingame_buildables() * sizeof(Buildable));
-
         for (i = 0; i < planet->num_buildings; i++)
         {
             planet->buildings[i] = *buildable_fromJson(sj_array_get_nth(buildings, i));
+            //planet->buildings[i]._inuse = 1;
         }
 
     }
 
-    else { planet->buildings = NULL; planet->num_buildings = 0; }
+    else { planet->num_buildings = 0; }
 
 }
 
@@ -72,6 +78,19 @@ SJson* planet_toJson(Planet* planet)
     if (planet->num_buildings) { sj_object_insert(planet_json, "buildings", buildings); }
 
     return planet_json;
+}
+
+
+//Planet governance
+void planet_construct(Planet* planet, Buildable* building)
+{
+    int i;
+
+    Buildable* tempbuildable = building;
+
+    planet->buildings[planet->num_buildings] = *building;
+
+    planet->num_buildings++;
 }
 
 //Create the planet's menu state
