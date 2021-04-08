@@ -12,6 +12,11 @@
 			"output":
 			{
 				"Plastoil": 100
+			},
+			
+			"costs":
+			{
+				"Gold": 1
 			}
 		},
 		
@@ -26,6 +31,11 @@
 			"output":
 			{
 				"Silicon": 100
+			},
+			
+			"costs":
+			{
+				"Gold": 1
 			}
 		},
 		
@@ -39,6 +49,11 @@
 			"output":
 			{
 				"Iron": 100
+			},
+			
+			"costs":
+			{
+				"Gold": 1
 			}
 		}
 	]

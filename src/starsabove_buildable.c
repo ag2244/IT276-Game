@@ -96,7 +96,8 @@ Buildable* buildable_fromJson(SJson* buildable_json)
 		status,
 		name,
 		resources_fromJson(sj_object_get_value(buildable_json, "input")),
-		resources_fromJson(sj_object_get_value(buildable_json, "output"))
+		resources_fromJson(sj_object_get_value(buildable_json, "output")),
+		resources_fromJson(sj_object_get_value(buildable_json, "costs"))
 	);
 
 }
@@ -116,7 +117,7 @@ SJson* buildable_toJson(Buildable* buildable)
 
 
 /* Create, copy and destroy buildables */
-Buildable* buildable_new(int status, char* name, float* input, float* output)
+Buildable* buildable_new(int status, char* name, float* input, float* output, float* costs)
 {
 	int i;
 
@@ -125,19 +126,22 @@ Buildable* buildable_new(int status, char* name, float* input, float* output)
 	buildable->status = status;
 	strcpy(buildable->name, name);
 
-	buildable->resource_input = malloc(6 * sizeof(float));
-	buildable->resource_output = malloc(6 * sizeof(float));;
+	buildable->resource_input = malloc(numresources * sizeof(float));
+	buildable->resource_output = malloc(numresources * sizeof(float));
+	buildable->costs = malloc(numresources * sizeof(float));
 
 	for (i = 0; i < numresources; i++)
 	{
 		buildable->resource_input[i] = 0;
 		buildable->resource_output[i] = 0;
+		buildable->costs[i] = 0;
 	}
 
 	for (i = 0; i < numresources; i++)
 	{
 		buildable->resource_input[i] = input[i];
 		buildable->resource_output[i] = output[i];
+		buildable->costs[i] = costs[i];
 	}
 
 	//buildable->_inuse = 0;
@@ -147,7 +151,7 @@ Buildable* buildable_new(int status, char* name, float* input, float* output)
 
 Buildable* buildable_copy(Buildable* src)
 {
-	return buildable_new(src->status, src->name, src->resource_input, src->resource_output);
+	return buildable_new(src->status, src->name, src->resource_input, src->resource_output, src->costs);
 }
 
 void buildable_free(Buildable* buildable)
@@ -271,9 +275,13 @@ Menu_State* buildable_construction_menustate_all(Menu_State* previous_menustate,
 	Menu_State* construction_menu;
 	Menu_State* this_buildable_menu;
 
+	Menu_State* temp_menustate;
+
 	UI_Element* buildable_textbox;
 	UI_Element* info_textbox;
 	UI_Element* construct_textbox;
+
+	UI_Element* temp_uielem;
 
 	Buildable* this_buildable;
 
@@ -381,6 +389,36 @@ Menu_State* buildable_construction_menustate_all(Menu_State* previous_menustate,
 			);
 
 			menu_addTo(this_buildable_menu->current_menu, info_textbox);
+
+			//Add the "cost" info to the buildable menustate.
+			temp_menustate = this_buildable_menu;
+
+			temp_uielem = textbox_init
+			(
+				vector2d(10, 10),
+				vector2d(200, 50),
+				"Resource Costs",
+				font_load("resources/fonts/futur.ttf", 12)
+			);
+
+			temp_uielem->signal = new_gameevent
+			(
+				system_name,
+				planet->name,
+				"BUILDING_COSTS",
+				this_buildable->name,
+				0,
+				resources_menustate_init(this_buildable->costs, this_buildable_menu, "Resource Costs"),
+				0
+			);
+
+			menu_addTo
+			(
+				temp_menustate->current_menu,
+				temp_uielem
+			);
+
+			menu_state_hide(temp_uielem->signal->menu_state);
 
 
 			/*Wrapping things up, connect to the buildable main menu*/

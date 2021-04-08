@@ -362,7 +362,10 @@ void event_relay()
 		{
 
 			//If the player nation owns this entity
-			if (strcmp(entity_manager->entity_list[i].owner->name, gameState.playerNation) == 0) { entity_playerowned = 1; }
+			if (entity_manager->entity_list[i].owner)
+			{
+				if (strcmp(entity_manager->entity_list[i].owner->name, gameState.playerNation) == 0) { entity_playerowned = 1; }
+			}
 
 			if (entity_manager->entity_list[i].reciever)
 			{
@@ -451,7 +454,10 @@ void onClick_left()
 	
 	if (gameState.currentClickable_entity) {
 
-		if (strcmp(gameState.currentClickable_entity->owner->name, gameState.playerNation) == 0) { ownedbyplayer = 1; }
+		if (gameState.currentClickable_entity->owner)
+		{
+			if (strcmp(gameState.currentClickable_entity->owner->name, gameState.playerNation) == 0) { ownedbyplayer = 1; }
+		}
 
 		entity_onClick(gameState.currentClickable_entity, &gameState.frame_event, ownedbyplayer);
 
