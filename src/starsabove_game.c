@@ -9,6 +9,13 @@ Bool KEYS[322];
 
 //Font* font;
 
+void test_uinumber()
+{
+	int i; int j = 0;
+	UI_Manager* uimgr = ui_manager_get();
+	for (i = 0; i < uimgr->max_elements; i++) { if (uimgr->element_list[i]._inuse) j++; } slog("%i", j);
+}
+
 void load_gamerule(char* filename)
 {
 	SJson* gamerule;

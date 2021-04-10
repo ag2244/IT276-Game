@@ -64,6 +64,12 @@ float* resourcelist_add(float* arr0, float* arr1);
 float* resourcelist_subtract(float* arr0, float* arr1);
 
 /*
+* @brief Compare one resource array to another.
+* @return NULL on error, or a 0 if arr0 contains a negative, or 1 if it doesnt
+*/
+Bool resourcelist_checkdeficit(float* arr);
+
+/*
 * @brief Copy one resource array to another new one
 * @return NULL on error, or an array of floats, with keys being the enum values in resources
 */

@@ -312,14 +312,22 @@ SJson* system_toJson(Entity* self)
 void system_reciever(Entity* self, Game_Event* event)
 {
 
-    Buildable* bldng = NULL;
-
-    //slog(event->target_id);
+    //If the command is to construct a building
     if (strcmp(event->command, "CONSTRUCT_BUILDING") == 0)
     {
-        bldng = buildable_copy(buildable_get_byname(event->descriptor));
+        Buildable* bldng = buildable_copy(buildable_get_byname(event->descriptor));
 
-        planet_construct(system_planet_byname(self, event->sub_target_id), bldng);
+        float* new_resources = resourcelist_subtract(self->owner->resources_total, bldng->costs);
+
+        if (resourcelist_checkdeficit(new_resources))
+        {
+            planet_construct(system_planet_byname(self, event->sub_target_id), bldng);
+
+            free(self->owner->resources_total);
+            self->owner->resources_total = new_resources;
+        }
+
+        else { slog("CANNOT AFFORD THIS BUILDING"); }
     }
 }
 

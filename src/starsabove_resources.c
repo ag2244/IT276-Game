@@ -150,6 +150,22 @@ float* resourcelist_subtract(float* arr0, float* arr1)
 	return difference;
 }
 
+Bool resourcelist_checkdeficit(float* arr)
+{
+	int i;
+
+	for (i = 0; i < numresources; i++)
+	{
+		if (arr[i] < 0)
+		{
+			return 0;
+		}
+	}
+
+	return 1;
+
+}
+
 float* resourcelist_copy(float* arr)
 {
 	int i;
