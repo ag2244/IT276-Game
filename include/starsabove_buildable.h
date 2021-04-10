@@ -35,10 +35,13 @@ typedef struct
 	int status;
 
 	char name[128];
+
 	float* resource_input;
 	float* resource_output;
 
 	float* costs;
+
+	int buildtime;
 
 } Buildable;
 
@@ -81,7 +84,7 @@ Buildable* buildable_fromJson(SJson* buildable_json);
 * @param output The output resources
 * @return NULL, or a pointer to a buildable
 */
-Buildable* buildable_new(int status, char* name, float* input, float* output, float* costs);
+Buildable* buildable_new(int status, char* name, float* input, float* output, float* costs, int buildtime);
 
 /*
 * @brief Copy a buildable into another

@@ -4,6 +4,7 @@
 	[
 		{
 			"name": "Factory",
+			"buildtime": 3,
 			"input":
 			{
 				"Uranium": 1
@@ -22,6 +23,7 @@
 		
 		{
 			"name": "Electronics Factory",
+			"buildtime": 3,
 			"input":
 			{
 				"Uranium": 1,
@@ -41,6 +43,7 @@
 		
 		{
 			"name": "Iron Mine",
+			"buildtime": 3,
 			"input":
 			{
 				"Food": 1

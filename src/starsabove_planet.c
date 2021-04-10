@@ -29,6 +29,8 @@ void planet_fromJson_buildings(SJson* planetjson, Planet* planet)
 
     else { planet->num_buildings = 0; }
 
+    slog("FIX ITERATING OVER NULL BUILDINGS");
+
 }
 
 Planet* planet_fromJson(SJson* planetjson) {
@@ -87,6 +89,8 @@ void planet_construct(Planet* planet, Buildable* building)
     int i;
 
     Buildable* tempbuildable = building;
+
+    tempbuildable->status = (int)BLD_CONSTRUCTING;
 
     planet->buildings[planet->num_buildings] = *building;
 

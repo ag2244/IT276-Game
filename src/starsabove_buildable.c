@@ -84,20 +84,23 @@ Buildable* buildable_fromJson(SJson* buildable_json)
 {
 	char name[128];
 	int* status = -1;
+	int* buildtime = 0;
 	strcpy(name, sj_get_string_value(sj_object_get_value(buildable_json, "name")));
 
 	if (sj_object_get_value(buildable_json, "status"))
 	{
-		sj_echo(sj_object_get_value(buildable_json, "status"));
 		sj_get_integer_value(sj_object_get_value(buildable_json, "status"), &status);
 	}
+
+	sj_get_integer_value(sj_object_get_value(buildable_json, "buildtime"), &buildtime);
 
 	return buildable_new(
 		status,
 		name,
 		resources_fromJson(sj_object_get_value(buildable_json, "input")),
 		resources_fromJson(sj_object_get_value(buildable_json, "output")),
-		resources_fromJson(sj_object_get_value(buildable_json, "costs"))
+		resources_fromJson(sj_object_get_value(buildable_json, "costs")),
+		buildtime
 	);
 
 }
@@ -115,15 +118,16 @@ SJson* buildable_toJson(Buildable* buildable)
 	return buildable_json;
 }
 
-
 /* Create, copy and destroy buildables */
-Buildable* buildable_new(int status, char* name, float* input, float* output, float* costs)
+Buildable* buildable_new(int status, char* name, float* input, float* output, float* costs, int buildtime)
 {
 	int i;
 
 	Buildable* buildable = malloc(sizeof(Buildable));
 
 	buildable->status = status;
+	buildable->buildtime = buildtime;
+
 	strcpy(buildable->name, name);
 
 	buildable->resource_input = malloc(numresources * sizeof(float));
@@ -151,7 +155,7 @@ Buildable* buildable_new(int status, char* name, float* input, float* output, fl
 
 Buildable* buildable_copy(Buildable* src)
 {
-	return buildable_new(src->status, src->name, src->resource_input, src->resource_output, src->costs);
+	return buildable_new(src->status, src->name, src->resource_input, src->resource_output, src->costs, src->buildtime);
 }
 
 void buildable_free(Buildable* buildable)
@@ -193,7 +197,15 @@ Menu_State* buildable_menustate_init(Buildable* buildable, Menu_State* previous_
 	);
 
 	//Add status textbox
-	sprintf(temp_text, "Status: %s", status_names[buildable->status]);
+	if (buildable->buildtime != 0)
+	{
+		sprintf(temp_text, "Status: %s | %i turns", status_names[buildable->status], buildable->buildtime);
+	}
+	
+	else 
+	{
+		sprintf(temp_text, "Status: %s", status_names[buildable->status]);
+	}
 
 	menu_addTo
 	(
