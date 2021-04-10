@@ -302,7 +302,7 @@ void newTurn()
 
 	gameState.turn++;
 
-	menu_state_free(gameState.player_menustate);
+	menu_state_free(menu_state_root(gameState.player_menustate));
 
 	gameState.player_menustate = nation_menustate(get_nation_by_name(gameState.playerNation), 1);
 
