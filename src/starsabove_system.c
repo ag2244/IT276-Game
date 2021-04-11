@@ -173,6 +173,8 @@ float* system_onNewTurn(Entity* self)
     for (i = 0; i < system_data->num_planets; i++)
     {
         resources_total = resourcelist_add(resources_total, systemdata->planets[i].resources_mining);
+
+        systemdata->planets[i].onNewTurn(&systemdata->planets[i]);
     }
 
     return resources_total;

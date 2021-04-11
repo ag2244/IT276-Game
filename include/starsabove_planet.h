@@ -13,7 +13,7 @@
 #include "starsabove_ui_textbox.h"
 #include "starsabove_resources.h"
 
-typedef struct
+typedef struct Planet_s
 {
 	char name[128];
 	
@@ -21,6 +21,8 @@ typedef struct
 
 	int num_buildings;
 	Buildable* buildings;
+
+	void (*onNewTurn) (struct Planet_s* planet);
 
 } Planet;
 
@@ -51,6 +53,12 @@ void planet_construct(Planet* planet, Buildable* building);
 * @return NULL on error or a pointer to the saved json object
 */
 Menu_State* planet_menustate_init(Planet* planet, Menu_State* system_menustate, char* system_name, Bool playerOwned);
+
+/*
+* @brief Perform new turn operations for a planet
+* @param planet The planet to do new turn operations for
+*/
+void planet_onNewTurn(Planet* planet);
 
 /*
 * @brief creates a new planet

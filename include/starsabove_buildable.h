@@ -27,7 +27,7 @@ static char status_names[4][128] =
 	"Disabled"
 };
 
-typedef struct
+typedef struct Buildable_s
 {
 
 	//Bool _inuse;
@@ -42,6 +42,8 @@ typedef struct
 	float* costs;
 
 	int buildtime;
+
+	void (*onNewTurn) (struct Buildable* self);
 
 } Buildable;
 
@@ -120,5 +122,11 @@ Menu_State* buildable_menustate_init(Buildable* buildable, Menu_State* previous_
 * @return NULL on error, or a pointer to a new Menu_State
 */
 Menu_State* buildable_construction_menustate_all(Menu_State* previous_menustate, struct Planet* planet, char* system_name);
+
+/*
+* @brief Do new turn processes for a buildable
+* @param self The buildable to do new turn things for
+*/
+void buildable_onNewTurn(Buildable* self);
 
 #endif

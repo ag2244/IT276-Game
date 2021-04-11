@@ -115,6 +115,12 @@ SJson* buildable_toJson(Buildable* buildable)
 	sj_object_insert(buildable_json, "input", resources_toJson(buildable->resource_input));
 	sj_object_insert(buildable_json, "output", resources_toJson(buildable->resource_output));
 
+	sj_object_insert(buildable_json, "status", sj_new_int(buildable->status));
+
+	if (buildable->buildtime > 0) {
+		sj_object_insert(buildable_json, "buildtime", sj_new_int(buildable->buildtime));
+	}
+
 	return buildable_json;
 }
 
@@ -147,6 +153,8 @@ Buildable* buildable_new(int status, char* name, float* input, float* output, fl
 		buildable->resource_output[i] = output[i];
 		buildable->costs[i] = costs[i];
 	}
+
+	buildable->onNewTurn = buildable_onNewTurn;
 
 	//buildable->_inuse = 0;
 
@@ -456,4 +464,14 @@ Menu_State* buildable_construction_menustate_all(Menu_State* previous_menustate,
 	menu_state_hide(construction_menu);
 
 	return construction_menu;
+}
+
+void buildable_onNewTurn(Buildable* self)
+{
+	self->buildtime = max(0, self->buildtime - 1);
+
+	if ((self->buildtime == 0) && (self->status == (int)BLD_CONSTRUCTING))
+	{
+		self->status = (int)BLD_ACTIVE;
+	}
 }

@@ -35,8 +35,6 @@ void planet_fromJson_buildings(SJson* planetjson, Planet* planet)
 
 Planet* planet_fromJson(SJson* planetjson) {
 
-    float* temp;
-
 	Planet* planet = planet_new(
 		sj_get_string_value(sj_object_get_value(planetjson, "name")), 
         resources_fromJson(sj_object_get_value(planetjson, "resources"))
@@ -44,18 +42,6 @@ Planet* planet_fromJson(SJson* planetjson) {
 
     //Load buildings
     planet_fromJson_buildings(planetjson, planet);
-
-    //Load resources
-    temp = resources_fromJson(sj_object_get_value(planetjson, "resources"));
-
-    planet->resources_mining = malloc(numresources * sizeof(float));
-
-    for (int i = 0; i < numresources; i++)
-    {
-        planet->resources_mining[i] = temp[i];
-    }
-
-    free(temp);
 
 	return planet;
 
@@ -303,11 +289,25 @@ Menu_State* planet_menustate_init(Planet* planet, Menu_State* system_menustate, 
     return planet_menustate;
 }
 
+void planet_onNewTurn(Planet* planet)
+{
+    int i;
+
+    for (i = 0; i < planet->num_buildings; i++)
+    {
+        planet->buildings[i].onNewTurn(&planet->buildings[i]);
+    }
+}
+
 Planet* planet_new(char* name, float* resource_arr)
 {
 	Planet* planet = malloc(sizeof(Planet));
 
 	strcpy(planet->name, name);
+
+    planet->resources_mining = resourcelist_copy(resource_arr);
+
+    planet->onNewTurn = planet_onNewTurn;
 
 	return planet;
 }
