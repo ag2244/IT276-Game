@@ -22,7 +22,7 @@ typedef struct Planet_s
 	int num_buildings;
 	Buildable* buildings;
 
-	void (*onNewTurn) (struct Planet_s* planet);
+	float* (*onNewTurn) (struct Planet_s* planet);
 
 } Planet;
 
@@ -58,7 +58,7 @@ Menu_State* planet_menustate_init(Planet* planet, Menu_State* system_menustate, 
 * @brief Perform new turn operations for a planet
 * @param planet The planet to do new turn operations for
 */
-void planet_onNewTurn(Planet* planet);
+float* planet_onNewTurn(Planet* planet);
 
 /*
 * @brief creates a new planet

@@ -289,14 +289,19 @@ Menu_State* planet_menustate_init(Planet* planet, Menu_State* system_menustate, 
     return planet_menustate;
 }
 
-void planet_onNewTurn(Planet* planet)
+float* planet_onNewTurn(Planet* planet)
 {
     int i;
+    float* resources_totalchange;
+
+    resources_totalchange = resourcelist_copy(planet->resources_mining);
 
     for (i = 0; i < planet->num_buildings; i++)
     {
-        planet->buildings[i].onNewTurn(&planet->buildings[i]);
+        resources_totalchange = resourcelist_add(resources_totalchange, planet->buildings[i].onNewTurn(&planet->buildings[i]));
     }
+
+    return resources_totalchange;
 }
 
 Planet* planet_new(char* name, float* resource_arr)

@@ -43,7 +43,7 @@ typedef struct Buildable_s
 
 	int buildtime;
 
-	void (*onNewTurn) (struct Buildable* self);
+	float* (*onNewTurn) (struct Buildable* self);
 
 } Buildable;
 
@@ -127,6 +127,6 @@ Menu_State* buildable_construction_menustate_all(Menu_State* previous_menustate,
 * @brief Do new turn processes for a buildable
 * @param self The buildable to do new turn things for
 */
-void buildable_onNewTurn(Buildable* self);
+float* buildable_onNewTurn(Buildable* self);
 
 #endif

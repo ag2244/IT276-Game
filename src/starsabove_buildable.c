@@ -118,7 +118,9 @@ SJson* buildable_toJson(Buildable* buildable)
 	sj_object_insert(buildable_json, "status", sj_new_int(buildable->status));
 
 	if (buildable->buildtime > 0) {
+
 		sj_object_insert(buildable_json, "buildtime", sj_new_int(buildable->buildtime));
+
 	}
 
 	return buildable_json;
@@ -466,7 +468,7 @@ Menu_State* buildable_construction_menustate_all(Menu_State* previous_menustate,
 	return construction_menu;
 }
 
-void buildable_onNewTurn(Buildable* self)
+float* buildable_onNewTurn(Buildable* self)
 {
 	self->buildtime = max(0, self->buildtime - 1);
 
@@ -474,4 +476,6 @@ void buildable_onNewTurn(Buildable* self)
 	{
 		self->status = (int)BLD_ACTIVE;
 	}
+
+	return resourcelist_subtract(self->resource_output, self->resource_input);
 }
