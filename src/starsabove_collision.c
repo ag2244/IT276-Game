@@ -32,6 +32,38 @@ void box_free(Collider_Box* box)
 	free(box);
 }
 
+Bool box_detectCollision(Collider_Box* box0, Collider_Box* box1)
+{
+
+	if ((box0 == NULL) || (box1 == NULL))
+	{
+		slog("Cannot detect collision with a NULL box"); return 0;
+	}
+
+	if (
+		(box0->position.x + box0->size.x > box1->position.x) &&		//R0 bottom right x > R1 top left x
+		(box0->position.x < box1->position.x + box1->size.x) &&		//R0 top left x > R1 bottom right x
+		(box0->position.y + box0->size.y > box1->position.y) &&		//R0 bottom right y > R1 top left y
+		(box0->position.y < box1->position.y + box1->size.y)		//R0 top left y > R1 bottom right y
+		)
+	{
+		return 1;
+	}
+
+	else if (
+		(box0->position.x + box0->size.x > box1->position.x) &&		//R1 bottom right x > R0 top left x
+		(box0->position.x < box1->position.x + box1->size.x) &&		//R1 top left x > R0 bottom right x
+		(box0->position.y + box0->size.y > box1->position.y) &&		//R1 bottom right y > R0 top left y
+		(box0->position.y < box1->position.y + box1->size.y)		//R1 top left y > R0 bottom right y
+		)
+	{
+		return 1;
+	}
+
+	return 0;
+
+}
+
 void circle_free(Collider_Circle* circle) {
 
 	if (circle == NULL)

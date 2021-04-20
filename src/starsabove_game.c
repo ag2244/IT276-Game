@@ -3,11 +3,10 @@
 #include "simple_logger.h"
 
 #include "starsabove_game.h"
+#include "starsabove_camera.h"
 
 GameState gameState = { 0 };
 Bool KEYS[322];
-
-//Font* font;
 
 void test_uinumber()
 {
@@ -239,6 +238,8 @@ void prepare_game()
 	test();
 
 	gameState.player_menustate = nation_menustate(get_nation_by_name(gameState.playerNation), 1);
+
+	camera_init(vector2d(0, 0), vector2d(1500, 900), vector2d(40, 40));
 
 	atexit(starsabove_exit);
 
@@ -484,7 +485,8 @@ void processKeys(Uint8 keys, Uint32 mouse) {
 
 	SDL_Event frame_event;
 
-	Menu_State* temp;
+	float x_mvmt = 0;
+	float y_mvmt = 0;
 
 	//Process the frame event itself
 	while (SDL_PollEvent(&frame_event)) {
@@ -520,6 +522,28 @@ void processKeys(Uint8 keys, Uint32 mouse) {
 				}
 			}
 
+			//IF W, A, S and/or D
+
+			else if (frame_event.key.keysym.sym == SDLK_w)
+			{
+				y_mvmt = -1;
+			}
+
+			else if (frame_event.key.keysym.sym == SDLK_a)
+			{
+				x_mvmt = -1;
+			}
+
+			else if (frame_event.key.keysym.sym == SDLK_s)
+			{
+				y_mvmt = 1;
+			}
+
+			else if (frame_event.key.keysym.sym == SDLK_d)
+			{
+				x_mvmt = 1;
+			}
+
 			else
 				KEYS[frame_event.key.keysym.sym] = 1;
 
@@ -534,6 +558,8 @@ void processKeys(Uint8 keys, Uint32 mouse) {
 			break;
 		}
 	}
+
+	camera_move(vector2d(x_mvmt, y_mvmt));
 
 }
 

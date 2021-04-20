@@ -114,6 +114,9 @@
     <ClInclude Include="..\..\include\starsabove_buildable.h">
       <Filter>Header Files\Stars Above</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\starsabove_camera.h">
+      <Filter>Header Files\Stars Above\UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\gfc\simple_logger\src\simple_logger.c">
@@ -217,6 +220,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\starsabove_buildable.c">
       <Filter>Source Files\Stars Above</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\starsabove_camera.c">
+      <Filter>Source Files\Stars Above\UI</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

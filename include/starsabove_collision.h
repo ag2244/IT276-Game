@@ -73,6 +73,14 @@ void circle_free(Collider_Circle* circle);
 */
 Bool box_clickable(Collider_Box* self, Vector2D otherPosition);
 
+/*
+* @brief Checks if two boxes are colliding
+* @param box0 The first box
+* @param box1 The second box
+* @return 1 if colliding, 0 if not
+*/
+Bool box_detectCollision(Collider_Box* box0, Collider_Box* box1);
+
 /**
 * @brief checks if a point is within the specified circle
 * @param self the circle to check with

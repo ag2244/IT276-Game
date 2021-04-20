@@ -7,6 +7,8 @@
 
 #include "starsabove_entity.h"
 
+#include "starsabove_camera.h"
+
 EntityManager entity_manager = { 0 };
 
 void entity_manager_init(Uint32 max_entities)
@@ -225,15 +227,22 @@ void entity_draw(Entity* ent)
 
 		if (ent->sprite == NULL) return; //Nothing to draw
 
-		gf2d_sprite_draw(
-			ent->sprite,
-			ent->position,
-			NULL,
-			NULL,
-			&ent->rotation,
-			NULL,
-			NULL,
-			(Uint32)ent->frame );
+		if (camera_inview(ent->collider_circle, ent->collider_box) != 0)
+		{
+			Vector2D view_pos;
+
+			vector2d_sub(view_pos, ent->position, camera_get()->pos);
+
+			gf2d_sprite_draw(
+				ent->sprite,
+				view_pos,
+				NULL,
+				NULL,
+				&ent->rotation,
+				NULL,
+				NULL,
+				(Uint32)ent->frame);
+		}
 
 	}
 }
