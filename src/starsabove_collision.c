@@ -84,9 +84,9 @@ Bool box_clickable(Collider_Box* box, Vector2D otherPosition) {
 	}
 
 	if (
-		(otherPosition.x > box->position.x) && (otherPosition.y > box->position.y) 
+		(otherPosition.x > box->viewpos.x) && (otherPosition.y > box->viewpos.y)
 		&& 
-		(otherPosition.x < box->position.x + box->size.x) && (otherPosition.y < box->position.y + box->size.y))
+		(otherPosition.x < box->viewpos.x + box->size.x) && (otherPosition.y < box->viewpos.y + box->size.y))
 	{
 		return 1;
 	}
@@ -115,5 +115,5 @@ Bool circle_clickable(Collider_Circle* circle, Vector2D otherPosition)
 		return NULL;
 	}
 	
-	return vector2d_distance_between_less_than(circle->position, otherPosition, circle->radius);
+	return vector2d_distance_between_less_than(circle->viewpos, otherPosition, circle->radius);
 }

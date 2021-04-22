@@ -208,6 +208,21 @@
 					"Silicon": 0,
 					"Plastoil": 0
 				}
+			"fleets":
+			[
+				{
+					"name": "Nation1 Fleet1",
+					"location": "System I"
+					"ships":
+					{
+						"Light": 2,
+						"Cruiser": 2,
+						"Battleship": 2,
+						"Carrier": 2,
+						"Engineering": 2
+					}
+				}
+			]
 		}
 	]
 }

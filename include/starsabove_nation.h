@@ -13,7 +13,7 @@ typedef struct Nation_s
 
 	float* resources_total;
 
-	SJson* (*toJson)(struct Nation* self);
+	SJson* (*toJson)(struct Nation_s* self);
 
 } Nation;
 
@@ -95,7 +95,7 @@ struct Menu_State* nation_menustate(Nation* nation, Bool _isPlayer);
 * @param self the nation to convert
 * @return NULL on error, or a pointer to a json object
 */
-SJson* nation_toJson(struct Nation* self);
+SJson* nation_toJson(Nation* self);
 
 /**
 * @brief Turn all the nations in nation_list to a json object

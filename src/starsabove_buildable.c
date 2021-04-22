@@ -39,6 +39,8 @@ void buildabledict_load(SJson* buildabledict_json)
 		buildabledict.buildables[i].status = BLD_TEMPLATE;
 	}
 
+	slog("LOADED ALL BUILDABLE TEMPLATES");
+
 	atexit(buildabledict_free);
 
 }
@@ -77,7 +79,6 @@ Buildable* buildable_get_byname(char* key)
 }
 
 int num_ingame_buildables() { if (&buildabledict) { return buildabledict.num_buildables; } return 0;  }
-
 
 /* Load and save buildables */
 Buildable* buildable_fromJson(SJson* buildable_json)
@@ -209,12 +210,12 @@ Menu_State* buildable_menustate_init(Buildable* buildable, Menu_State* previous_
 	//Add status textbox
 	if (buildable->buildtime != 0)
 	{
-		sprintf(temp_text, "Status: %s | %i turns", status_names[buildable->status], buildable->buildtime);
+		sprintf(temp_text, "Status: %s | %i turns", buildable_status_names[buildable->status], buildable->buildtime);
 	}
 	
 	else 
 	{
-		sprintf(temp_text, "Status: %s", status_names[buildable->status]);
+		sprintf(temp_text, "Status: %s", buildable_status_names[buildable->status]);
 	}
 
 	menu_addTo

@@ -19,7 +19,7 @@ static enum buildableStatus
 	BLD_DISABLED
 };
 
-static char status_names[4][128] =
+static char buildable_status_names[4][128] =
 {
 	"Unbuilt",
 	"Constructing",

@@ -5,6 +5,12 @@
 #include "starsabove_game.h"
 #include "starsabove_camera.h"
 
+#include "starsabove_system.h"
+#include "starsabove_nation.h"
+
+#include "starsabove_buildable.h"
+#include "starsabove_fleet.h"
+
 GameState gameState = { 0 };
 Bool KEYS[322];
 
@@ -32,6 +38,8 @@ void load_gamerule(char* filename)
 	}
 
 	buildabledict_load(sj_object_get_value(gamerule, "Buildables"));
+
+	shiptemplates_load(sj_object_get_value(gamerule, "Ships"));
 
 	sj_free(gamerule);
 }

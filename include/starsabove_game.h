@@ -14,9 +14,6 @@
 #include "starsabove_game_resources.h"
 
 #include "starsabove_entity.h"
-#include "starsabove_system.h"
-#include "starsabove_nation.h"
-#include "starsabove_buildable.h"
 
 #include "starsabove_ui_base.h"
 #include "starsabove_ui_textbox.h"

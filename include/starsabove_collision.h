@@ -20,6 +20,7 @@ typedef struct Collider_Box_s
 {
 
 	Vector2D position;
+	Vector2D viewpos;
 
 	Vector2D size; //Bottom right corner of the box
 	
@@ -38,6 +39,7 @@ typedef struct Collider_Circle_s
 	float radius;
 
 	Vector2D position;
+	Vector2D viewpos;
 
 	Bool(*is_clickable)(struct Collider_Circle_s self, Vector2D otherPosition);
 

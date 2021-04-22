@@ -61,4 +61,48 @@
 		}
 	]
 
+	"Ships":
+	[
+		{
+			"type": "Light",
+			"maintenance":
+			{
+				"Iron": 1,
+				"Food": 1
+			}
+		},
+		{
+			"type": "Cruiser",
+			"maintenance":
+			{
+				"Iron": 1,
+				"Food": 1
+			}
+		},
+		{
+			"type": "Battleship",
+			"maintenance":
+			{
+				"Iron": 1,
+				"Food": 1
+			}
+		},
+		{
+			"type": "Carrier",
+			"maintenance":
+			{
+				"Iron": 1,
+				"Food": 1
+			}
+		},
+		{
+			"type": "Engineering",
+			"maintenance":
+			{
+				"Iron": 1,
+				"Food": 1
+			}
+		}
+	]
+
 }

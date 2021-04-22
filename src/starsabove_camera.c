@@ -89,8 +89,6 @@ void camera_move(Vector2D movement_dir)
 	Vector2D temp;
 	Vector2D movement;
 
-	if ((movement_dir.x != 0) || (movement_dir.y != 0)) { slog("%f, %f", movement_dir.x, movement_dir.y); }
-
 	vector2d_copy(movement, game_cam.movementspeed);
 
 	movement.x = movement.x * movement_dir.x;

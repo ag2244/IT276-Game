@@ -242,6 +242,19 @@ void entity_draw(Entity* ent)
 				NULL,
 				NULL,
 				(Uint32)ent->frame);
+
+			if (ent->collider_circle)
+			{
+				vector2d_copy(ent->collider_circle->viewpos, view_pos);
+
+				ent->collider_circle->viewpos.x += ent->sprite->frame_w / 2;
+				ent->collider_circle->viewpos.y += ent->sprite->frame_h / 2;
+			}
+
+			else if (ent->collider_box)
+			{
+				vector2d_copy(ent->collider_box->viewpos, view_pos);
+			}
 		}
 
 	}
