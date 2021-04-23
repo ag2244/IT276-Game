@@ -62,6 +62,8 @@ typedef struct
 
 } Fleet;
 
+Fleet* fleet_fromlist(Fleet* fleet, int i);
+
 void shiptemplates_load(SJson* ships_json);
 
 void shiptemplates_free();

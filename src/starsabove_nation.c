@@ -244,6 +244,74 @@ void nations_list_onNewTurn()
 	}
 }
 
+void nation_menustate_add_fleets(Nation* self, Menu_State* nation_menustate)
+{
+	char i;
+
+	UI_Element* all_fleets_textbox;
+	UI_Element* single_fleet_textbox;
+
+	Menu_State* all_fleets_menustate;
+	Menu_State* single_fleet_menustate;
+
+	Fleet* thisfleet;
+
+	all_fleets_textbox = textbox_init
+	(
+		vector2d(10, 10),
+		vector2d(250, 50),
+		"National Fleets",
+		font_load("resources/fonts/futur.ttf", 12)
+	);
+
+	all_fleets_menustate = menu_state_new(
+		nation_menustate,
+		textbox_init
+		(
+			vector2d(10, 10),
+			vector2d(250, 50),
+			"National Fleets",
+			font_load("resources/fonts/futur.ttf", 16)
+		),
+		NULL,
+		vector2d(10, 10),
+		0,
+		5
+	);
+
+	all_fleets_textbox->signal = new_gameevent(
+		self->name,
+		"FLEETS",
+		"SHOW_ALL",
+		NULL,
+		NULL,
+		all_fleets_menustate,
+		0
+		);
+
+	for (i = 0; i < max_national_fleets; i++)
+	{
+		thisfleet = fleet_fromlist(self->fleets, i);
+
+		if (!thisfleet) { continue; }
+
+		single_fleet_textbox = textbox_init
+		(
+			vector2d(10, 10),
+			vector2d(250, 50),
+			thisfleet->name,
+			font_load("resources/fonts/futur.ttf", 12)
+		);
+
+		menu_addTo(all_fleets_menustate->current_menu, single_fleet_textbox);
+	}
+
+	menu_state_hide(all_fleets_menustate);
+
+	menu_addTo(nation_menustate->current_menu, all_fleets_textbox);
+
+}
+
 struct Menu_State* nation_menustate(Nation* nation, Bool _isPlayer)
 {
 
@@ -307,6 +375,8 @@ struct Menu_State* nation_menustate(Nation* nation, Bool _isPlayer)
 		nation_menustate->current_menu,
 		resources_textbox
 	);
+
+	nation_menustate_add_fleets(nation, nation_menustate);
 
 	menu_state_show(nation_menustate);
 

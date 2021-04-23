@@ -13,6 +13,17 @@ Ship_Dict;
 
 Ship_Dict shipdict = { 0 };
 
+
+Fleet* fleet_fromlist(Fleet* fleet, int i)
+{
+	if (fleet[i]._inuse)
+	{
+		return &fleet[i];
+	}
+
+	return NULL;
+}
+
 void shiptemplates_load(SJson* ships_json)
 {
 

@@ -59,6 +59,8 @@ void ui_update(UI_Element* self)
 {
 	if (!self) return;
 
+	vector2d_copy(self->collider_box->viewpos, self->collider_box->position);
+
 	//Animate
 	self->frame += self->frameRate;
 	if (self->frame >= self->frameCount) self->frame = 0;
@@ -239,7 +241,7 @@ void ui_draw(UI_Element* element)
 
 Bool ui_clickable(UI_Element* element, float mX, float mY) {
 
-	//slog("UI_Element_clickable");
+	//slog("(%f, %f) <--> (%f, %f)", element->position.x, element->position.y, element->collider_box->position.x, element->collider_box->position.y);
 
 	Vector2D pos = vector2d(mX, mY);
 
@@ -252,6 +254,7 @@ Bool ui_clickable(UI_Element* element, float mX, float mY) {
 	{
 		if (box_clickable(element->collider_box, pos) != 0)
 		{
+			
 			return 1;
 		}
 	}

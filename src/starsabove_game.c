@@ -459,6 +459,8 @@ void onClick_left()
 
 		if (gameState.frame_event._sent == 1)
 		{
+			//slog("\n%s\n%s\n%s\n%s", gameState.frame_event.target_id, gameState.frame_event.sub_target_id, gameState.frame_event.command, gameState.frame_event.descriptor);
+
 			event_relay();
 
 			gameState.frame_event._sent = 0;
