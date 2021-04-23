@@ -5,6 +5,8 @@
 
 typedef struct Menu_State;
 
+typedef struct Fleet;
+
 typedef struct Nation_s
 {
 	Bool _inuse;
@@ -12,6 +14,8 @@ typedef struct Nation_s
 	char name[256];
 
 	float* resources_total;
+
+	struct Fleet* fleets;
 
 	SJson* (*toJson)(struct Nation_s* self);
 
@@ -63,14 +67,14 @@ void nations_list_free();
 * @param max_systems the maximum number of systems it can own
 * @return NULL on error, or a pointer to a json object
 */
-Nation* nation_new(Nation* nation, char* name, float* resources);
+Nation* nation_new(Nation* nation, char* name, float* resources, struct Fleet* fleets);
 
 /**
 * @brief Add a nation to the nations list
 * @param name the name of the nation
 * @return NULL on error, or a pointer to a json object
 */
-Nation* nation_add(char* name, float* resources);
+Nation* nation_add(char* name, float* resources, struct Fleet* fleets);
 
 /*
 * @brief Do new turn functions for a nation

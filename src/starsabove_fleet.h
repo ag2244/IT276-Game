@@ -10,14 +10,16 @@
 #include "starsabove_resources.h"
 #include "starsabove_ui_textbox.h"
 
+typedef struct Nation;
+
 typedef struct Fleet;
 
-static const int num_Ship_types = 5;
-static const int max_Ships = 50;
+static const int max_ships = 30;
+static const int max_national_fleets = 100;
 
 typedef enum shipStatus
 {
-	SHIP_TEMPLATE,
+	SHIP_TEMPLATE = -1,
 	SHIP_CONSTRUCTING,
 	SHIP_ACTIVE,
 	SHIP_DISABLED
@@ -35,22 +37,28 @@ static char ship_status_names[4][128] =
 typedef struct
 {
 	char type[128];
-	shipStatus status;
+
+	int status;
+	int health;
 
 	float* maintenance;
 
 	struct Fleet* fleet;
 
+	Bool _inuse;
+
 } Ship;
 
-typedef struct Fleet_s
+typedef struct
 {
 
 	char name[128];
 
-	Ship* Ships;
+	Ship* ships;
 
-	Entity* location;
+	char location[128];
+
+	Bool _inuse;
 
 } Fleet;
 
@@ -64,11 +72,13 @@ Ship* ship_copy(Ship* src, Fleet* fleet);
 
 Ship* ship_fromJson(SJson* ship_json, Fleet* fleet);
 
-Ship* ship_init(char shiptype[128], float* costs, Fleet* fleet);
+Ship* ship_init(char shiptype[128], float* costs, int health, int status, Fleet* fleet);
 
 Fleet* fleet_fromjson(SJson* fleet_json);
 
-Fleet* fleet_init(char name[128]);
+Fleet* fleetlist_fromJson(SJson* fleets_json);
+
+Fleet* fleet_init(char name[128], Entity* location);
 
 Menu_State* fleet_menustate(Fleet* fleet);
 
@@ -79,5 +89,7 @@ SJson* ship_toJson(Ship* self);
 void fleet_free(Fleet* self);
 
 SJson* fleet_toJson(Fleet* self);
+
+SJson* fleetlist_toJson(Fleet* fleetlist);
 
 #endif

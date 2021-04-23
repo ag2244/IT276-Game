@@ -42,16 +42,13 @@ SJson* resources_toJson(float* resources)
 	int i;
 	SJson* resources_json = sj_object_new(); 
 
-	/*sj_object_insert(resources_json, "food", sj_new_float(resources[RES_FOOD]));
-	sj_object_insert(resources_json, "iron", sj_new_float(resources[RES_IRON]));
-	sj_object_insert(resources_json, "uranium", sj_new_float(resources[RES_URANIUM]));
-	sj_object_insert(resources_json, "gold", sj_new_float(resources[RES_GOLD]));
-	sj_object_insert(resources_json, "silicon", sj_new_float(resources[RES_SILICON]));
-	sj_object_insert(resources_json, "plastoil", sj_new_float(resources[RES_PLASTOIL]));*/
-
 	for (i = 0; i < numresources; i++)
 	{
-		sj_object_insert(resources_json, resource_names[i], sj_new_float(resources[i]));
+
+		if (resources[i] != 0) 
+		{
+			sj_object_insert(resources_json, resource_names[i], sj_new_float(resources[i]));
+		}
 	}
 
 	return resources_json;

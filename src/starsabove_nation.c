@@ -15,6 +15,8 @@
 #include "starsabove_entity.h"
 #include "starsabove_ui_textbox.h"
 
+#include "starsabove_fleet.h"
+
 Nation_List nation_list = { 0 };
 
 int load_nations(SJson* game_json)
@@ -57,7 +59,11 @@ int load_nations(SJson* game_json)
 
 		}
 
-		nation = nation_add(name, resources_fromJson(sj_object_get_value(currentNation, "resources")));
+		nation = nation_add(
+			name, 
+			resources_fromJson(sj_object_get_value(currentNation, "resources")), 
+			fleetlist_fromJson(sj_object_get_value(currentNation, "fleets"))
+		);
 
 		if (!nation)
 		{
@@ -146,7 +152,7 @@ void nations_list_free()
 	slog("Nations List freed");
 }
 
-Nation* nation_new(Nation* nation, char* name, float* resources)
+Nation* nation_new(Nation* nation, char* name, float* resources, Fleet* fleets)
 {
 
 	gfc_line_cpy(nation->name, name);
@@ -158,12 +164,14 @@ Nation* nation_new(Nation* nation, char* name, float* resources)
 		nation->resources_total[i] = resources[i];
 	}
 
+	nation->fleets = fleets;
+
 	nation->toJson = nation_toJson;
 
 	return nation;
 }
 
-Nation* nation_add(char* name, float* resources)
+Nation* nation_add(char* name, float* resources, Fleet* fleets)
 {
 	int i;
 
@@ -180,7 +188,7 @@ Nation* nation_add(char* name, float* resources)
 
 		nation_list.nations[i]._inuse = 1;
 
-		nation_new(&nation_list.nations[i], name, resources);
+		nation_new(&nation_list.nations[i], name, resources, fleets);
 
 		return &nation_list.nations[i];
 	}
@@ -307,12 +315,16 @@ struct Menu_State* nation_menustate(Nation* nation, Bool _isPlayer)
 
 SJson* nation_toJson(Nation* self)
 {
-	int i = 0;
+	int i;
+	SJson* fleetlist;
 	SJson* nation_json = sj_object_new();
 
 	sj_object_insert(nation_json, "name", sj_new_str(self->name));
 
 	sj_object_insert(nation_json, "resources", resources_toJson(self->resources_total));
+
+	fleetlist = fleetlist_toJson(self->fleets); 
+	if (sj_array_get_count(fleetlist) > 0) { sj_object_insert(nation_json, "fleets", fleetlist); }
 
 	return nation_json;
 }

@@ -211,16 +211,22 @@
 			"fleets":
 			[
 				{
-					"name": "Nation1 Fleet1",
-					"location": "System I"
+					"name": "Nation1 Fleet 1",
+					"location": "System1",
+					"status": 1,
 					"ships":
-					{
-						"Light": 2,
-						"Cruiser": 2,
-						"Battleship": 2,
-						"Carrier": 2,
-						"Engineering": 2
-					}
+					[
+						{
+							"type": "Light",
+							"health": 100,
+							"status": 1,
+							"maintenance":
+							{
+								"Iron": 1,
+								"Food": 1
+							}
+						}
+					]
 				}
 			]
 		}
