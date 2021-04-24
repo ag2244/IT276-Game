@@ -204,7 +204,7 @@ void nation_onNewTurn(Nation* nation)
 	EntityManager entitymgr = *entity_manager_get();
 	Entity* thisSystem;
 
-	float* resources = malloc(6 * sizeof(float));
+	float* resources = malloc(numresources * sizeof(float));
 
 	for (i = 0; i < 6; i++) { resources[i] = 0; }
 
@@ -252,7 +252,6 @@ void nation_menustate_add_fleets(Nation* self, Menu_State* nation_menustate)
 	UI_Element* single_fleet_textbox;
 
 	Menu_State* all_fleets_menustate;
-	Menu_State* single_fleet_menustate;
 
 	Fleet* thisfleet;
 
@@ -301,6 +300,16 @@ void nation_menustate_add_fleets(Nation* self, Menu_State* nation_menustate)
 			vector2d(250, 50),
 			thisfleet->name,
 			font_load("resources/fonts/futur.ttf", 12)
+		);
+
+		single_fleet_textbox->signal = new_gameevent(
+			self->name,
+			"FLEETS",
+			"SHOW_ALL",
+			NULL,
+			NULL,
+			fleet_menustate(thisfleet, all_fleets_menustate),
+			0
 		);
 
 		menu_addTo(all_fleets_menustate->current_menu, single_fleet_textbox);

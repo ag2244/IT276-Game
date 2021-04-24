@@ -132,7 +132,7 @@ UI_Element* newturnbutton_init()
 
 	if (!element)
 	{
-		slog("Failed to spawn a system");
+		slog("Failed to init new turn button");
 		return NULL;
 	}
 

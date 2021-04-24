@@ -26,11 +26,13 @@ typedef enum shipStatus
 } 
 shipStatus;
 
-static char ship_status_names[4][128] =
+static const int num_ship_statuses = 5;
+static char ship_status_names[5][128] =
 {
 	"Unbuilt",
 	"Constructing",
 	"Active",
+	"Moving",
 	"Disabled"
 };
 
@@ -53,6 +55,7 @@ typedef struct
 {
 
 	char name[128];
+	int status;
 
 	Ship* ships;
 
@@ -80,9 +83,13 @@ Fleet* fleet_fromjson(SJson* fleet_json);
 
 Fleet* fleetlist_fromJson(SJson* fleets_json);
 
-Fleet* fleet_init(char name[128], Entity* location);
+Fleet* fleet_init(char name[128], int status, char location[128]);
 
-Menu_State* fleet_menustate(Fleet* fleet);
+Menu_State* ships_menustate(Ship* ships, Menu_State* previous, Bool in_fleet);
+
+Menu_State* fleet_menustate(Fleet* fleet, Menu_State* previous);
+
+float* fleet_totalmaintenance(Fleet* fleet);
 
 void ship_free(Ship* self);
 

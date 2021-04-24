@@ -213,7 +213,7 @@
 				{
 					"name": "Nation1 Fleet 1",
 					"location": "System1",
-					"status": 1,
+					"status": 2,
 					"ships":
 					[
 						{

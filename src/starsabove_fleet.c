@@ -16,7 +16,7 @@ Ship_Dict shipdict = { 0 };
 
 Fleet* fleet_fromlist(Fleet* fleet, int i)
 {
-	if (fleet[i]._inuse)
+	if (fleet[i]._inuse == 1)
 	{
 		return &fleet[i];
 	}
@@ -134,11 +134,14 @@ Fleet* fleet_fromjson(SJson* fleet_json)
 	SJson* ships_json;
 
 	Fleet* fleet;
+	int* status;
 
 	if (!fleet_json)
 	{
 		slog("CANNOT LOAD FLEET FROM NULL JSON"); return NULL;
 	}
+
+	sj_get_integer_value(sj_object_get_value(fleet_json, "status"), &status);
 
 	ships_json = sj_object_get_value(fleet_json, "ships");
 
@@ -149,6 +152,7 @@ Fleet* fleet_fromjson(SJson* fleet_json)
 
 	fleet = fleet_init(
 		sj_get_string_value(sj_object_get_value(fleet_json, "name")),
+		status,
 		sj_get_string_value(sj_object_get_value(fleet_json, "location"))
 	);
 
@@ -197,7 +201,7 @@ Fleet* fleetlist_fromJson(SJson* fleets_json)
 	return fleet_list;
 }
 
-Fleet* fleet_init(char name[128], Entity* location)
+Fleet* fleet_init(char name[128], int status, char location[128])
 {
 	int i = 0;
 
@@ -207,14 +211,186 @@ Fleet* fleet_init(char name[128], Entity* location)
 
 	strcpy(fleet->location, location);
 
+	fleet->status = status;
+
 	fleet->ships = malloc(sizeof(Ship) * max_ships);
 
 	return fleet;
 }
 
-Menu_State* fleet_menustate(Fleet* fleet)
+Menu_State* ships_menustate(Ship* ships, Menu_State* previous, Bool in_fleet)
 {
+	int i;
 
+	char textbox_title[128];
+
+	Menu_State* ships_menustate;
+
+	UI_Element* ship_button;
+
+	ships_menustate = menu_state_new(
+		previous,
+		textbox_init
+		(
+			vector2d(10, 10),
+			vector2d(300, 50),
+			"Ships",
+			font_load("resources/fonts/futur.ttf", 16)
+		),
+		NULL,
+		vector2d(10, 10),
+		0,
+		5
+	);
+
+	for (i = 0; i < max_ships; i++)
+	{
+
+		if (!ships[i]._inuse) { continue; }
+
+		if (in_fleet == 1) 
+		{ 
+			sprintf(textbox_title, "%s | %i | %s", ships[i].type, ships[i].health, ship_status_names[ships[i].status]);
+
+			ship_button = textbox_init
+			(
+				vector2d(10, 10),
+				vector2d(250, 50),
+				textbox_title,
+				font_load("resources/fonts/futur.ttf", 10)
+			);
+		}
+
+		else 
+		{
+			sprintf(textbox_title, "%s Ship", ships[i].type);
+
+			ship_button = textbox_init
+			(
+				vector2d(10, 10),
+				vector2d(250, 50),
+				textbox_title,
+				font_load("resources/fonts/futur.ttf", 12)
+			);
+		}
+
+		menu_addTo(ships_menustate->current_menu, ship_button);
+	}
+
+	menu_state_hide(ships_menustate);
+
+	return ships_menustate;
+}
+
+Menu_State* fleet_menustate(Fleet* fleet, Menu_State* previous)
+{
+	int i;
+
+	Menu_State* fleet_menustate;
+
+	UI_Element* all_ships_button;
+	UI_Element* maintenancecosts_button;
+
+	char temp0[128]; char temp1[128];
+
+	float* temp_floats;
+
+	fleet_menustate = menu_state_new(
+		previous,
+		textbox_init
+		(
+			vector2d(10, 10),
+			vector2d(250, 50),
+			fleet->name,
+			font_load("resources/fonts/futur.ttf", 16)
+		),
+		NULL,
+		vector2d(10, 10),
+		0,
+		5
+	);
+
+	strcpy(temp1, ship_status_names[fleet->status]);
+
+	sprintf(temp0, "%s | %s", fleet->location, temp1);
+
+	menu_addTo(
+		fleet_menustate->current_menu,
+
+		textbox_init
+		(
+			vector2d(10, 10),
+			vector2d(250, 50),
+			temp0,
+			font_load("resources/fonts/futur.ttf", 12)
+		)
+	);
+
+	//Get Resources Total button
+	maintenancecosts_button = textbox_init
+	(
+		vector2d(10, 10),
+		vector2d(250, 50),
+		"Total Maintenance Costs",
+		font_load("resources/fonts/futur.ttf", 12)
+	);
+
+	temp_floats = fleet_totalmaintenance(fleet);
+
+	maintenancecosts_button->signal = new_gameevent(
+		fleet->name,
+		"MAINTENANCE",
+		"SHOW_SUM",
+		NULL,
+		NULL,
+		resources_menustate_init(temp_floats, fleet_menustate, "Maintenance Costs"),
+		0
+	);
+
+	menu_addTo(fleet_menustate->current_menu, maintenancecosts_button);
+
+	//Get Ships button
+	all_ships_button = textbox_init
+	(
+		vector2d(10, 10),
+		vector2d(250, 50),
+		"Ships",
+		font_load("resources/fonts/futur.ttf", 12)
+	);
+
+	all_ships_button->signal = new_gameevent(
+		fleet->name,
+		"SHIPS",
+		"SHOW_ALL",
+		NULL,
+		NULL,
+		ships_menustate(fleet->ships, fleet_menustate, 0),
+		0
+	);
+
+	menu_addTo(fleet_menustate->current_menu, all_ships_button);
+
+	menu_state_hide(fleet_menustate);
+
+	return fleet_menustate;
+}
+
+float* fleet_totalmaintenance(Fleet* fleet)
+{
+	int i;
+
+	float* resources = malloc(numresources * sizeof(float));
+
+	for (i = 0; i < numresources; i++) { resources[i] = 0; }
+
+	for (i = 0; i < max_ships; i++)
+	{
+		if (!fleet->ships[i]._inuse) { continue; }
+
+		resources = resourcelist_add(resources, fleet->ships[i].maintenance);
+	}
+
+	return resources;
 }
 
 void ship_free(Ship* self)
@@ -249,6 +425,8 @@ SJson* fleet_toJson(Fleet* self)
 	SJson* ships_json = sj_array_new();
 
 	sj_object_insert(fleet_json, "name", sj_new_str(self->name));
+
+	sj_object_insert(fleet_json, "status", sj_new_int(self->status));
 
 	sj_object_insert(fleet_json, "location", sj_new_str(self->location));
 
