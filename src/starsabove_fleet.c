@@ -364,7 +364,7 @@ Menu_State* fleet_menustate(Fleet* fleet, Menu_State* previous)
 		"SHOW_ALL",
 		NULL,
 		NULL,
-		ships_menustate(fleet->ships, fleet_menustate, 0),
+		ships_menustate(fleet->ships, fleet_menustate, 1),
 		0
 	);
 
