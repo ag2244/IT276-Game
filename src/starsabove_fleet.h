@@ -45,6 +45,8 @@ typedef struct
 
 	float* maintenance;
 
+	float* costs;
+
 	struct Fleet* fleet;
 
 	Bool _inuse;
@@ -77,7 +79,7 @@ Ship* ship_copy(Ship* src, Fleet* fleet);
 
 Ship* ship_fromJson(SJson* ship_json, Fleet* fleet);
 
-Ship* ship_init(char shiptype[128], float* costs, int health, int status, Fleet* fleet);
+Ship* ship_init(char shiptype[128], float* maintenance, float* costs, int health, int status, Fleet* fleet);
 
 Fleet* fleet_fromjson(SJson* fleet_json);
 
@@ -85,7 +87,9 @@ Fleet* fleetlist_fromJson(SJson* fleets_json);
 
 Fleet* fleet_init(char name[128], int status, char location[128]);
 
-Menu_State* ships_menustate(Ship* ships, Menu_State* previous, Bool in_fleet);
+Menu_State* ship_menustate(Ship* ship, Menu_State* previous, Bool forconstruction, Game_Event* event_template);
+
+Menu_State* ships_menustate(Ship* ships, Menu_State* previous, Bool in_fleet, Game_Event* event_template);
 
 Menu_State* fleet_menustate(Fleet* fleet, Menu_State* previous);
 

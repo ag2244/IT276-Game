@@ -58,6 +58,21 @@
 			{
 				"Gold": 1
 			}
+		},
+		
+		{
+			"name": "Shipyard",
+			"buildtime": 3,
+			"input":
+			{
+				"Iron": 5,
+				"Gold": 5
+			},
+			
+			"costs":
+			{
+				"Gold": 5
+			}
 		}
 	]
 
@@ -69,6 +84,15 @@
 			{
 				"Iron": 1,
 				"Food": 1
+			},
+			"requirements":
+			[
+				"Shipyard"
+			],
+			"costs":
+			{
+				"Iron": 10,
+				"Gold": 10
 			}
 		},
 		{
@@ -77,6 +101,15 @@
 			{
 				"Iron": 1,
 				"Food": 1
+			},
+			"requirements":
+			[
+				"Shipyard"
+			],
+			"costs":
+			{
+				"Iron": 10,
+				"Gold": 10
 			}
 		},
 		{
@@ -85,6 +118,15 @@
 			{
 				"Iron": 1,
 				"Food": 1
+			},
+			"requirements":
+			[
+				"Shipyard"
+			],
+			"costs":
+			{
+				"Iron": 10,
+				"Gold": 10
 			}
 		},
 		{
@@ -93,6 +135,15 @@
 			{
 				"Iron": 1,
 				"Food": 1
+			},
+			"requirements":
+			[
+				"Shipyard"
+			],
+			"costs":
+			{
+				"Iron": 10,
+				"Gold": 10
 			}
 		},
 		{
@@ -101,6 +152,15 @@
 			{
 				"Iron": 1,
 				"Food": 1
+			},
+			"requirements":
+			[
+				"Shipyard"
+			],
+			"costs":
+			{
+				"Iron": 10,
+				"Gold": 10
 			}
 		}
 	]

@@ -244,7 +244,7 @@ void nations_list_onNewTurn()
 	}
 }
 
-void nation_menustate_add_fleets(Nation* self, Menu_State* nation_menustate)
+void nation_menustate_national_fleets(Nation* self, Menu_State* nation_menustate)
 {
 	char i;
 
@@ -385,7 +385,7 @@ struct Menu_State* nation_menustate(Nation* nation, Bool _isPlayer)
 		resources_textbox
 	);
 
-	nation_menustate_add_fleets(nation, nation_menustate);
+	nation_menustate_national_fleets(nation, nation_menustate);
 
 	menu_state_show(nation_menustate);
 

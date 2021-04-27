@@ -1,10 +1,30 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <NotepadPlus>
     <Session activeView="0">
-        <mainView activeIndex="1">
-            <File firstVisibleLine="0" xOffset="0" scrollWidth="21216" startPos="400" endPos="400" selMode="0" offset="0" wrapCount="1" lang="JSON" encoding="-1" userReadOnly="no" filename="C:\Users\anura\OneDrive\Desktop\School Programs\IT276-Game\jsondata\Test Input.json" backupFilePath="" originalFileLastModifTimestamp="962475707" originalFileLastModifTimestampHigh="30876955" mapFirstVisibleDisplayLine="-1" mapFirstVisibleDocLine="-1" mapLastVisibleDocLine="-1" mapNbLine="-1" mapHigherPos="-1" mapWidth="-1" mapHeight="-1" mapKByteInDoc="3359488" mapWrapIndentMode="-1" mapIsWrap="no" />
-            <File firstVisibleLine="0" xOffset="0" scrollWidth="21216" startPos="0" endPos="0" selMode="0" offset="0" wrapCount="13" lang="JSON" encoding="-1" userReadOnly="no" filename="C:\Users\anura\OneDrive\Desktop\School Programs\IT276-Game\jsondata\TESTOUT.json" backupFilePath="" originalFileLastModifTimestamp="-1656825144" originalFileLastModifTimestampHigh="30877130" mapFirstVisibleDisplayLine="-1" mapFirstVisibleDocLine="-1" mapLastVisibleDocLine="-1" mapNbLine="-1" mapHigherPos="-1" mapWidth="-1" mapHeight="-1" mapKByteInDoc="1921649527" mapWrapIndentMode="-1" mapIsWrap="no" />
-            <File firstVisibleLine="0" xOffset="0" scrollWidth="21216" startPos="64" endPos="64" selMode="0" offset="0" wrapCount="1" lang="JSON" encoding="-1" userReadOnly="no" filename="C:\Users\anura\OneDrive\Desktop\School Programs\IT276-Game\jsondata\gamedict.json" backupFilePath="" originalFileLastModifTimestamp="-921498671" originalFileLastModifTimestampHigh="30875758" mapFirstVisibleDisplayLine="-1" mapFirstVisibleDocLine="-1" mapLastVisibleDocLine="-1" mapNbLine="-1" mapHigherPos="-1" mapWidth="-1" mapHeight="-1" mapKByteInDoc="207896080" mapWrapIndentMode="-1" mapIsWrap="no" />
+        <mainView activeIndex="0">
+            <File firstVisibleLine="18" xOffset="0" scrollWidth="21208" startPos="648" endPos="648" selMode="0" offset="0" wrapCount="1" lang="JSON" encoding="-1" userReadOnly="no" filename="C:\Users\anura\OneDrive\Desktop\School Programs\IT276-Game\jsondata\Test Input.json" backupFilePath="" originalFileLastModifTimestamp="-814028174" originalFileLastModifTimestampHigh="30882345" mapFirstVisibleDisplayLine="-1" mapFirstVisibleDocLine="-1" mapLastVisibleDocLine="-1" mapNbLine="-1" mapHigherPos="-1" mapWidth="-1" mapHeight="-1" mapKByteInDoc="45045" mapWrapIndentMode="-1" mapIsWrap="no">
+                <Fold line="53" />
+                <Fold line="65" />
+                <Fold line="85" />
+                <Fold line="97" />
+                <Fold line="109" />
+                <Fold line="129" />
+                <Fold line="141" />
+                <Fold line="153" />
+                <Fold line="173" />
+                <Fold line="185" />
+                <Fold line="197" />
+            </File>
+            <File firstVisibleLine="0" xOffset="0" scrollWidth="21208" startPos="362" endPos="362" selMode="0" offset="0" wrapCount="13" lang="JSON" encoding="-1" userReadOnly="no" filename="C:\Users\anura\OneDrive\Desktop\School Programs\IT276-Game\jsondata\TESTOUT.json" backupFilePath="" originalFileLastModifTimestamp="-2113057364" originalFileLastModifTimestampHigh="30882356" mapFirstVisibleDisplayLine="-1" mapFirstVisibleDocLine="-1" mapLastVisibleDocLine="-1" mapNbLine="-1" mapHigherPos="-1" mapWidth="-1" mapHeight="-1" mapKByteInDoc="209968" mapWrapIndentMode="-1" mapIsWrap="no" />
+            <File firstVisibleLine="0" xOffset="0" scrollWidth="20352" startPos="805" endPos="805" selMode="0" offset="0" wrapCount="1" lang="JSON" encoding="-1" userReadOnly="no" filename="C:\Users\anura\OneDrive\Desktop\School Programs\IT276-Game\jsondata\gamedict.json" backupFilePath="" originalFileLastModifTimestamp="-1023831989" originalFileLastModifTimestampHigh="30882345" mapFirstVisibleDisplayLine="-1" mapFirstVisibleDocLine="-1" mapLastVisibleDocLine="-1" mapNbLine="-1" mapHigherPos="-1" mapWidth="-1" mapHeight="-1" mapKByteInDoc="209968" mapWrapIndentMode="-1" mapIsWrap="no">
+                <Fold line="4" />
+                <Fold line="23" />
+                <Fold line="80" />
+                <Fold line="97" />
+                <Fold line="114" />
+                <Fold line="131" />
+                <Fold line="148" />
+            </File>
         </mainView>
         <subView activeIndex="0" />
     </Session>

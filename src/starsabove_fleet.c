@@ -3,6 +3,7 @@
 #include "starsabove_fleet.h"
 
 #include "starsabove_nation.h"
+#include "starsabove_game_resources.h"
 
 typedef struct
 {
@@ -84,7 +85,7 @@ Ship* getshipbyname(char shiptype[128])
 
 Ship* ship_copy(Ship* src, Fleet* fleet)
 {
-	return ship_init(src->type, src->maintenance, src->health, src->status, fleet);
+	return ship_init(src->type, src->maintenance, src->costs, src->health, src->status, fleet);
 }
 
 Ship* ship_fromJson(SJson* ship_json, Fleet* fleet)
@@ -105,12 +106,13 @@ Ship* ship_fromJson(SJson* ship_json, Fleet* fleet)
 	return ship_init(
 		sj_get_string_value(sj_object_get_value(ship_json, "type")),
 		resourcelist_copy(resources_fromJson(sj_object_get_value(ship_json, "maintenance"))),
+		resourcelist_copy(resources_fromJson(sj_object_get_value(ship_json, "costs"))),
 		health,
 		status,
 		fleet);
 }
 
-Ship* ship_init(char shiptype[128], float* maintenance, int health, int status, Fleet* fleet)
+Ship* ship_init(char shiptype[128], float* maintenance, float* costs, int health, int status, Fleet* fleet)
 {
 	Ship* ship = malloc(sizeof(Ship));
 
@@ -118,6 +120,7 @@ Ship* ship_init(char shiptype[128], float* maintenance, int health, int status, 
 	ship->fleet = fleet;
 
 	ship->maintenance = resourcelist_copy(maintenance);
+	ship->costs = resourcelist_copy(costs);
 
 	ship->health = health;
 	ship->status = status;
@@ -218,7 +221,106 @@ Fleet* fleet_init(char name[128], int status, char location[128])
 	return fleet;
 }
 
-Menu_State* ships_menustate(Ship* ships, Menu_State* previous, Bool in_fleet)
+Menu_State* ship_menustate(Ship* ship, Menu_State* previous, Bool forconstruction, Game_Event* event_template)
+{
+
+	Menu_State* ship_menustate;
+
+	UI_Element* costs_button;
+	UI_Element* maintenance_button;
+	UI_Element* construct_button;
+
+	ship_menustate = menu_state_new(
+		previous,
+		textbox_init
+		(
+			vector2d(10, 10),
+			vector2d(300, 50),
+			ship->type,
+			font_load("resources/fonts/futur.ttf", 16)
+		),
+		NULL,
+		vector2d(10, 10),
+		0,
+		5
+	);
+
+	//Resource Cost
+	costs_button = textbox_init
+	(
+		vector2d(10, 10),
+		vector2d(200, 50),
+		"Costs",
+		font_load("resources/fonts/futur.ttf", 12)
+	);
+
+	costs_button->signal = new_gameevent(
+		NULL,
+		NULL,
+		"GETCOSTS",
+		NULL,
+		0,
+		resources_menustate_init(ship->costs, ship_menustate, "Building Costs"),
+		0
+	);
+
+	menu_addTo
+	(
+		ship_menustate->current_menu,
+		costs_button
+	);
+	
+	//Maintenance Costs
+	maintenance_button = textbox_init
+	(
+		vector2d(10, 10),
+		vector2d(200, 50),
+		"Maintenance Costs",
+		font_load("resources/fonts/futur.ttf", 12)
+	);
+
+	maintenance_button->signal = new_gameevent(
+		NULL,
+		NULL,
+		"GETMAINTENANCE",
+		NULL,
+		0,
+		resources_menustate_init(ship->maintenance, ship_menustate, "Maintenance Costs"),
+		0
+	);
+
+	menu_addTo
+	(
+		ship_menustate->current_menu,
+		maintenance_button
+	);
+	
+	//Construction button
+	if (forconstruction)
+	{
+		construct_button = textbox_init
+		(
+			vector2d(10, 10),
+			vector2d(200, 50),
+			"Construct",
+			font_load("resources/fonts/futur.ttf", 12)
+		);
+
+		construct_button->signal = malloc(sizeof(Game_Event));
+		gameevent_copy(construct_button->signal, event_template);
+
+		strcpy(construct_button->signal->descriptor, ship->type);
+
+		menu_addTo(ship_menustate->current_menu, construct_button);
+	}
+
+	menu_state_hide(ship_menustate);
+
+	return ship_menustate;
+
+}
+
+Menu_State* ships_menustate(Ship* ships, Menu_State* previous, Bool in_fleet, Game_Event* event_template)
 {
 	int i;
 
@@ -243,13 +345,15 @@ Menu_State* ships_menustate(Ship* ships, Menu_State* previous, Bool in_fleet)
 		5
 	);
 
-	for (i = 0; i < max_ships; i++)
+
+
+	if (in_fleet == 1)
 	{
+		for (i = 0; i < max_ships; i++)
+		{
 
-		if (!ships[i]._inuse) { continue; }
+			if (!ships[i]._inuse) { continue; }
 
-		if (in_fleet == 1) 
-		{ 
 			sprintf(textbox_title, "%s | %i | %s", ships[i].type, ships[i].health, ship_status_names[ships[i].status]);
 
 			ship_button = textbox_init
@@ -259,11 +363,20 @@ Menu_State* ships_menustate(Ship* ships, Menu_State* previous, Bool in_fleet)
 				textbox_title,
 				font_load("resources/fonts/futur.ttf", 10)
 			);
+
+			menu_addTo(ships_menustate->current_menu, ship_button);
 		}
 
-		else 
+	}
+
+	else
+	{
+		for (i = 0; i < shipdict.numships; i++)
 		{
-			sprintf(textbox_title, "%s Ship", ships[i].type);
+
+			if (!shipdict.ship_templates[i]._inuse) { continue; }
+
+			sprintf(textbox_title, "%s Ship", shipdict.ship_templates[i].type);
 
 			ship_button = textbox_init
 			(
@@ -272,9 +385,19 @@ Menu_State* ships_menustate(Ship* ships, Menu_State* previous, Bool in_fleet)
 				textbox_title,
 				font_load("resources/fonts/futur.ttf", 12)
 			);
-		}
 
-		menu_addTo(ships_menustate->current_menu, ship_button);
+			ship_button->signal = new_gameevent(
+				shipdict.ship_templates[i].type,
+				NULL,
+				"DETAILS",
+				NULL,
+				0,
+				ship_menustate(&shipdict.ship_templates[i], ships_menustate, 1, event_template),
+				NULL
+			);
+
+			menu_addTo(ships_menustate->current_menu, ship_button);
+		}
 	}
 
 	menu_state_hide(ships_menustate);
@@ -364,7 +487,7 @@ Menu_State* fleet_menustate(Fleet* fleet, Menu_State* previous)
 		"SHOW_ALL",
 		NULL,
 		NULL,
-		ships_menustate(fleet->ships, fleet_menustate, 1),
+		ships_menustate(fleet->ships, fleet_menustate, 1, NULL),
 		0
 	);
 

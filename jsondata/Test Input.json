@@ -32,6 +32,22 @@
 								{
 									"Plastoil": 100
 								}
+							},
+							
+							{
+								"name": "Shipyard",
+								"buildtime": 3,
+								"status": 2,
+								"input":
+								{
+									"Iron": 5,
+									"Gold": 5
+								},
+								
+								"costs":
+								{
+									"Gold": 5
+								}
 							}
 						]
 				},

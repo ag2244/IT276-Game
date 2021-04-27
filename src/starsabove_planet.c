@@ -1,6 +1,7 @@
 #include "gfc_types.h"
 
 #include "starsabove_planet.h"
+#include "starsabove_fleet.h"
 
 void planet_fromJson_buildings(SJson* planetjson, Planet* planet)
 {
@@ -163,7 +164,55 @@ UI_Element* planet_menustate_buildingsbutton(Planet* planet, Menu_State* planet_
     return buildings_button;
 }
 
-UI_Element* planet_menustate_constructionbutton(Planet* planet, Menu_State* planet_menustate, char* system_name)
+UI_Element* planet_menustate_shipconstruction(Planet* planet, Menu_State* planet_menustate, char* system_name)
+{
+    int i;
+
+    UI_Element* construct_button;
+    UI_Element* construction_option;
+
+    Menu_State* construction_menu = NULL;
+
+    construction_menu = ships_menustate(
+        NULL, 
+        planet_menustate, 
+        0,
+        new_gameevent(
+            system_name,
+            planet->name,
+            "CONSTRUCT SHIP",
+            NULL,
+            1,
+            NULL,
+            0
+        )
+        );
+
+    menu_state_hide(construction_menu);
+
+    //Create buildings button
+    construct_button = textbox_init
+    (
+        vector2d(10, 10),
+        vector2d(200, 50),
+        "Ship Construction",
+        font_load("resources/fonts/futur.ttf", 12)
+    );
+
+    construct_button->signal = new_gameevent(
+        system_name,
+        planet->name,
+        "CONSTRUCTIONMENU_SHIP",
+        NULL,
+        0,
+        construction_menu,
+        0
+    );
+
+    return construct_button;
+}
+
+UI_Element* planet_menustate_buildingconstruction(Planet* planet, Menu_State* planet_menustate, char* system_name)
 {
     int i;
 
@@ -279,7 +328,13 @@ Menu_State* planet_menustate_init(Planet* planet, Menu_State* system_menustate, 
         menu_addTo
         (
             planet_menustate->current_menu,
-            planet_menustate_constructionbutton(planet, planet_menustate, system_name)
+            planet_menustate_buildingconstruction(planet, planet_menustate, system_name)
+        );
+
+        menu_addTo
+        (
+            planet_menustate->current_menu,
+            planet_menustate_shipconstruction(planet, planet_menustate, system_name)
         );
     }
 
