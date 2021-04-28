@@ -217,12 +217,12 @@
 			"name": "Nation1"
 			"resources":
 				{
-					"Food": 0,
-					"Iron": 0,
-					"Uranium": 0,
-					"Gold": 0,
-					"Silicon": 0,
-					"Plastoil": 0
+					"Food": 20,
+					"Iron": 20,
+					"Uranium": 20,
+					"Gold": 20,
+					"Silicon": 20,
+					"Plastoil": 20
 				}
 			"fleets":
 			[
@@ -235,7 +235,7 @@
 						{
 							"type": "Light",
 							"health": 100,
-							"status": 1,
+							"status": 2,
 							"maintenance":
 							{
 								"Iron": 1,

@@ -180,7 +180,7 @@ UI_Element* planet_menustate_shipconstruction(Planet* planet, Menu_State* planet
         new_gameevent(
             system_name,
             planet->name,
-            "CONSTRUCT SHIP",
+            "CONSTRUCT_SHIP",
             NULL,
             1,
             NULL,

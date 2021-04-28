@@ -22,6 +22,7 @@ typedef enum shipStatus
 	SHIP_TEMPLATE = -1,
 	SHIP_CONSTRUCTING,
 	SHIP_ACTIVE,
+	SHIP_MOVING,
 	SHIP_DISABLED
 } 
 shipStatus;
@@ -94,6 +95,10 @@ Menu_State* ships_menustate(Ship* ships, Menu_State* previous, Bool in_fleet, Ga
 Menu_State* fleet_menustate(Fleet* fleet, Menu_State* previous);
 
 float* fleet_totalmaintenance(Fleet* fleet);
+
+int fleet_addShip(Fleet* fleet, Ship* ship);
+
+int fleetlist_addFleet(Fleet* fleetlist, Fleet* fleet);
 
 void ship_free(Ship* self);
 

@@ -7,6 +7,7 @@
 #include "starsabove_resources.h"
 
 #include "starsabove_buildable.h"
+#include "starsabove_fleet.h"
 
 //Use for pointing to the data for an individual system
 System_Data* system_data;
@@ -311,6 +312,17 @@ SJson* system_toJson(Entity* self)
 
 void system_reciever(Entity* self, Game_Event* event)
 {
+    int i;
+
+    if (!self)
+    {
+        slog("NULL ENTITY CANNOT RECIEVE EVENT"); return;
+    }
+
+    if (!self)
+    {
+        slog("ENTITY CANNOT RECIEVE NULL EVENT"); return;
+    }
 
     //If the command is to construct a building
     if (strcmp(event->command, "CONSTRUCT_BUILDING") == 0)
@@ -328,6 +340,37 @@ void system_reciever(Entity* self, Game_Event* event)
         }
 
         else { slog("CANNOT AFFORD THIS BUILDING"); }
+    }
+
+    //If the command is to construct a building
+    if (strcmp(event->command, "CONSTRUCT_SHIP") == 0)
+    {
+        Fleet* fleet;
+
+        Ship* ship = ship_copy(getshipbyname(event->descriptor), NULL);
+
+        float* new_resources = resourcelist_subtract(self->owner->resources_total, ship->costs);
+
+        if (resourcelist_checkdeficit(new_resources))
+        {
+            slog("ENOUGH RESOURCES FOR \"%s\"", ship->type);
+
+            fleet = nation_fleetbylocation(self->owner, self);
+
+            if (fleet)
+            {
+
+                ship->status = (int)SHIP_CONSTRUCTING;
+
+                fleet_addShip(fleet, ship);
+
+                Fleet* thisfleet; for (i = 0; i < max_national_fleets; i++) { thisfleet = fleet_fromlist(self->owner->fleets, i); if (thisfleet) { slog("%s", thisfleet->name); } }
+
+                return;
+            }
+        }
+
+        else { slog("CANNOT AFFORD THIS SHIP"); }
     }
 }
 

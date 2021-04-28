@@ -244,6 +244,75 @@ void nations_list_onNewTurn()
 	}
 }
 
+Fleet* nation_new_fleet(Nation* self, char location_name[128])
+{
+	int i;
+	int fleetnum = 1;
+	char fleet_name[128];
+
+	Fleet* thisfleet;
+	Fleet* newFleet;
+
+	sprintf(fleet_name, "%s Fleet %i", self->name, fleetnum);
+
+	for (i = 0; i < max_national_fleets; i++)
+	{
+		thisfleet = fleet_fromlist(self->fleets, i);
+
+		if (!thisfleet) { continue; }
+
+		if (strcmp(thisfleet->name, fleet_name) == 0)
+		{
+			fleetnum++;
+
+			sprintf(fleet_name, "%s Fleet %i", self->name, fleetnum);
+		}
+	}
+
+	newFleet = fleet_init(fleet_name, 0, location_name);
+
+	if (fleetlist_addFleet(self->fleets, newFleet) == 1)
+	{
+		return newFleet;
+	}
+	slog("BBB");
+
+	return NULL;
+}
+
+struct Fleet* nation_fleetbylocation(Nation* self, Entity* location)
+{
+	int i;
+
+	Fleet* thisfleet;
+
+	if (!self)
+	{
+		slog("CANNOT RETRIEVE FLEET FROM NULL NATION"); return NULL;
+	}
+
+	if (!location)
+	{
+		slog("CANNOT RETRIEVE FLEET FROM NULL LOCATION"); return NULL;
+	}
+
+	for (i = 0; i < max_national_fleets; i++)
+	{
+		thisfleet = fleet_fromlist(self->fleets, i);
+
+		if (!thisfleet) { continue; }
+
+		if (strcmp(thisfleet->location, location->name) == 0)
+		{
+			return thisfleet;
+		}
+	}
+
+	thisfleet = nation_new_fleet(self, location->name);
+
+	return thisfleet;
+}
+
 void nation_menustate_national_fleets(Nation* self, Menu_State* nation_menustate)
 {
 	char i;

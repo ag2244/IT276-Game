@@ -81,6 +81,8 @@ Ship* getshipbyname(char shiptype[128])
 			return &shipdict.ship_templates[i];
 		}
 	}
+
+	return NULL;
 }
 
 Ship* ship_copy(Ship* src, Fleet* fleet)
@@ -194,11 +196,21 @@ Fleet* fleetlist_fromJson(SJson* fleets_json)
 
 	fleet_list = malloc(sizeof(Fleet) * max_national_fleets);
 
-	for (i = 0; i < sj_array_get_count(fleets_json); i++)
+	for (i = 0; i < max_national_fleets; i++)
 	{
-		fleet_list[i] = *fleet_fromjson(sj_array_get_nth(fleets_json, i));
 
-		fleet_list[i]._inuse = 1;
+		if (i < sj_array_get_count(fleets_json))
+		{
+
+			fleet_list[i] = *fleet_fromjson(sj_array_get_nth(fleets_json, i));
+
+			fleet_list[i]._inuse = 1;
+		}
+
+		else
+		{
+			fleet_list[i]._inuse = 0;
+		}
 	}
 
 	return fleet_list;
@@ -514,6 +526,71 @@ float* fleet_totalmaintenance(Fleet* fleet)
 	}
 
 	return resources;
+}
+
+int fleet_addShip(Fleet* fleet, Ship* ship)
+{
+	int i;
+
+	if (!fleet)
+	{
+		slog("CANNOT ADD SHIP TO NULL FLEET"); return 0;
+	}
+
+	if (!ship)
+	{
+		slog("CANNOT ADD NULL SHIP TO FLEET"); return 0;
+	}
+
+	for (i = 0; i < max_ships; i++)
+	{
+		if (!fleet->ships[i]._inuse)
+		{
+			fleet->ships[i] = *ship;
+
+			return 1;
+		}
+	}
+
+	return -1;
+
+}
+
+int fleetlist_addFleet(Fleet* fleetlist, Fleet* fleet)
+{
+
+	int i;
+
+	if (!fleetlist)
+	{
+		slog("CANNOT ADD FLEET TO NULL FLEET LIST"); return 0;
+	}
+
+	if (!fleet)
+	{
+		slog("CANNOT ADD NULL FLEET TO FLEET LIST"); return 0;
+	}
+
+	for (i = 0; i < max_national_fleets; i++)
+	{
+
+		if (fleet[i]._inuse == 1)
+		{
+			slog("ASD");continue;
+		}
+
+		if (fleet[i]._inuse == 0)
+		{
+
+			fleetlist[i] = *fleet;
+			fleetlist[i]._inuse = 1;
+
+			return 1;
+		}
+	}
+
+	return -1;
+
 }
 
 void ship_free(Ship* self)

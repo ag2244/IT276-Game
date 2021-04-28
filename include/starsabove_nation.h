@@ -6,6 +6,7 @@
 typedef struct Menu_State;
 
 typedef struct Fleet;
+typedef struct Entity;
 
 typedef struct Nation_s
 {
@@ -86,6 +87,14 @@ void nation_onNewTurn(Nation* nation);
 * @brief Go through all nations and call nation_onNewTurn() for each
 */
 void nations_list_onNewTurn();
+
+/*
+* @brief Returns the fleet in a certain location
+* @param self The owner of the fleet
+* @param location The location (star system) to locate a fleet in
+* @return NULL on error, or an existing Fleet object
+*/
+struct Fleet* nation_fleetbylocation(Nation* self, struct Entity* location);
 
 /*
 * @brief Get the menustate for a nation
