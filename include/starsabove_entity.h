@@ -11,6 +11,7 @@
 #include "starsabove_game_resources.h"
 
 #include "starsabove_collision.h"
+#include "starsabove_ui_base.h"
 #include "starsabove_nation.h"
 
 #ifndef __ENTITY_H__
@@ -35,6 +36,9 @@ typedef struct Entity_s{
 	float frame;
 	float frameRate;
 	int frameCount;
+
+	int num_buttons;
+	UI_Element* shortcut_buttons;
 
 	/*Function pointers!*/
 	void (*update)(struct Entity_s *self);

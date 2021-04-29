@@ -1,0 +1,250 @@
+{
+	"Systems":
+	[
+		{
+			"name": "System1",
+			"position": [400, 500],
+			"owner": "Nation1",
+			"planets":
+			[
+				{
+					"name": "System1 I",
+					"resources":
+						{
+							"Food": 7,
+							"Iron": 7,
+							"Uranium": 7,
+							"Gold": 7,
+							"Silicon": 7,
+							"Plastoil": 7
+						}
+					"buildings":
+						[
+							{
+								"name": "Factory",
+								"status": 2,
+								"input":
+								{
+									"Uranium": 1
+								},
+								
+								"output":
+								{
+									"Plastoil": 100
+								}
+							},
+							
+							{
+								"name": "Shipyard",
+								"buildtime": 3,
+								"status": 2,
+								"input":
+								{
+									"Iron": 5,
+									"Gold": 5
+								},
+								
+								"costs":
+								{
+									"Gold": 5
+								}
+							}
+						]
+				},
+				{
+					"name": "System1 II",
+					"resources":
+						{
+							"Food": 3,
+							"Iron": 3,
+							"Uranium": 3,
+							"Gold": 3,
+							"Silicon": 3,
+							"Plastoil": 3
+						}
+				},
+				{
+					"name": "System1 III",
+					"resources":
+						{
+							"Food": 3,
+							"Iron": 3,
+							"Uranium": 3,
+							"Gold": 3,
+							"Silicon": 3,
+							"Plastoil": 3
+						}
+				}
+			]
+		},
+		{
+			"name": "System2",
+			"position": [300, 400],
+			"owner": "Nation1",
+			"planets":
+			[
+				{
+					"name": "System2 I",
+					"resources":
+						{
+							"Food": 3,
+							"Iron": 3,
+							"Uranium": 3,
+							"Gold": 3,
+							"Silicon": 3,
+							"Plastoil": 3
+						}
+				},
+				{
+					"name": "System2 II",
+					"resources":
+						{
+							"Food": 3,
+							"Iron": 3,
+							"Uranium": 3,
+							"Gold": 3,
+							"Silicon": 3,
+							"Plastoil": 3
+						}
+				},
+				{
+					"name": "System2 III",
+					"resources":
+						{
+							"Food": 3,
+							"Iron": 3,
+							"Uranium": 3,
+							"Gold": 3,
+							"Silicon": 3,
+							"Plastoil": 3
+						}
+				}
+			]
+		},
+		{
+			"name": "System3",
+			"position": [800, 200],
+			"owner": "null",
+			"planets":
+			[
+				{
+					"name": "System3 I",
+					"resources":
+						{
+							"Food": 3,
+							"Iron": 3,
+							"Uranium": 3,
+							"Gold": 3,
+							"Silicon": 3,
+							"Plastoil": 3
+						}
+				},
+				{
+					"name": "System3 II",
+					"resources":
+						{
+							"Food": 3,
+							"Iron": 3,
+							"Uranium": 3,
+							"Gold": 3,
+							"Silicon": 3,
+							"Plastoil": 3
+						}
+				},
+				{
+					"name": "System3 III",
+					"resources":
+						{
+							"Food": 3,
+							"Iron": 3,
+							"Uranium": 3,
+							"Gold": 3,
+							"Silicon": 3,
+							"Plastoil": 3
+						}
+				}
+			]
+		},
+		{
+			"name": "System4",
+			"position": [600, 250],
+			"owner": "null",
+			"planets":
+			[
+				{
+					"name": "System4 I",
+					"resources":
+						{
+							"Food": 3,
+							"Iron": 3,
+							"Uranium": 3,
+							"Gold": 3,
+							"Silicon": 3,
+							"Plastoil": 3
+						}
+				},
+				{
+					"name": "System4 II",
+					"resources":
+						{
+							"Food": 3,
+							"Iron": 3,
+							"Uranium": 3,
+							"Gold": 3,
+							"Silicon": 3,
+							"Plastoil": 3
+						}
+				},
+				{
+					"name": "System4 III",
+					"resources":
+						{
+							"Food": 3,
+							"Iron": 3,
+							"Uranium": 3,
+							"Gold": 3,
+							"Silicon": 3,
+							"Plastoil": 3
+						}
+				}
+			]
+		}
+	],
+	
+	"Nations":
+	[
+		{
+			"name": "Nation1"
+			"resources":
+				{
+					"Food": 20,
+					"Iron": 20,
+					"Uranium": 20,
+					"Gold": 20,
+					"Silicon": 20,
+					"Plastoil": 20
+				}
+			"fleets":
+			[
+				{
+					"name": "Nation1 Fleet 1",
+					"location": "System1",
+					"status": 2,
+					"ships":
+					[
+						{
+							"type": "Light",
+							"health": 100,
+							"status": 2,
+							"maintenance":
+							{
+								"Iron": 1,
+								"Food": 1
+							}
+						}
+					]
+				}
+			]
+		}
+	]
+}

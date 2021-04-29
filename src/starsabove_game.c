@@ -86,7 +86,7 @@ void save_game(char* savefile_name)
 	SJson* savefile = sj_object_new();
 	SJson* systems = sj_array_new();
 
-	char filename[10] = "jsondata/";
+	char filename[10] = "savegames/";
 	char savefile_copy[256]; strcpy(savefile_copy, savefile_name);
 
 	int i;
@@ -168,7 +168,7 @@ void test()
 {
 	load_gamerule("jsondata/gamedict.json");
 
-	load_game("jsondata/Test Input.json");
+	load_game("savegames/Test Input.json");
 
 	save_game("TESTOUT.json");
 

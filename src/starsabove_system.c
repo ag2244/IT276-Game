@@ -161,6 +161,11 @@ void system_onClick(Entity* self, Game_Event* event_reciever, Bool playerowned)
     gameevent_copy(event_reciever, self->clickEvent);
 }
 
+void system_update(Entity* self)
+{
+
+}
+
 float* system_onNewTurn(Entity* self)
 {
 
@@ -374,6 +379,35 @@ void system_reciever(Entity* self, Game_Event* event)
     }
 }
 
+void system_spawn_initbuttons(Entity* self)
+{
+    UI_Element* fleet_button;
+
+    if (!self)
+    {
+        slog("CANNOT INIT BUTTONS FOR NULL ENTITY"); return;
+    }
+
+    self->num_buttons = 1;
+
+    self->shortcut_buttons = malloc(sizeof(UI_Element) * self->num_buttons);
+
+    fleet_button = &self->shortcut_buttons[0];
+
+    fleet_button->position = *vector2d_new();
+
+    fleet_button->spriteMain = gf2d_sprite_load_all("images/ui/fleet_button.png", 24, 24, 1);
+
+    fleet_button->hidden = 0;
+
+    fleet_button->position = vector2d(
+        0, //-1 * (float)fleet_button->spriteMain->frame_w,
+        (float)fleet_button->spriteMain->frame_h + (float)self->sprite->frame_h - 10 //(-1 * (float)fleet_button->spriteMain->frame_h)
+    );
+
+
+}
+
 Entity* system_spawn(char* name, Vector2D position, Nation* owner, System_Data* systemdata)
 {
     int i = 0;
@@ -421,6 +455,9 @@ Entity* system_spawn(char* name, Vector2D position, Nation* owner, System_Data* 
     ent->toJson = system_toJson;
     ent->reciever = system_reciever;
     ent->onNewTurn = system_onNewTurn;
+    ent->update = system_update;
+
+    system_spawn_initbuttons(ent);
 
     //Done!
     slog("System \"%s\" created!", ent->name);

@@ -34,6 +34,11 @@ int load_systems(SJson* game_json);
 */
 void system_onClick(struct Entity* self, Game_Event* event_reciever, Bool playerowned);
 
+/*
+* @brief A system's unique update function
+*/
+void system_update(Entity* self);
+
 /**
 * @brief Perform actions when a system is clicked
 * @return NULL on error

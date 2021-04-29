@@ -159,6 +159,8 @@ Entity* entity_new()
 
 		entity_manager.entity_list[i]._inuse = 1;
 
+		entity_manager.entity_list[i].num_buttons = 0;
+
 		return &entity_manager.entity_list[i];
 	}
 
@@ -254,6 +256,41 @@ void entity_draw(Entity* ent)
 			else if (ent->collider_box)
 			{
 				vector2d_copy(ent->collider_box->viewpos, view_pos);
+			}
+
+			//Draw UI_Elements - positions are relative
+
+			if (ent->num_buttons > 0)
+			{
+				int i;
+				UI_Element* thisbutton;
+				Vector2D adjustedpos = *vector2d_new();
+
+				for (i = 0; i < ent->num_buttons; i++)
+				{
+					if (ent->shortcut_buttons[i]._inuse == 0) { continue; }
+
+					thisbutton = &ent->shortcut_buttons[i];
+
+					vector2d_add(adjustedpos, thisbutton->position, ent->position);
+
+					if (thisbutton->spriteMain == NULL)
+					{
+						return;
+					}
+
+					else gf2d_sprite_draw(
+						thisbutton->spriteMain,
+						adjustedpos,
+						NULL,
+						NULL,
+						NULL,
+						NULL,
+						NULL,
+						(Uint32)thisbutton->frame);
+
+					//slog("%f, %f", adjustedpos.x, adjustedpos.y);
+				}
 			}
 		}
 
