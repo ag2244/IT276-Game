@@ -93,6 +93,8 @@ void entity_manager_free() {
 
 void entity_update(Entity* self) 
 {
+	int i;
+
 	if (!self) return;
 
 	// Move
@@ -105,6 +107,11 @@ void entity_update(Entity* self)
 	// DO ANY GENERIC UPDATE CODE
 	// IF THERE IS A CUSTOM UPDATE, DO THAT NOW
 	if (self->update) self->update(self);
+
+	for (i = 0; i < self->num_buttons; i++)
+	{
+		self->shortcut_buttons[i].update(&self->shortcut_buttons[i]);
+	}
 }
 
 void entity_manager_update_entities() {
@@ -270,9 +277,11 @@ void entity_draw(Entity* ent)
 				{
 					if (ent->shortcut_buttons[i]._inuse == 0) { continue; }
 
+					if (ent->shortcut_buttons[i].hidden == 1) { continue; }
+
 					thisbutton = &ent->shortcut_buttons[i];
 
-					vector2d_add(adjustedpos, thisbutton->position, ent->position);
+					vector2d_add(adjustedpos, thisbutton->position, view_pos);
 
 					if (thisbutton->spriteMain == NULL)
 					{
@@ -288,6 +297,8 @@ void entity_draw(Entity* ent)
 						NULL,
 						NULL,
 						(Uint32)thisbutton->frame);
+
+					vector2d_copy(thisbutton->collider_box->viewpos, adjustedpos);
 
 					//slog("%f, %f", adjustedpos.x, adjustedpos.y);
 				}

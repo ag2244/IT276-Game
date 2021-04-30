@@ -168,6 +168,8 @@ Nation* nation_new(Nation* nation, char* name, float* resources, Fleet* fleets)
 
 	nation->toJson = nation_toJson;
 
+	nation->_is_player = 0;
+
 	return nation;
 }
 
@@ -280,11 +282,11 @@ Fleet* nation_new_fleet(Nation* self, char location_name[128])
 	return NULL;
 }
 
-struct Fleet* nation_fleetbylocation(Nation* self, Entity* location)
+struct Fleet* nation_fleetbylocation(Nation* self, Entity* location, Bool createnew)
 {
 	int i;
 
-	Fleet* thisfleet;
+	Fleet* thisfleet = NULL;
 
 	if (!self)
 	{
@@ -308,7 +310,10 @@ struct Fleet* nation_fleetbylocation(Nation* self, Entity* location)
 		}
 	}
 
-	thisfleet = nation_new_fleet(self, location->name);
+	if (createnew == 1)
+	{
+		thisfleet = nation_new_fleet(self, location->name);
+	}
 
 	return thisfleet;
 }

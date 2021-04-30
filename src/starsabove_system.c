@@ -150,7 +150,7 @@ void system_onClick(Entity* self, Game_Event* event_reciever, Bool playerowned)
         return NULL;
     }
 
-    if (self == NULL)
+    if (event_reciever == NULL)
     {
         slog("Cannot pass signal to on NULL event!");
         return NULL;
@@ -159,6 +159,31 @@ void system_onClick(Entity* self, Game_Event* event_reciever, Bool playerowned)
     system_gameevent_init(self, playerowned);
 
     gameevent_copy(event_reciever, self->clickEvent);
+}
+
+void system_update_fleetbutton(UI_Element* self)
+{
+    Entity* this_entity;
+
+    if (self == NULL)
+    {
+        slog("CANNOT UPDATE NULL BUTTON!"); return;
+    }
+
+    this_entity = (Entity*)self->data;
+
+    if (this_entity->owner == NULL) { self->hidden = 1; return; }
+
+    if (nation_fleetbylocation(this_entity->owner, this_entity, 0))
+    {
+        self->hidden = 0;
+    }
+
+    else
+    {
+        //if (strcmp(this_entity->name, "System1") == 0) { slog("ASD"); }
+        self->hidden = 1;
+    }
 }
 
 void system_update(Entity* self)
@@ -360,7 +385,7 @@ void system_reciever(Entity* self, Game_Event* event)
         {
             slog("ENOUGH RESOURCES FOR \"%s\"", ship->type);
 
-            fleet = nation_fleetbylocation(self->owner, self);
+            fleet = nation_fleetbylocation(self->owner, self, 1);
 
             if (fleet)
             {
@@ -369,7 +394,7 @@ void system_reciever(Entity* self, Game_Event* event)
 
                 fleet_addShip(fleet, ship);
 
-                Fleet* thisfleet; for (i = 0; i < max_national_fleets; i++) { thisfleet = fleet_fromlist(self->owner->fleets, i); if (thisfleet) { slog("%s", thisfleet->name); } }
+                //Fleet* thisfleet; for (i = 0; i < max_national_fleets; i++) { thisfleet = fleet_fromlist(self->owner->fleets, i); if (thisfleet) { slog("%s", thisfleet->name); } }
 
                 return;
             }
@@ -379,9 +404,79 @@ void system_reciever(Entity* self, Game_Event* event)
     }
 }
 
-void system_spawn_initbuttons(Entity* self)
+void system_fleetbutton_onClick(UI_Element* self, Game_Event* event_reciever, Bool playerowned)
+{
+    Entity* this_entity;
+
+    Fleet* local_fleet = NULL;
+
+    if (self == NULL)
+    {
+        slog("Cannot click on NULL button!");
+        return NULL;
+    }
+
+    if (self == NULL)
+    {
+        slog("Cannot pass signal to on NULL event!");
+        return NULL;
+    }
+
+    this_entity = (Entity*) self->data;
+
+    local_fleet = nation_fleetbylocation(this_entity->owner, this_entity, 0);
+
+    gameevent_copy(
+        event_reciever, 
+        new_gameevent
+        (
+            self->text,
+            "FLEETS",
+            "SHOW LOCAL FLEETS",
+            NULL,
+            0,
+            fleet_menustate(
+                local_fleet, 
+                NULL
+            ),
+            1
+        )
+    );
+}
+
+void system_spawn_initbuttons_fleets(Entity* self)
 {
     UI_Element* fleet_button;
+
+    if (!self)
+    {
+        slog("CANNOT INIT FLEET BUTTON FOR NULL ENTITY"); return;
+    }
+
+    fleet_button = &self->shortcut_buttons[0];
+
+    fleet_button->spriteMain = gf2d_sprite_load_all("images/ui/fleet_button.png", 24, 24, 1);
+    fleet_button->hidden = 0;
+    fleet_button->position = vector2d(
+        0,
+        (float)fleet_button->spriteMain->frame_w + (float)self->sprite->frame_h - 10
+    );
+    // fleet_button->position = vector2d(-1 * (float)fleet_button->spriteMain->frame_w, (-1 * (float)fleet_button->spriteMain->frame_h))
+
+    fleet_button->onClick = system_fleetbutton_onClick;
+    fleet_button->update = system_update_fleetbutton;
+
+    fleet_button->data = self;
+
+    fleet_button->collider_box = box_new();
+
+    vector2d_copy(fleet_button->collider_box->position, fleet_button->position);
+    fleet_button->collider_box->size = vector2d((float)fleet_button->spriteMain->frame_w, (float)self->sprite->frame_h);
+    fleet_button->collider_box->is_clickable = box_clickable;
+}
+
+void system_spawn_initbuttons(Entity* self)
+{
 
     if (!self)
     {
@@ -392,20 +487,7 @@ void system_spawn_initbuttons(Entity* self)
 
     self->shortcut_buttons = malloc(sizeof(UI_Element) * self->num_buttons);
 
-    fleet_button = &self->shortcut_buttons[0];
-
-    fleet_button->position = *vector2d_new();
-
-    fleet_button->spriteMain = gf2d_sprite_load_all("images/ui/fleet_button.png", 24, 24, 1);
-
-    fleet_button->hidden = 0;
-
-    fleet_button->position = vector2d(
-        0, //-1 * (float)fleet_button->spriteMain->frame_w,
-        (float)fleet_button->spriteMain->frame_h + (float)self->sprite->frame_h - 10 //(-1 * (float)fleet_button->spriteMain->frame_h)
-    );
-
-
+    system_spawn_initbuttons_fleets(self);
 }
 
 Entity* system_spawn(char* name, Vector2D position, Nation* owner, System_Data* systemdata)
@@ -455,7 +537,7 @@ Entity* system_spawn(char* name, Vector2D position, Nation* owner, System_Data* 
     ent->toJson = system_toJson;
     ent->reciever = system_reciever;
     ent->onNewTurn = system_onNewTurn;
-    ent->update = system_update;
+    //ent->update = system_update;
 
     system_spawn_initbuttons(ent);
 

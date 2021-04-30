@@ -211,6 +211,8 @@ Fleet* fleetlist_fromJson(SJson* fleets_json)
 		{
 			fleet_list[i]._inuse = 0;
 		}
+
+		
 	}
 
 	return fleet_list;
@@ -218,6 +220,7 @@ Fleet* fleetlist_fromJson(SJson* fleets_json)
 
 Fleet* fleet_init(char name[128], int status, char location[128])
 {
+	//slog(name);
 	int i = 0;
 
 	Fleet* fleet = malloc(sizeof(Fleet));
@@ -544,7 +547,7 @@ int fleet_addShip(Fleet* fleet, Ship* ship)
 
 	for (i = 0; i < max_ships; i++)
 	{
-		if (!fleet->ships[i]._inuse)
+		if (fleet->ships[i]._inuse != 1)
 		{
 			fleet->ships[i] = *ship;
 
@@ -574,19 +577,17 @@ int fleetlist_addFleet(Fleet* fleetlist, Fleet* fleet)
 	for (i = 0; i < max_national_fleets; i++)
 	{
 
-		if (fleet[i]._inuse == 1)
+		if (fleetlist[i]._inuse == 1)
 		{
-			slog("ASD");continue;
+			continue;
 		}
 
-		if (fleet[i]._inuse == 0)
-		{
+		if (fleetlist[i]._inuse) { slog("%i", i); }
 
-			fleetlist[i] = *fleet;
-			fleetlist[i]._inuse = 1;
+		fleetlist[i] = *fleet;
+		fleetlist[i]._inuse = 1;
 
-			return 1;
-		}
+		return 1;
 	}
 
 	return -1;

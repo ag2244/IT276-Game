@@ -11,6 +11,7 @@ typedef struct Entity;
 typedef struct Nation_s
 {
 	Bool _inuse;
+	Bool _is_player;
 	
 	char name[256];
 
@@ -94,7 +95,7 @@ void nations_list_onNewTurn();
 * @param location The location (star system) to locate a fleet in
 * @return NULL on error, or an existing Fleet object
 */
-struct Fleet* nation_fleetbylocation(Nation* self, struct Entity* location);
+struct Fleet* nation_fleetbylocation(Nation* self, struct Entity* location, Bool createnew);
 
 /*
 * @brief Get the menustate for a nation

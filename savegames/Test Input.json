@@ -214,16 +214,16 @@
 	"Nations":
 	[
 		{
-			"name": "Nation1"
+			"name": "Nation1",
 			"resources":
-				{
-					"Food": 20,
-					"Iron": 20,
-					"Uranium": 20,
-					"Gold": 20,
-					"Silicon": 20,
-					"Plastoil": 20
-				}
+			{
+				"Food": 20,
+				"Iron": 20,
+				"Uranium": 20,
+				"Gold": 20,
+				"Silicon": 20,
+				"Plastoil": 20
+			},
 			"fleets":
 			[
 				{

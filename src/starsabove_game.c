@@ -174,6 +174,8 @@ void test()
 
 	//test_ui();
 
+	get_nation_by_name("Nation1")->_is_player = 1;
+
 	strcpy(gameState.playerNation, "Nation1");
 
 	slog("Test Setup is done!");
@@ -393,7 +395,7 @@ void event_relay()
 
 Bool starsabove_hoverDetection(float mX, float mY) {
 
-    int i;
+	int i; int j;
 	UI_Manager* ui_manager;
 	EntityManager* entity_manager;
 	
@@ -440,6 +442,20 @@ Bool starsabove_hoverDetection(float mX, float mY) {
 			gameState.currentClickable_ui = NULL;
 			return 1;
 		}
+
+		//Go through each of the entity's UI buttons
+		for (j = 0; j < entity_manager->entity_list[i].num_buttons; j++)
+		{
+
+			//If the element is a clickable and the mouse is hovering over it, set the gameState.currentClickable_ui to point to it and return True.
+			if (ui_clickable(&entity_manager->entity_list[i].shortcut_buttons[j], mX, mY))
+			{
+				gameState.currentClickable_ui = &entity_manager->entity_list[i].shortcut_buttons[j];
+				gameState.currentClickable_entity = NULL;
+				return 1;
+			}
+		}
+
 	}
 
 	//No clickable is being hovered over
