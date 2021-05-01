@@ -173,6 +173,11 @@
 							"Plastoil": 3
 						}
 				}
+			],
+			"edges":
+			[
+				"System1",
+				"System4"
 			]
 		},
 		{

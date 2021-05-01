@@ -319,6 +319,9 @@ void entity_draw(Entity* ent)
 				if (ent->neighbors[i].collider_circle)
 				{
 					vector2d_copy(neighbor_pos, ent->neighbors[i].position);
+
+					neighbor_pos.x += ent->neighbors[i].sprite->frame_w / 2;
+					neighbor_pos.y += ent->neighbors[i].sprite->frame_h / 2;
 				}
 
 				else if (ent->collider_box)

@@ -68,6 +68,8 @@ void system_gameevent_init(struct Entity* ent);
 */
 Entity* system_spawn(char* name, Vector2D position, Nation* owner, System_Data* systemdata);
 
+Menu_State* system_movetoneighbors_menustate(Entity* self, Menu_State* previous, char title[128], Game_Event* template);
+
 /**
 * @brief get the number of planets from a system
 * @param system The system to get the number of planets from

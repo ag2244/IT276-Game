@@ -332,6 +332,7 @@ SJson* system_toJson(Entity* self)
 
     SJson* array_position;
     SJson* array_planets;
+    SJson* array_edges;
 
     char* owner;
     char nullstr[128] = "null";
@@ -342,6 +343,7 @@ SJson* system_toJson(Entity* self)
 
     array_position = sj_array_new();
     array_planets = sj_array_new();
+    array_edges = sj_array_new();
 
     if (self == NULL)
     {
@@ -374,6 +376,15 @@ SJson* system_toJson(Entity* self)
     }
 
     sj_object_insert(systemJson, "planets", array_planets);
+
+    //Add edges
+
+    for (i = 0; i < self->num_neighbors; i++)
+    {
+        sj_array_append(array_edges, sj_new_str( self->neighbors[i].name) );
+    }
+
+    if (sj_array_get_count(array_edges) > 0) {sj_object_insert(systemJson, "edges", array_edges);}
 
     return systemJson;
 
@@ -584,6 +595,65 @@ Entity* system_spawn(char* name, Vector2D position, Nation* owner, System_Data* 
     //Done!
     slog("System \"%s\" created!", ent->name);
     return ent;
+}
+
+Menu_State* system_movetoneighbors_menustate(Entity* self, Menu_State* previous, char title[128], Game_Event* template)
+{
+    int i;
+
+    Menu_State* neighbors_menustate;
+    UI_Element* neighbor_textbox;
+
+    if (!self)
+    {
+        slog("CANNOT CREATE NEIGHBORS MENU FOR NULL SYSTEM"); return NULL;
+    }
+
+    if (!previous)
+    {
+        slog("CANNOT USE NULL PREVIOUS MENU FOR NEIGHBORS MENU"); return NULL;
+    }
+
+    if (!title)
+    {
+        slog("CANNOT USE NULL NAME FOR NEIGHBORS MENU"); return NULL;
+    }
+
+    neighbors_menustate = menu_state_new(
+        previous,
+        textbox_init
+        (
+            vector2d(10, 10),
+            vector2d(250, 50),
+            title,
+            font_load("resources/fonts/futur.ttf", 16)
+        ),
+        NULL,
+        vector2d(10, 10),
+        0,
+        5
+    );
+
+    for (i = 0; i < self->num_neighbors; i++)
+    {
+        neighbor_textbox = textbox_init(
+            vector2d(10, 10),
+            vector2d(250, 50),
+            self->neighbors[i].name,
+            font_load("resources/fonts/futur.ttf", 12)
+        );
+
+        neighbor_textbox->signal = malloc(sizeof(Game_Event));
+
+        gameevent_copy(neighbor_textbox->signal, template);
+        strcpy(neighbor_textbox->signal->descriptor, self->neighbors[i].name);
+
+        menu_addTo(neighbors_menustate->current_menu, neighbor_textbox);
+    }
+
+    menu_state_hide(neighbors_menustate);
+
+    return neighbors_menustate;
 }
 
 //Get number of planets

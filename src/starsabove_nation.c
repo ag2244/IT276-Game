@@ -30,7 +30,9 @@ int load_nations(SJson* game_json)
 
 	char* name = NULL;
 	
-	int i;
+	int i; int j;
+
+	Fleet* thisfleet;
 
 	//game["Nations"]
 	nations = sj_object_get_value(game_json, "Nations");
@@ -68,6 +70,15 @@ int load_nations(SJson* game_json)
 		if (!nation)
 		{
 			slog("Could not add nation \"%s\"", name); return NULL;
+		}
+
+		for (j = 0; j < max_national_fleets; j++)
+		{
+			thisfleet = fleet_fromlist(nation->fleets, i);
+
+			if (!thisfleet) { continue; }
+
+			thisfleet->owner = nation;
 		}
 
 
@@ -275,9 +286,10 @@ Fleet* nation_new_fleet(Nation* self, char location_name[128])
 
 	if (fleetlist_addFleet(self->fleets, newFleet) == 1)
 	{
+		newFleet->owner = self;
+
 		return newFleet;
 	}
-	slog("BBB");
 
 	return NULL;
 }

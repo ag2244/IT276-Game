@@ -63,6 +63,7 @@ typedef struct
 	Ship* ships;
 
 	char location[128];
+	Nation* owner;
 
 	Bool _inuse;
 

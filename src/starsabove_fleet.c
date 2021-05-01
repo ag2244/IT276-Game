@@ -3,6 +3,7 @@
 #include "starsabove_fleet.h"
 
 #include "starsabove_nation.h"
+#include "starsabove_system.h"
 #include "starsabove_game_resources.h"
 
 typedef struct
@@ -428,6 +429,9 @@ Menu_State* fleet_menustate(Fleet* fleet, Menu_State* previous)
 
 	UI_Element* all_ships_button;
 	UI_Element* maintenancecosts_button;
+	UI_Element* move_button;
+
+	Game_Event* move_event;
 
 	char temp0[128]; char temp1[128];
 
@@ -507,6 +511,38 @@ Menu_State* fleet_menustate(Fleet* fleet, Menu_State* previous)
 	);
 
 	menu_addTo(fleet_menustate->current_menu, all_ships_button);
+
+	//Get move button
+
+	move_button = textbox_init
+	(
+		vector2d(10, 10),
+		vector2d(250, 50),
+		"Move Fleet",
+		font_load("resources/fonts/futur.ttf", 12)
+	);
+
+	move_event = new_gameevent(
+		fleet->owner->name,
+		fleet->name,
+		"MOVETO",
+		NULL,
+		0,
+		NULL,
+		NULL
+	);
+
+	move_button->signal = new_gameevent(
+		fleet->name,
+		"SHIPS",
+		"SHOW_ALL",
+		NULL,
+		NULL,
+		system_movetoneighbors_menustate(get_entity_by_name(fleet->location), fleet_menustate, "Move Fleet", move_event),
+		0
+	);
+
+	menu_addTo(fleet_menustate->current_menu, move_button);
 
 	menu_state_hide(fleet_menustate);
 
