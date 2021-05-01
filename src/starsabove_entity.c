@@ -3,6 +3,7 @@
 #include "gfc_vector.h"
 
 #include "gf2d_sprite.h"
+#include "gf2d_draw.h"
 #include "simple_logger.h"
 
 #include "starsabove_entity.h"
@@ -238,7 +239,11 @@ void entity_draw(Entity* ent)
 
 		if (camera_inview(ent->collider_circle, ent->collider_box) != 0)
 		{
+			int i;
 			Vector2D view_pos;
+
+			Vector2D collider_pos;
+			Vector2D neighbor_pos;
 
 			vector2d_sub(view_pos, ent->position, camera_get()->pos);
 
@@ -254,14 +259,17 @@ void entity_draw(Entity* ent)
 
 			if (ent->collider_circle)
 			{
-				vector2d_copy(ent->collider_circle->viewpos, view_pos);
+				vector2d_copy(collider_pos, view_pos);
 
-				ent->collider_circle->viewpos.x += ent->sprite->frame_w / 2;
-				ent->collider_circle->viewpos.y += ent->sprite->frame_h / 2;
+				collider_pos.x += ent->sprite->frame_w / 2;
+				collider_pos.y += ent->sprite->frame_h / 2;
+
+				vector2d_copy(ent->collider_circle->viewpos, collider_pos);
 			}
 
 			else if (ent->collider_box)
 			{
+				vector2d_copy(collider_pos, view_pos);
 				vector2d_copy(ent->collider_box->viewpos, view_pos);
 			}
 
@@ -302,6 +310,31 @@ void entity_draw(Entity* ent)
 
 					//slog("%f, %f", adjustedpos.x, adjustedpos.y);
 				}
+			}
+
+			//Go through the edges, draw lines
+			for (i = 0; i < ent->num_neighbors; i++)
+			{
+
+				if (ent->neighbors[i].collider_circle)
+				{
+					vector2d_copy(neighbor_pos, ent->neighbors[i].position);
+				}
+
+				else if (ent->collider_box)
+				{
+					vector2d_copy(neighbor_pos, ent->neighbors[i].position);
+
+					neighbor_pos.x += ent->neighbors[i].sprite->frame_w / 2;
+					neighbor_pos.y += ent->neighbors[i].sprite->frame_h / 2;
+				}
+
+				vector2d_sub(neighbor_pos, neighbor_pos, camera_get()->pos);
+
+				gf2d_draw_line(
+					collider_pos,
+					neighbor_pos,
+					vector4d(255, 255, 255, 100));
 			}
 		}
 

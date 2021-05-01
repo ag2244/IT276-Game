@@ -37,6 +37,9 @@ typedef struct Entity_s{
 	float frameRate;
 	int frameCount;
 
+	int num_neighbors;
+	struct Entity_s* neighbors;
+
 	int num_buttons;
 	UI_Element* shortcut_buttons;
 

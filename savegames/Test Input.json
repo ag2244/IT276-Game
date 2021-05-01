@@ -3,7 +3,7 @@
 	[
 		{
 			"name": "System1",
-			"position": [400, 500],
+			"position": [600, 700],
 			"owner": "Nation1",
 			"planets":
 			[
@@ -75,11 +75,16 @@
 							"Plastoil": 3
 						}
 				}
+			],
+			"edges":
+			[
+				"System2",
+				"System3"
 			]
 		},
 		{
 			"name": "System2",
-			"position": [300, 400],
+			"position": [200, 300],
 			"owner": "Nation1",
 			"planets":
 			[
@@ -119,11 +124,16 @@
 							"Plastoil": 3
 						}
 				}
+			],
+			"edges":
+			[
+				"System1",
+				"System4"
 			]
 		},
 		{
 			"name": "System3",
-			"position": [800, 200],
+			"position": [900, 600],
 			"owner": "null",
 			"planets":
 			[
@@ -167,7 +177,7 @@
 		},
 		{
 			"name": "System4",
-			"position": [600, 250],
+			"position": [650, 450],
 			"owner": "null",
 			"planets":
 			[
@@ -207,6 +217,11 @@
 							"Plastoil": 3
 						}
 				}
+			],
+			"edges":
+			[
+				"System1",
+				"System3"
 			]
 		}
 	],

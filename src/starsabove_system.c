@@ -30,6 +30,37 @@ System_Data* system_data_new(Uint32 numPlanets)
     return systemdata;
 }
 
+void load_system_neighbors(Entity* system, SJson* system_json)
+{
+    int i;
+
+    SJson* neighbors_json;
+    Entity* neighbors;
+
+    if (!system_json)
+    {
+        slog("CANNOT LOAD EDGES FOR NULL SYSTEM JSON"); return;
+    }
+
+    neighbors_json = sj_object_get_value(system_json, "edges");
+
+    if ((!neighbors_json) || (!sj_is_array(neighbors_json)))
+    {
+        slog("Could not load this system's edges"); return;
+    }
+
+    neighbors = malloc(sizeof(Entity) * sj_array_get_count(neighbors_json));
+
+    for (i = 0; i < sj_array_get_count(neighbors_json); i++)
+    {
+        neighbors[i] = *get_entity_by_name(sj_get_string_value(sj_array_get_nth(neighbors_json, i)));
+    }
+
+    system->num_neighbors = sj_array_get_count(neighbors_json);
+    system->neighbors = neighbors;
+
+}
+
 int load_systems(SJson* game_json)
 {
     //The star systems in this game
@@ -51,7 +82,6 @@ int load_systems(SJson* game_json)
     int i, j;
     int numPlanets;
 
-    //game["Systems"]
     systems = sj_object_get_value(game_json, "Systems");
 
     if (!systems)
@@ -139,6 +169,16 @@ int load_systems(SJson* game_json)
     }
 
     slog("All systems have been spawned!");
+
+    for (i = 0; i < systems->v.array->count; i++)
+    {
+        currentSystem = sj_array_get_nth(systems, i);
+
+        load_system_neighbors(&entity_manager_get()->entity_list[i], currentSystem);
+    }
+
+    slog("All systems have been connected with their neighbors!");
+
     return 1;
 }
 
