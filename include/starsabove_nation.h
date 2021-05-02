@@ -3,6 +3,8 @@
 #ifndef __NATION_H__
 #define __NATION_H__
 
+#include "starsabove_game_resources.h"
+
 typedef struct Menu_State;
 
 typedef struct Fleet;
@@ -64,6 +66,12 @@ Nation_List* nation_list_get();
 void nations_list_free();
 
 /**
+* @brief Recieve a game event and act upon it
+* @param event The event to recieve and act upon
+*/
+void nation_list_reciever(Game_Event* event);
+
+/**
 * @brief Make a new nation
 * @param name the name of the nation
 * @param max_systems the maximum number of systems it can own
@@ -89,6 +97,12 @@ void nation_onNewTurn(Nation* nation);
 */
 void nations_list_onNewTurn();
 
+/**
+* @brief Recieve a game event and act upon it
+* @param event The event to recieve and act upon
+*/
+void nation_reciever(Nation* nation, Game_Event* event);
+
 /*
 * @brief Returns the fleet in a certain location
 * @param self The owner of the fleet
@@ -96,6 +110,14 @@ void nations_list_onNewTurn();
 * @return NULL on error, or an existing Fleet object
 */
 struct Fleet* nation_fleetbylocation(Nation* self, struct Entity* location, Bool createnew);
+
+/*
+* @brief Returns the fleet with a certain name
+* @param self The owner of the fleet
+* @param name The name of the fleet
+* @return NULL on error, or an existing Fleet object
+*/
+struct Fleet* nation_fleetbyname(Nation* self, char name[128], Bool createnew);
 
 /*
 * @brief Get the menustate for a nation

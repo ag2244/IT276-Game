@@ -68,7 +68,15 @@ void system_gameevent_init(struct Entity* ent);
 */
 Entity* system_spawn(char* name, Vector2D position, Nation* owner, System_Data* systemdata);
 
-Menu_State* system_movetoneighbors_menustate(Entity* self, Menu_State* previous, char title[128], Game_Event* template);
+/*
+* @brief Get a menustate consisting of all the system's neighbors
+* @param self The system whose neighbors to get
+* @param previous The previous men state
+* @param title Title of the menu
+* @param template The game event to use as a template for each button
+* @return NULL on error, or a new menu_state.
+*/
+Menu_State* system_neighbors_menustate(Entity* self, Menu_State* previous, char title[128], Game_Event* template);
 
 /**
 * @brief get the number of planets from a system

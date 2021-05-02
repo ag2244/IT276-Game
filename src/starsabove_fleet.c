@@ -534,13 +534,16 @@ Menu_State* fleet_menustate(Fleet* fleet, Menu_State* previous)
 
 	move_button->signal = new_gameevent(
 		fleet->name,
-		"SHIPS",
-		"SHOW_ALL",
+		NULL,
+		"CHOOSE_DESTINATION",
 		NULL,
 		NULL,
-		system_movetoneighbors_menustate(get_entity_by_name(fleet->location), fleet_menustate, "Move Fleet", move_event),
+		system_neighbors_menustate(get_entity_by_name(fleet->location), fleet_menustate, "Move Fleet", move_event),
 		0
 	);
+	
+	//Menu_State* temp = move_button->signal->menu_state;
+	//slog(temp->current_menu->beginning->element->signal->command);
 
 	menu_addTo(fleet_menustate->current_menu, move_button);
 

@@ -163,6 +163,37 @@ void nations_list_free()
 	slog("Nations List freed");
 }
 
+void nation_list_reciever(Game_Event* event)
+{
+	int i;
+	Nation* current_nation;
+
+	if (nation_list.nations == NULL) {
+		slog("NATIONS LIST DOES NOT EXIST!");
+		return;
+	}
+
+	if (event == NULL) {
+		slog("CANNOT RECIEVE A NULL EVENT");
+		return;
+	}
+
+	for (i = 0; i < nation_list.max_nations; i++)
+	{
+		current_nation = &nation_list.nations[i];
+
+		if (!current_nation->_inuse)
+		{
+			continue;
+		}
+
+		if (strcmp(current_nation->name, event->target_id) == 0)
+		{
+			nation_reciever(current_nation, event);
+		}
+	}
+}
+
 Nation* nation_new(Nation* nation, char* name, float* resources, Fleet* fleets)
 {
 
@@ -257,6 +288,37 @@ void nations_list_onNewTurn()
 	}
 }
 
+void nation_reciever(Nation* nation, Game_Event* event)
+{
+
+	if (nation == NULL)
+	{
+		slog("CANNOT RECIEVE EVENT FOR NULL NATION"); return;
+	}
+
+	if (event == NULL)
+	{
+		slog("CANNOT RECIEVE NULL EVENT FOR NATION"); return;
+	}
+
+	//If the command is to move a fleet
+	if (strcmp(event->command, "MOVETO") == 0)
+	{
+		Fleet* thisfleet;
+
+		thisfleet = nation_fleetbyname(nation, event->sub_target_id, 0);
+
+		if (!thisfleet)
+		{
+			slog("UNABLE TO GET FLEET FOR REQUESTED MOVE ACTION"); return;
+		}
+
+		strcpy(thisfleet->location, event->descriptor); slog("%i", thisfleet->status);
+		thisfleet->status = (int)SHIP_TURNEND; slog("%i", thisfleet->status);
+	}
+
+}
+
 Fleet* nation_new_fleet(Nation* self, char location_name[128])
 {
 	int i;
@@ -325,6 +387,47 @@ struct Fleet* nation_fleetbylocation(Nation* self, Entity* location, Bool create
 	if (createnew == 1)
 	{
 		thisfleet = nation_new_fleet(self, location->name);
+	}
+
+	return thisfleet;
+}
+
+struct Fleet* nation_fleetbyname(Nation* self, char name[128], Bool createnew)
+{
+	int i;
+
+	Fleet* thisfleet = NULL;
+
+	if (!self)
+	{
+		slog("CANNOT RETRIEVE FLEET FROM NULL NATION"); return NULL;
+	}
+
+	if (!name)
+	{
+		slog("CANNOT RETRIEVE FLEET WITH NULL NAME"); return NULL;
+	}
+
+	for (i = 0; i < max_national_fleets; i++)
+	{
+		thisfleet = fleet_fromlist(self->fleets, i);
+
+		if (!thisfleet) { continue; }
+
+		if (strcmp(thisfleet->name, name) == 0)
+		{
+			return thisfleet;
+		}
+	}
+
+	if (createnew == 1)
+	{
+		//thisfleet = nation_new_fleet(self, location->name);
+	}
+
+	if (!thisfleet)
+	{
+		slog("COULD NOT FIND FLEET WITH NAME \"%s\"", name);
 	}
 
 	return thisfleet;

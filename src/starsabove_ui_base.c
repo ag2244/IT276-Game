@@ -304,7 +304,7 @@ void ui_onClick(UI_Element* element, Game_Event* event_reciever)
 
 		if (element->signal)
 		{
-			gameevent_copy(event_reciever, element->signal);
+			gameevent_copy(event_reciever, element->signal); slog(element->signal->command);
 		}
 
 	}

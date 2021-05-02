@@ -349,6 +349,8 @@ void event_relay()
 		gameState.player_menustate = gameState.frame_event.menu_state;
 
 		menu_state_show(gameState.player_menustate);
+
+		return;
 	}
 
 	//If this is a general game event
@@ -369,6 +371,8 @@ void event_relay()
 	{
 		return NULL;
 	}
+
+	nation_list_reciever(&gameState.frame_event);
 
 	//Go through each entity in the entity manager
 	for (i = 0; i < entity_manager->max_entities; i++)

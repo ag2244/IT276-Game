@@ -404,7 +404,6 @@ void system_reciever(Entity* self, Game_Event* event)
     {
         slog("ENTITY CANNOT RECIEVE NULL EVENT"); return;
     }
-
     //If the command is to construct a building
     if (strcmp(event->command, "CONSTRUCT_BUILDING") == 0)
     {
@@ -597,7 +596,7 @@ Entity* system_spawn(char* name, Vector2D position, Nation* owner, System_Data* 
     return ent;
 }
 
-Menu_State* system_movetoneighbors_menustate(Entity* self, Menu_State* previous, char title[128], Game_Event* template)
+Menu_State* system_neighbors_menustate(Entity* self, Menu_State* previous, char title[128], Game_Event* template)
 {
     int i;
 

@@ -19,10 +19,10 @@ static const int max_national_fleets = 100;
 
 typedef enum shipStatus
 {
-	SHIP_TEMPLATE = -1,
+	SHIP_TEMPLATE = 0,
 	SHIP_CONSTRUCTING,
 	SHIP_ACTIVE,
-	SHIP_MOVING,
+	SHIP_TURNEND,
 	SHIP_DISABLED
 } 
 shipStatus;
@@ -33,7 +33,7 @@ static char ship_status_names[5][128] =
 	"Unbuilt",
 	"Constructing",
 	"Active",
-	"Moving",
+	"Turn Over",
 	"Disabled"
 };
 
