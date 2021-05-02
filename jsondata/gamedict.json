@@ -80,6 +80,7 @@
 	[
 		{
 			"type": "Light",
+			"buildtime": 2,
 			"maintenance":
 			{
 				"Iron": 1,
@@ -97,6 +98,7 @@
 		},
 		{
 			"type": "Cruiser",
+			"buildtime": 2,
 			"maintenance":
 			{
 				"Iron": 1,
@@ -114,6 +116,7 @@
 		},
 		{
 			"type": "Battleship",
+			"buildtime": 2,
 			"maintenance":
 			{
 				"Iron": 1,
@@ -131,6 +134,7 @@
 		},
 		{
 			"type": "Carrier",
+			"buildtime": 2,
 			"maintenance":
 			{
 				"Iron": 1,
@@ -148,6 +152,7 @@
 		},
 		{
 			"type": "Engineering",
+			"buildtime": 2,
 			"maintenance":
 			{
 				"Iron": 1,

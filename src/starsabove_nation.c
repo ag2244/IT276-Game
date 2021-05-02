@@ -248,6 +248,8 @@ void nation_onNewTurn(Nation* nation)
 	EntityManager entitymgr = *entity_manager_get();
 	Entity* thisSystem;
 
+	Fleet* thisfleet = NULL;
+
 	float* resources = malloc(numresources * sizeof(float));
 
 	for (i = 0; i < 6; i++) { resources[i] = 0; }
@@ -263,6 +265,16 @@ void nation_onNewTurn(Nation* nation)
 		{
 			resources = resourcelist_add(thisSystem->onNewTurn(thisSystem), resources);
 		}
+
+	}
+
+	for (i = 0; i < max_national_fleets; i++)
+	{
+		thisfleet = fleet_fromlist(nation->fleets, i);
+
+		if (!thisfleet) { continue; }
+
+		resources = resourcelist_add (fleet_onNewTurn(thisfleet), resources);
 
 	}
 
@@ -313,8 +325,11 @@ void nation_reciever(Nation* nation, Game_Event* event)
 			slog("UNABLE TO GET FLEET FOR REQUESTED MOVE ACTION"); return;
 		}
 
-		strcpy(thisfleet->location, event->descriptor); slog("%i", thisfleet->status);
-		thisfleet->status = (int)SHIP_TURNEND; slog("%i", thisfleet->status);
+		if ((thisfleet->status != (int)SHIP_ACTIVE) || (thisfleet->status != (int)SHIP_PARTIALLY_ACTIVE)) { slog("Fleet cannot move"); return; }
+
+		strcpy(thisfleet->location, event->descriptor);
+
+		thisfleet->status = (int)SHIP_TURNEND;
 	}
 
 }
@@ -345,11 +360,12 @@ Fleet* nation_new_fleet(Nation* self, char location_name[128])
 	}
 
 	newFleet = fleet_init(fleet_name, 0, location_name);
+	newFleet->owner = self;
+
+	newFleet->status = (int)SHIP_CONSTRUCTING;
 
 	if (fleetlist_addFleet(self->fleets, newFleet) == 1)
 	{
-		newFleet->owner = self;
-
 		return newFleet;
 	}
 

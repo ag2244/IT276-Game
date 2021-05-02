@@ -203,7 +203,10 @@ void system_onClick(Entity* self, Game_Event* event_reciever, Bool playerowned)
 
 void system_update_fleetbutton(UI_Element* self)
 {
+    int i;
     Entity* this_entity;
+
+    Nation* thisNation;
 
     if (self == NULL)
     {
@@ -212,17 +215,21 @@ void system_update_fleetbutton(UI_Element* self)
 
     this_entity = (Entity*)self->data;
 
-    if (this_entity->owner == NULL) { self->hidden = 1; return; }
-
-    if (nation_fleetbylocation(this_entity->owner, this_entity, 0))
+    for (i = 0; i < nation_list_get()->max_nations; i++)
     {
-        self->hidden = 0;
-    }
+        thisNation = &nation_list_get()->nations[i];
 
-    else
-    {
-        //if (strcmp(this_entity->name, "System1") == 0) { slog("ASD"); }
-        self->hidden = 1;
+        if (!thisNation->_inuse) { continue; }
+
+        if ((nation_fleetbylocation(thisNation, this_entity, 0)) && (thisNation->_is_player))
+        {
+            self->hidden = 0;
+        }
+
+        else
+        {
+            self->hidden = 1;
+        }
     }
 }
 
@@ -433,7 +440,7 @@ void system_reciever(Entity* self, Game_Event* event)
 
         if (resourcelist_checkdeficit(new_resources))
         {
-            slog("ENOUGH RESOURCES FOR \"%s\"", ship->type);
+            slog("ENOUGH RESOURCES FOR \"%s\"", ship->type); 
 
             fleet = nation_fleetbylocation(self->owner, self, 1);
 
@@ -456,7 +463,10 @@ void system_reciever(Entity* self, Game_Event* event)
 
 void system_fleetbutton_onClick(UI_Element* self, Game_Event* event_reciever, Bool playerowned)
 {
+    int i;
+
     Entity* this_entity;
+    Nation* thisnation;
 
     Fleet* local_fleet = NULL;
 
@@ -474,7 +484,21 @@ void system_fleetbutton_onClick(UI_Element* self, Game_Event* event_reciever, Bo
 
     this_entity = (Entity*) self->data;
 
-    local_fleet = nation_fleetbylocation(this_entity->owner, this_entity, 0);
+    for (i = 0; i < nation_list_get()->max_nations; i++)
+    {
+        thisnation = &nation_list_get()->nations[i];
+
+        if (!thisnation->_inuse) { continue; }
+
+        local_fleet = nation_fleetbylocation(thisnation, this_entity, 0);
+
+        if (thisnation->_is_player && (local_fleet))
+        {
+            break;
+        }
+    }
+
+    if (!local_fleet) { slog("NO SELECTABLE FLEET HERE!"); return; }
 
     gameevent_copy(
         event_reciever, 

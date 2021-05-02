@@ -44,7 +44,7 @@ typedef struct Entity_s{
 	UI_Element* shortcut_buttons;
 
 	/*Function pointers!*/
-	void (*update)(struct Entity_s *self);
+	void (*update)(struct Entity_s*self);
 	void (*draw)(struct Entity_s* self);
 	void (*free)(struct Entity_s* self);
 	

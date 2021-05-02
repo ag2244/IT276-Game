@@ -22,17 +22,19 @@ typedef enum shipStatus
 	SHIP_TEMPLATE = 0,
 	SHIP_CONSTRUCTING,
 	SHIP_ACTIVE,
+	SHIP_PARTIALLY_ACTIVE,
 	SHIP_TURNEND,
 	SHIP_DISABLED
 } 
 shipStatus;
 
-static const int num_ship_statuses = 5;
-static char ship_status_names[5][128] =
+static const int num_ship_statuses = 6;
+static char ship_status_names[6][128] =
 {
 	"Unbuilt",
 	"Constructing",
 	"Active",
+	"Partially Active",
 	"Turn Over",
 	"Disabled"
 };
@@ -43,6 +45,8 @@ typedef struct
 
 	int status;
 	int health;
+
+	int buildtime;
 
 	float* maintenance;
 
@@ -81,7 +85,7 @@ Ship* ship_copy(Ship* src, Fleet* fleet);
 
 Ship* ship_fromJson(SJson* ship_json, Fleet* fleet);
 
-Ship* ship_init(char shiptype[128], float* maintenance, float* costs, int health, int status, Fleet* fleet);
+Ship* ship_init(char shiptype[128], float* maintenance, float* costs, int health, int status, int buildtime, Fleet* fleet);
 
 Fleet* fleet_fromjson(SJson* fleet_json);
 
@@ -96,6 +100,10 @@ Menu_State* ships_menustate(Ship* ships, Menu_State* previous, Bool in_fleet, Ga
 Menu_State* fleet_menustate(Fleet* fleet, Menu_State* previous);
 
 float* fleet_totalmaintenance(Fleet* fleet);
+
+float* ship_onNewTurn(Ship* self);
+
+float* fleet_onNewTurn(Fleet* self);
 
 int fleet_addShip(Fleet* fleet, Ship* ship);
 

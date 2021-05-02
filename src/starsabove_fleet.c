@@ -88,7 +88,7 @@ Ship* getshipbyname(char shiptype[128])
 
 Ship* ship_copy(Ship* src, Fleet* fleet)
 {
-	return ship_init(src->type, src->maintenance, src->costs, src->health, src->status, fleet);
+	return ship_init(src->type, src->maintenance, src->costs, src->health, src->status, src->buildtime, fleet);
 }
 
 Ship* ship_fromJson(SJson* ship_json, Fleet* fleet)
@@ -96,6 +96,7 @@ Ship* ship_fromJson(SJson* ship_json, Fleet* fleet)
 
 	int* health = 0;
 	int* status = 0;
+	int* buildtime = 0;
 
 	if (!ship_json)
 	{
@@ -106,16 +107,19 @@ Ship* ship_fromJson(SJson* ship_json, Fleet* fleet)
 
 	sj_get_integer_value(sj_object_get_value(ship_json, "status"), &status);
 
+	sj_get_integer_value(sj_object_get_value(ship_json, "buildtime"), &buildtime);
+
 	return ship_init(
 		sj_get_string_value(sj_object_get_value(ship_json, "type")),
 		resourcelist_copy(resources_fromJson(sj_object_get_value(ship_json, "maintenance"))),
 		resourcelist_copy(resources_fromJson(sj_object_get_value(ship_json, "costs"))),
 		health,
 		status,
+		buildtime,
 		fleet);
 }
 
-Ship* ship_init(char shiptype[128], float* maintenance, float* costs, int health, int status, Fleet* fleet)
+Ship* ship_init(char shiptype[128], float* maintenance, float* costs, int health, int status, int buildtime, Fleet* fleet)
 {
 	Ship* ship = malloc(sizeof(Ship));
 
@@ -127,6 +131,7 @@ Ship* ship_init(char shiptype[128], float* maintenance, float* costs, int health
 
 	ship->health = health;
 	ship->status = status;
+	ship->buildtime = buildtime;
 
 	ship->_inuse = 1;
 
@@ -370,7 +375,11 @@ Menu_State* ships_menustate(Ship* ships, Menu_State* previous, Bool in_fleet, Ga
 
 			if (!ships[i]._inuse) { continue; }
 
-			sprintf(textbox_title, "%s | %i | %s", ships[i].type, ships[i].health, ship_status_names[ships[i].status]);
+			//slog("%i", ships[i].status);
+
+			if (ships[i].status != (int)SHIP_CONSTRUCTING) { sprintf(textbox_title, "%s | %i | %s", ships[i].type, ships[i].health, ship_status_names[ships[i].status]); }
+
+			else { sprintf(textbox_title, "%s | %s, %i turns left", ships[i].type, ship_status_names[ships[i].status], ships[i].buildtime); }
 
 			ship_button = textbox_init
 			(
@@ -541,7 +550,6 @@ Menu_State* fleet_menustate(Fleet* fleet, Menu_State* previous)
 		system_neighbors_menustate(get_entity_by_name(fleet->location), fleet_menustate, "Move Fleet", move_event),
 		0
 	);
-	
 	//Menu_State* temp = move_button->signal->menu_state;
 	//slog(temp->current_menu->beginning->element->signal->command);
 
@@ -570,6 +578,61 @@ float* fleet_totalmaintenance(Fleet* fleet)
 	return resources;
 }
 
+float* ship_onNewTurn(Ship* self)
+{
+	int i;
+	
+	float* resources;
+
+	if (!self)
+	{
+		slog("CANNOT PERFORM NEW TURN FUNCTIONS ON NULL SHIP"); return NULL;
+	}
+
+	if (self->buildtime > 0) { self->buildtime--; }
+
+	if ((self->buildtime == 0) && (self->status == (int)SHIP_CONSTRUCTING)) { self->status = (int)SHIP_ACTIVE; }
+
+	resources = resourcelist_copy(self->maintenance);
+
+	return resources;
+}
+
+float* fleet_onNewTurn(Fleet* self)
+{
+	int i; int numactive = 0; int fleetsize = 0;
+
+	float* resources;
+
+	if (!self)
+	{
+		slog("CANNOT PERFORM NEW TURN FUNCTIONS ON NULL FLEET"); return NULL;
+	}
+
+	resources = malloc(sizeof(float) * numresources);
+
+	for (i = 0; i < numresources; i++) resources[i] = 0;
+
+	for (i = 0; i < max_ships; i++)
+	{
+		if (!self->ships[i]._inuse) { continue; }
+
+		fleetsize++;
+
+		if (self->ships[i].status == (int)SHIP_ACTIVE) { numactive++; }
+
+		resources = resourcelist_subtract(resources, ship_onNewTurn(&self->ships[i]));
+	}
+
+	if ((numactive < fleetsize) && (self->status == (int)SHIP_ACTIVE)) { self->status = (int)SHIP_PARTIALLY_ACTIVE; }
+
+	if (numactive == fleetsize) { self->status = (int)SHIP_ACTIVE; }
+
+	slog("%s, %i ?= %i", self->name, numactive, fleetsize);
+
+	return resources;
+}
+
 int fleet_addShip(Fleet* fleet, Ship* ship)
 {
 	int i;
@@ -589,6 +652,7 @@ int fleet_addShip(Fleet* fleet, Ship* ship)
 		if (fleet->ships[i]._inuse != 1)
 		{
 			fleet->ships[i] = *ship;
+			ship->fleet = fleet;
 
 			return 1;
 		}
@@ -647,6 +711,8 @@ SJson* ship_toJson(Ship* self)
 	sj_object_insert(ship, "status", sj_new_int(self->status));
 
 	sj_object_insert(ship, "health", sj_new_int(self->health));
+
+	sj_object_insert(ship, "buildtime", sj_new_int(self->buildtime));
 
 	sj_object_insert(ship, "maintenance", resources_toJson(self->maintenance));
 
