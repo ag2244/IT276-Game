@@ -20,6 +20,15 @@
 
 #include "starsabove_text.h"
 
+typedef enum
+{
+	SA_MAIN_MENU = 0,
+	SA_INGAME,
+	SA_PAUSED,
+	SA_LEVEL_EDITOR
+}
+gameStatus;
+
 typedef struct GameState_s
 {
 	int turn;
@@ -32,6 +41,8 @@ typedef struct GameState_s
 
 	Bool _hasevent;
 	Game_Event frame_event;
+
+	gameStatus status;
 
 } GameState;
 

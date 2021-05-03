@@ -15,10 +15,10 @@
 int main(int argc, char * argv[])
 {
     /*variable declarations*/
-    int done = 0;
+    int done = 0; int in_menu = 0;
     const Uint8 * keys;
     const Uint32* mouse;
-    Sprite *sprite;
+    Sprite *background_sprite;
     
     int mx,my;
     float mf = 0;
@@ -42,7 +42,7 @@ int main(int argc, char * argv[])
     SDL_ShowCursor(SDL_DISABLE);
     
     /*demo setup*/
-    sprite = gf2d_sprite_load_image("images/backgrounds/space.png");
+    background_sprite = gf2d_sprite_load_image("images/backgrounds/space.png");
     mouseNormal = gf2d_sprite_load_all("images/ui/cursor.png",32,32,1);
     mouseClickable = gf2d_sprite_load_all("images/ui/cursor_click.png", 32, 32, 1);
 
@@ -62,12 +62,12 @@ int main(int argc, char * argv[])
         // all drawing should happen between clear_screen and next_frame
 
         //backgrounds drawn first
-        gf2d_sprite_draw_image(sprite,vector2d(0,0));
+        gf2d_sprite_draw_image(background_sprite,vector2d(0,0));
             
             //Stars Above stuff
             processKeys(keys, mouse);
 
-            starsabove_loop();
+            //starsabove_loop();
 
             //Mouse position, sprite
             if (starsabove_hoverDetection(mx, my)) {

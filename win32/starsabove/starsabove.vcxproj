@@ -170,6 +170,7 @@
     <ClInclude Include="..\..\include\gf2d_graphics.h" />
     <ClInclude Include="..\..\include\gf2d_sprite.h" />
     <ClInclude Include="..\..\include\starsabove_army.h" />
+    <ClInclude Include="..\..\include\starsabove_ui_battlescreen.h" />
     <ClInclude Include="..\..\include\starsabove_buildable.h" />
     <ClInclude Include="..\..\include\starsabove_camera.h" />
     <ClInclude Include="..\..\include\starsabove_collision.h" />
@@ -223,6 +224,7 @@
     <ClCompile Include="..\..\src\starsabove_system.c" />
     <ClCompile Include="..\..\src\starsabove_text.c" />
     <ClCompile Include="..\..\src\starsabove_ui_base.c" />
+    <ClCompile Include="..\..\src\starsabove_ui_battlescreen.c" />
     <ClCompile Include="..\..\src\starsabove_ui_gametext.c" />
     <ClCompile Include="..\..\src\starsabove_ui_qtytextbox.c" />
     <ClCompile Include="..\..\src\starsabove_ui_textbox.c" />

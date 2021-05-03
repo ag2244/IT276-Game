@@ -251,6 +251,8 @@ void prepare_game()
 
 	camera_init(vector2d(0, 0), vector2d(1500, 900), vector2d(40, 40));
 
+	gameState.status = SA_INGAME;
+
 	atexit(starsabove_exit);
 
 	slog("============ GAME LOADED! ============");

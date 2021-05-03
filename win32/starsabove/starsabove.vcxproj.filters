@@ -123,6 +123,9 @@
     <ClInclude Include="..\..\src\starsabove_fleet.h">
       <Filter>Header Files\Stars Above</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\starsabove_ui_battlescreen.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\gfc\simple_logger\src\simple_logger.c">
@@ -241,6 +244,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\starsabove_fleet.c">
       <Filter>Source Files\Stars Above</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\starsabove_ui_battlescreen.c">
+      <Filter>Source Files\Stars Above\UI</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

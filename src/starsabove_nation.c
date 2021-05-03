@@ -325,7 +325,7 @@ void nation_reciever(Nation* nation, Game_Event* event)
 			slog("UNABLE TO GET FLEET FOR REQUESTED MOVE ACTION"); return;
 		}
 
-		if ((thisfleet->status != (int)SHIP_ACTIVE) || (thisfleet->status != (int)SHIP_PARTIALLY_ACTIVE)) { slog("Fleet cannot move"); return; }
+		if ((thisfleet->status != (int)SHIP_ACTIVE) && (thisfleet->status != (int)SHIP_PARTIALLY_ACTIVE)) { slog("Fleet cannot move"); return; }
 
 		strcpy(thisfleet->location, event->descriptor);
 
