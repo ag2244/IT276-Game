@@ -245,6 +245,8 @@ void load_game(char filename[128])
 {
 	int i = 0; EntityManager* entity_manager = entity_manager_get();
 
+	char savefile[128];
+
 	// Starting the nations list
 	nations_list_init(24);
 
@@ -253,8 +255,16 @@ void load_game(char filename[128])
 	// Initialize the player's menu state
 	gameState.player_menustate = NULL;
 
-	// Set up the debug world
-	test();
+	// Set up the world
+	load_gamerule("jsondata/gamedict.json");
+
+	sprintf(savefile, "savegames/%s", filename);
+
+	load_gamefile(savefile);
+
+	get_nation_by_name("Nation1")->_is_player = 1;
+
+	strcpy(gameState.playerNation, "Nation1");
 
 	gameState.player_menustate = nation_menustate(get_nation_by_name(gameState.playerNation), 1);
 
@@ -383,6 +393,13 @@ void event_relay()
 			menu_state_free(menu_state_root(gameState.player_menustate));
 
 			load_game(gameState.frame_event.descriptor);
+		}
+
+		if (strcmp(gameState.frame_event.command, "LEVEL EDITOR") == 0)
+		{
+			slog("LEVEL EDITOR");
+
+			return;
 		}
 	}
 

@@ -88,6 +88,7 @@ Menu_State* main_menu()
 	Menu_State* title_menustate = NULL;
 	UI_Element* title;
 	UI_Element* load_game_button;
+	UI_Element* leveleditor_button;
 
 	//Make a menu with a title
 	title = textbox_init_clear(vector2d(10, 10), vector2d(300, 150), "STARS ABOVE", font_load("resources/fonts/futur.ttf", 72));
@@ -101,6 +102,7 @@ Menu_State* main_menu()
 		15
 	);
 
+	//Load game buttons
 	load_game_button = textbox_init_clear(vector2d(0, 0), vector2d(200, 50), "LOAD A SAVE FILE", font_load("resources/fonts/futur.ttf", 20));
 
 	menu_addTo(
@@ -118,9 +120,24 @@ Menu_State* main_menu()
 			0
 		);
 
-	return title_menustate;
+	//Load game buttons
+	leveleditor_button = textbox_init_clear(vector2d(0, 0), vector2d(200, 50), "LEVEL EDITOR", font_load("resources/fonts/futur.ttf", 20));
 
-	//menu_state_hide(testmenustate);
-	//menu_state_show(testmenustate);
+	menu_addTo(
+		title_menustate->current_menu,
+		leveleditor_button
+	);
+
+	leveleditor_button->signal = new_gameevent(
+		"STARSABOVE",
+		NULL,
+		"LEVEL EDITOR",
+		NULL,
+		0,
+		NULL,
+		0
+	);
+
+	return title_menustate;
 
 }
