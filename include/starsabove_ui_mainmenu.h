@@ -3,6 +3,9 @@
 #ifndef __UI_MAINMENU__
 #define __UI_MAINMENU__
 
+//Thanks very much to the creators of dirent
+#include <dirent.h>
+
 #include "starsabove_ui_base.h"
 #include "starsabove_ui_textbox.h"
 

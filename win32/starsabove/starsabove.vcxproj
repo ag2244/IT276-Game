@@ -166,6 +166,7 @@
     <ClInclude Include="..\..\gfc\include\gfc_vector.h" />
     <ClInclude Include="..\..\gfc\simple_json\include\simple_json.h" />
     <ClInclude Include="..\..\gfc\simple_logger\include\simple_logger.h" />
+    <ClInclude Include="..\..\include\dirent.h" />
     <ClInclude Include="..\..\include\gf2d_draw.h" />
     <ClInclude Include="..\..\include\gf2d_graphics.h" />
     <ClInclude Include="..\..\include\gf2d_sprite.h" />

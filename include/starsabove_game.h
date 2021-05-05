@@ -82,7 +82,7 @@ void prepare_game();
 * @brief Load up a game and set up for play
 * @return NULL on error
 */
-void load_game();
+void load_game(char filename[128]);
 
 /**
 * @brief The game loop itself, called from game.c

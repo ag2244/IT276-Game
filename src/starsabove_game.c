@@ -2,6 +2,8 @@
 
 #include "simple_logger.h"
 
+#include "starsabove_ui_mainmenu.h"
+
 #include "starsabove_game.h"
 #include "starsabove_camera.h"
 
@@ -239,11 +241,9 @@ void prepare_game()
 	//load_game();
 }
 
-void load_game()
+void load_game(char filename[128])
 {
 	int i = 0; EntityManager* entity_manager = entity_manager_get();
-
-	font_load("resources/fonts/futur.ttf", 12);
 
 	// Starting the nations list
 	nations_list_init(24);
@@ -344,10 +344,8 @@ void event_relay()
 	//If the new event's menu state isn't null
 	if (gameState.frame_event.menu_state != NULL)
 	{
-
 		if (gameState.player_menustate)
 		{
-
 			menu_state_hide(gameState.player_menustate);
 
 			if (gameState.frame_event._menubase == 1)
@@ -378,6 +376,13 @@ void event_relay()
 		if (strcmp(gameState.frame_event.sub_target_id, "MAINMENU") == 0)
 		{
 			return;
+		}
+
+		if (strcmp(gameState.frame_event.command, "LOAD GAME") == 0)
+		{
+			menu_state_free(menu_state_root(gameState.player_menustate));
+
+			load_game(gameState.frame_event.descriptor);
 		}
 	}
 

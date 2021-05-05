@@ -337,7 +337,7 @@ void entity_draw(Entity* ent)
 				gf2d_draw_line(
 					collider_pos,
 					neighbor_pos,
-					vector4d(255, 255, 255, 100));
+					vector4d(255, 255, 255, 50));
 			}
 		}
 

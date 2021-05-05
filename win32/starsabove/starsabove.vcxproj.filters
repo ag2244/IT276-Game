@@ -129,6 +129,9 @@
     <ClInclude Include="..\..\include\starsabove_ui_mainmenu.h">
       <Filter>Header Files\Stars Above\UI</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\dirent.h">
+      <Filter>Header Files\Framework</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\gfc\simple_logger\src\simple_logger.c">

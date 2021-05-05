@@ -628,8 +628,6 @@ float* fleet_onNewTurn(Fleet* self)
 
 	if (numactive == fleetsize) { self->status = (int)SHIP_ACTIVE; }
 
-	slog("%s, %i ?= %i", self->name, numactive, fleetsize);
-
 	return resources;
 }
 
