@@ -19,6 +19,7 @@ typedef struct UI_Element_s
 {
 
 	Bool _inuse;
+	Bool clickable;
 	Bool hidden;
 
 	Vector2D position;

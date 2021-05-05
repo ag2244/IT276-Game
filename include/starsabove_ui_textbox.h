@@ -48,6 +48,14 @@ typedef struct Menu_State_s
 */
 UI_Element* textbox_init(Vector2D position, Vector2D size, char* text, Font* font);
 
+/** 
+* @brief Initialize a textbox
+* @param position The screen position to draw the textBox
+* @param size The size of the textBox
+* @return NULL on error, or a pointer to a new textbox
+*/
+UI_Element* textbox_init_clear(Vector2D position, Vector2D size, char* text, Font* font);
+
 /**
 * @brief Add a menu to a menu state struct
 * @param old The old menu state

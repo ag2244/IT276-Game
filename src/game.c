@@ -15,7 +15,7 @@
 int main(int argc, char * argv[])
 {
     /*variable declarations*/
-    int done = 0; int in_menu = 0;
+    int done = 0;
     const Uint8 * keys;
     const Uint32* mouse;
     Sprite *background_sprite;
@@ -67,7 +67,7 @@ int main(int argc, char * argv[])
             //Stars Above stuff
             processKeys(keys, mouse);
 
-            //starsabove_loop();
+            starsabove_loop();
 
             //Mouse position, sprite
             if (starsabove_hoverDetection(mx, my)) {

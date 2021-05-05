@@ -1,4 +1,5 @@
 #pragma once
+
 #include "simple_logger.h"
 #include "gfc_vector.h"
 
@@ -55,6 +56,55 @@ UI_Element* textbox_init(Vector2D position, Vector2D size, char* text, Font* fon
     vector2d_copy(element->collider_box->position, element->position);
 
     vector2d_copy(element->collider_box->size, vector2d(element->spriteBorder->frame_w, element->spriteBorder->frame_h));
+
+    element->onClick = textbox_onClick;
+
+    //slog("Textbox created with text \"%s\"!", text);
+    return element;
+}
+
+UI_Element* textbox_init_clear(Vector2D position, Vector2D size, char* text, Font* font)
+{
+
+    UI_Element* element = NULL;
+    Vector2D boxsize;
+
+    //Create the new elementity
+    element = ui_new();
+
+    if (!element)
+    {
+        slog("Failed to create a textbox");
+        return NULL;
+    }
+
+    element->offset = vector2d(5, 5);
+
+    //Load text rendering info
+    gfc_line_cpy(element->text, text);
+
+    element->font = font;
+
+    vector2d_copy(
+        element->text_position_relative,
+        vector2d(15, font->ptsize*0.5)
+    );
+
+    element->text_color = gfc_color(255, 255, 255, 0);
+
+    //Load position, size
+    vector2d_copy(element->position, position);
+    vector2d_copy(element->size, size);
+
+    element->frameRate = 0;
+    element->frameCount = 1;
+
+    //Get a collider
+    element->collider_box = box_new();
+
+    vector2d_copy(element->collider_box->position, element->position);
+
+    vector2d_copy(element->collider_box->size, vector2d(font->ptsize * strlen(text) * 0.75, font->ptsize*2));
 
     element->onClick = textbox_onClick;
 

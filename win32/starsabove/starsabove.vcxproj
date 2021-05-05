@@ -184,6 +184,7 @@
     <ClInclude Include="..\..\include\starsabove_text.h" />
     <ClInclude Include="..\..\include\starsabove_ui_base.h" />
     <ClInclude Include="..\..\include\starsabove_ui_gametext.h" />
+    <ClInclude Include="..\..\include\starsabove_ui_mainmenu.h" />
     <ClInclude Include="..\..\include\starsabove_ui_textbox.h" />
     <ClInclude Include="..\..\src\starsabove_fleet.h" />
   </ItemGroup>
@@ -226,6 +227,7 @@
     <ClCompile Include="..\..\src\starsabove_ui_base.c" />
     <ClCompile Include="..\..\src\starsabove_ui_battlescreen.c" />
     <ClCompile Include="..\..\src\starsabove_ui_gametext.c" />
+    <ClCompile Include="..\..\src\starsabove_ui_mainmenu.c" />
     <ClCompile Include="..\..\src\starsabove_ui_qtytextbox.c" />
     <ClCompile Include="..\..\src\starsabove_ui_textbox.c" />
   </ItemGroup>

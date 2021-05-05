@@ -126,6 +126,7 @@ UI_Element* ui_new()
 		ui_manager.element_list[i].text_color = gfc_color(1, 1, 1, 0);
 
 		ui_manager.element_list[i].hidden = 0;
+		ui_manager.element_list[i].clickable = 0;
 
 		return &ui_manager.element_list[i];
 	}
@@ -173,6 +174,9 @@ void ui_free(UI_Element* element)
 
 void ui_draw(UI_Element* element)
 {
+	Vector2D adjustedpos;
+	Vector2D hover_offset;
+
 	if (!element)
 	{
 		slog("Cannot draw a NULL UI_Element");
@@ -184,21 +188,25 @@ void ui_draw(UI_Element* element)
 		return;
 	}
 
+	hover_offset = vector2d((float)element->clickable * 10, 0);
+
 	//If there's a custom draw
-	else if (element->draw) element->draw(element);
+	if (element->draw) element->draw(element);
 
 	else {
 
-		if (element->spriteMain == NULL) return; //Nothing to draw
+		if ((element->spriteMain == NULL) && (element->spriteBorder == NULL) && (element->text == NULL)) return; //Nothing to draw
 		
 		if (element->spriteBorder != NULL) //If there is a border sprite (assumes there is an offset if so)
 		{
+			vector2d_add(adjustedpos, element->position, hover_offset);
+
 			Vector2D sum; //Sum of the position plus offset
-			vector2d_add(sum, element->position, element->offset);
+			vector2d_add(sum, adjustedpos, element->offset);
 
 			gf2d_sprite_draw(
 				element->spriteBorder,
-				element->position,
+				adjustedpos,
 				NULL,
 				NULL,
 				NULL,
@@ -217,24 +225,29 @@ void ui_draw(UI_Element* element)
 				(Uint32)element->frame);
 		}
 
+		else
+		{
+			vector2d_add(adjustedpos, element->position, hover_offset);
+
+			gf2d_sprite_draw(
+				element->spriteMain,
+				adjustedpos,
+				NULL,
+				NULL,
+				NULL,
+				NULL,
+				NULL,
+				(Uint32)element->frame);
+		}
+
 		if ((element->font != NULL) && (element->text != NULL))
 		{
 			Vector2D textpos;
 
-			vector2d_add(textpos, element->position, element->text_position_relative);
+			vector2d_add(textpos, adjustedpos, element->text_position_relative);
 
 			font_render(element->font, element->text, textpos, element->text_color);
 		}
-
-		else gf2d_sprite_draw(
-			element->spriteMain,
-			element->position,
-			NULL,
-			NULL,
-			NULL,
-			NULL,
-			NULL,
-			(Uint32)element->frame);
 
 	}
 }
@@ -247,6 +260,8 @@ Bool ui_clickable(UI_Element* element, float mX, float mY) {
 
 	if (element->hidden == 1)
 	{
+		element->clickable = 0;
+
 		return 0;
 	}
 
@@ -254,6 +269,7 @@ Bool ui_clickable(UI_Element* element, float mX, float mY) {
 	{
 		if (box_clickable(element->collider_box, pos) != 0)
 		{
+			element->clickable = 1;
 			
 			return 1;
 		}
@@ -263,9 +279,13 @@ Bool ui_clickable(UI_Element* element, float mX, float mY) {
 	{
 		if (circle_clickable(element->collider_circle, pos) != 0)
 		{
+			element->clickable = 1;
+
 			return 1;
 		}
 	}
+
+	element->clickable = 0;
 
 	return 0;
 

@@ -44,7 +44,7 @@ void load_gamerule(char* filename)
 	sj_free(gamerule);
 }
 
-void load_game(char* filename)
+void load_gamefile(char* filename)
 {
 	SJson* game;
 
@@ -168,11 +168,9 @@ void test()
 {
 	load_gamerule("jsondata/gamedict.json");
 
-	load_game("savegames/Test Input.json");
+	load_gamefile("savegames/Test Input.json");
 
 	save_game("TESTOUT.json");
-
-	//test_ui();
 
 	get_nation_by_name("Nation1")->_is_player = 1;
 
@@ -217,23 +215,34 @@ void test_ui()
 		)
 	);
 
-	menu_state_hide(testmenustate);
-	menu_state_show(testmenustate);
+	//menu_state_hide(testmenustate);
+	//menu_state_show(testmenustate);
+
+	gameState.player_menustate = testmenustate;
 	
 }
 
 void prepare_game()
 {
-	int i = 0; EntityManager* entity_manager = entity_manager_get();
 
-    // Starting the entity manager
-    entity_manager_init(100);
+	// Starting the entity manager
+	entity_manager_init(100);
 
 	// Starting the ui manager
 	ui_manager_init(2000);
 
 	// Starting the font manager, loading fonts
 	font_init(50);
+
+	gameState.player_menustate = main_menu();
+
+	//load_game();
+}
+
+void load_game()
+{
+	int i = 0; EntityManager* entity_manager = entity_manager_get();
+
 	font_load("resources/fonts/futur.ttf", 12);
 
 	// Starting the nations list
@@ -296,11 +305,12 @@ void testcmd()
 void starsabove_loop()
 {
 
-	testcmd();
+	if (gameState.status == SA_INGAME)
+	{
+		entity_manager_update_entities();
 
-	entity_manager_update_entities();
-
-	entity_manager_draw_entities();
+		entity_manager_draw_entities();
+	}
 
 	ui_manager_update();
 
@@ -365,6 +375,10 @@ void event_relay()
 			newTurn();
 		}
 
+		if (strcmp(gameState.frame_event.sub_target_id, "MAINMENU") == 0)
+		{
+			return;
+		}
 	}
 
 	entity_manager = entity_manager_get();
@@ -537,20 +551,23 @@ void processKeys(Uint8 keys, Uint32 mouse) {
 			//IF BACKSPACE
 			if (frame_event.key.keysym.sym == SDLK_BACKSPACE)
 			{
-				if (gameState.player_menustate != NULL)
+				if (gameState.status == SA_INGAME)
 				{
-
-					//Go back one menu_state
-					gameState.player_menustate = menu_state_back(gameState.player_menustate);
-
-					//If the new menu_state doesnt exist, set our current menu_state to the nation menu_state
-					if (gameState.player_menustate == NULL)
+					if (gameState.player_menustate != NULL)
 					{
-						gameState.player_menustate = nation_menustate(get_nation_by_name(gameState.playerNation), 1);
+
+						//Go back one menu_state
+						gameState.player_menustate = menu_state_back(gameState.player_menustate);
+
+						//If the new menu_state doesnt exist, set our current menu_state to the nation menu_state
+						if (gameState.player_menustate == NULL)
+						{
+							gameState.player_menustate = nation_menustate(get_nation_by_name(gameState.playerNation), 1);
+						}
+
+						menu_state_show(gameState.player_menustate);
+
 					}
-
-					menu_state_show(gameState.player_menustate);
-
 				}
 			}
 

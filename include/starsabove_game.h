@@ -54,7 +54,7 @@ void load_gamerule(char* filename);
 /**
 * @brief Load a game from a filename
 */
-void load_game(char* filename);
+void load_gamefile(char* filename);
 
 /**
 * @brief Start a new game
@@ -73,11 +73,16 @@ void save_game(char* savefile_name);
 */
 UI_Element* newturnbutton_init();
 
-/**
+/*
 * @brief Do stuff before the game loop begins
-* @return NULL on error
 */
 void prepare_game();
+
+/**
+* @brief Load up a game and set up for play
+* @return NULL on error
+*/
+void load_game();
 
 /**
 * @brief The game loop itself, called from game.c
