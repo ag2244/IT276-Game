@@ -17,6 +17,8 @@ Game_Event* new_gameevent(char* target_id, char* sub_target_id, char* command, c
 
 	game_event->_menubase = _menubase;
 
+	game_event->eventsound = gfc_sound_load("audio/Click.mp3", 0.5, 1);
+
 	return game_event;
 
 }
@@ -28,6 +30,8 @@ void gameevent_copy(Game_Event* dst, Game_Event* src)
 	if (src->target_id != NULL) { strcpy(dst->sub_target_id, src->sub_target_id); }
 	if (src->descriptor != NULL) { strcpy(dst->descriptor, src->descriptor); }
 	dst->qty = src->qty;
+
+	dst->eventsound = src->eventsound;
 
 	/*if (dst->menu_state != NULL)
 	{
@@ -50,6 +54,8 @@ void gameevent_free(Game_Event* gameevent)
 
 		gameevent->menu_state = NULL;
 	}
+
+	gfc_sound_free(gameevent->eventsound);
 
 	free(gameevent);
 

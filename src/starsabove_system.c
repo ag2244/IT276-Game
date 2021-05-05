@@ -290,6 +290,8 @@ void system_gameevent_init(Entity* ent, Bool playerOwned)
         1
     );
 
+    ent->clickEvent->eventsound = gfc_sound_load("audio/System.mp3", 0.5, 1);
+
     for (i = 0; i < systemdata->num_planets; i++)
     {
 
@@ -516,6 +518,8 @@ void system_fleetbutton_onClick(UI_Element* self, Game_Event* event_reciever, Bo
             1
         )
     );
+
+    event_reciever->eventsound = gfc_sound_load("audio/Ship.mp3", 0.5, 1);
 }
 
 void system_spawn_initbuttons_fleets(Entity* self)

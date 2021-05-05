@@ -517,6 +517,8 @@ void nation_menustate_national_fleets(Nation* self, Menu_State* nation_menustate
 			0
 		);
 
+		single_fleet_textbox->signal->eventsound = gfc_sound_load("audio/Ship.mp3", 0.5, 1);
+
 		menu_addTo(all_fleets_menustate->current_menu, single_fleet_textbox);
 	}
 

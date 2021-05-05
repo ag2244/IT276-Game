@@ -6,8 +6,8 @@
 #include "gfc_types.h"
 #include "gfc_vector.h"
 #include "gf2d_sprite.h"
-
 #include "gfc_color.h"
+#include "gfc_audio.h"
 
 #include "simple_json.h"
 
@@ -43,6 +43,8 @@ typedef struct GameState_s
 	Game_Event frame_event;
 
 	gameStatus status;
+
+	Sound* music;
 
 } GameState;
 

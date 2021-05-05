@@ -5,6 +5,7 @@
 
 #include "simple_logger.h"
 
+#include "gfc_audio.h"
 #include "gfc_types.h"
 
 typedef struct Menu_State;
@@ -22,6 +23,8 @@ typedef struct
 
 	Bool _menubase;
 	struct Menu_State* menu_state;
+
+	Sound* eventsound;
 
 } Game_Event;
 

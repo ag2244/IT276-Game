@@ -236,7 +236,13 @@ void prepare_game()
 	// Starting the font manager, loading fonts
 	font_init(50);
 
+	gfc_audio_init(100, 3, 3, 100, 1, 1);
+
 	gameState.player_menustate = main_menu();
+
+	gameState.music = gfc_sound_load("audio/Stars Above.mp3", 0.5, 1);
+
+	gfc_sound_play(gameState.music, -1, 0.1, -1, -1);
 
 	//load_game();
 }
@@ -350,6 +356,8 @@ void event_relay()
 	Bool entity_playerowned = 0;
 
 	//if (gameState.player_menustate) { slog(gameState.player_menustate->current_menu->title->text); } else { slog("NULL"); }
+
+	gfc_sound_play(gameState.frame_event.eventsound, 0, 0.1, 0, -1);
 
 	//If the new event's menu state isn't null
 	if (gameState.frame_event.menu_state != NULL)
@@ -641,6 +649,8 @@ void starsabove_exit()
 
 	gameState.currentClickable_entity = NULL;
 	gameState.currentClickable_ui = NULL;
+
+	gfc_sound_free(gameState.music);
 
 	slog("Freed game metadata");
 }
