@@ -55,8 +55,6 @@ void gameevent_free(Game_Event* gameevent)
 		gameevent->menu_state = NULL;
 	}
 
-	gfc_sound_free(gameevent->eventsound);
-
 	free(gameevent);
 
 }

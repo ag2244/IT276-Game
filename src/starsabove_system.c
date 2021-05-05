@@ -248,10 +248,12 @@ float* system_onNewTurn(Entity* self)
 
     System_Data* systemdata = self->data;
 
-    for (i = 0; i < system_data->num_planets; i++)
+    for (i = 0; i < system_num_planets(self); i++)
     {
         resources_total = resourcelist_add(resources_total, systemdata->planets[i].onNewTurn(&systemdata->planets[i]));
     }
+
+    slog("---");
 
     return resources_total;
 

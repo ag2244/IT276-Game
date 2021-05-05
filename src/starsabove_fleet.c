@@ -619,9 +619,9 @@ float* fleet_onNewTurn(Fleet* self)
 
 		fleetsize++;
 
-		if (self->ships[i].status == (int)SHIP_ACTIVE) { numactive++; }
-
 		resources = resourcelist_subtract(resources, ship_onNewTurn(&self->ships[i]));
+
+		if (self->ships[i].status == (int)SHIP_ACTIVE) { numactive++; }
 	}
 
 	if ((numactive < fleetsize) && (self->status == (int)SHIP_ACTIVE)) { self->status = (int)SHIP_PARTIALLY_ACTIVE; }
