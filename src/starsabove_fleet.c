@@ -88,7 +88,7 @@ Ship* getshipbyname(char shiptype[128])
 
 Ship* ship_copy(Ship* src, Fleet* fleet)
 {
-	return ship_init(src->type, src->maintenance, src->costs, src->health, src->status, src->buildtime, fleet);
+	return ship_init(src->type, src->maintenance, src->costs, src->supply, src->supply_capacity, src->health, src->status, src->buildtime, fleet);
 }
 
 Ship* ship_fromJson(SJson* ship_json, Fleet* fleet)
@@ -113,13 +113,15 @@ Ship* ship_fromJson(SJson* ship_json, Fleet* fleet)
 		sj_get_string_value(sj_object_get_value(ship_json, "type")),
 		resourcelist_copy(resources_fromJson(sj_object_get_value(ship_json, "maintenance"))),
 		resourcelist_copy(resources_fromJson(sj_object_get_value(ship_json, "costs"))),
+		resourcelist_copy(resources_fromJson(sj_object_get_value(ship_json, "supply"))),
+		resourcelist_copy(resources_fromJson(sj_object_get_value(ship_json, "supply capacity"))),
 		health,
 		status,
 		buildtime,
 		fleet);
 }
 
-Ship* ship_init(char shiptype[128], float* maintenance, float* costs, int health, int status, int buildtime, Fleet* fleet)
+Ship* ship_init(char shiptype[128], float* maintenance, float* costs, float* supply, float* supply_cap, int health, int status, int buildtime, Fleet* fleet)
 {
 	Ship* ship = malloc(sizeof(Ship));
 
@@ -128,6 +130,9 @@ Ship* ship_init(char shiptype[128], float* maintenance, float* costs, int health
 
 	ship->maintenance = resourcelist_copy(maintenance);
 	ship->costs = resourcelist_copy(costs);
+
+	ship->supply = resourcelist_copy(supply);
+	ship->supply_capacity = resourcelist_copy(supply_cap);
 
 	ship->health = health;
 	ship->status = status;
@@ -702,6 +707,12 @@ void ship_free(Ship* self)
 
 SJson* ship_toJson(Ship* self)
 {
+
+	if (!self)
+	{
+		slog("CANNOT TURN NULL SHIP INTO JSON"); return;
+	}
+
 	SJson* ship = sj_object_new();
 
 	sj_object_insert(ship, "type", sj_new_str(self->type));
@@ -710,9 +721,15 @@ SJson* ship_toJson(Ship* self)
 
 	sj_object_insert(ship, "health", sj_new_int(self->health));
 
-	sj_object_insert(ship, "buildtime", sj_new_int(self->buildtime));
+	if (self->buildtime > 0) { sj_object_insert(ship, "buildtime", sj_new_int(self->buildtime)); }
+
+	if (self->buildtime > 0) { sj_object_insert(ship, "transport_capacity", sj_new_int(self->transport_capacity));}
 
 	sj_object_insert(ship, "maintenance", resources_toJson(self->maintenance));
+
+	sj_object_insert(ship, "supply", resources_toJson(self->supply));
+
+	sj_object_insert(ship, "supply capacity", resources_toJson(self->supply_capacity));
 
 	return ship;
 }

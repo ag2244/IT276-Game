@@ -263,6 +263,26 @@
 								"Iron": 1,
 								"Food": 1
 							}
+						},
+						{
+							"type": "Transport",
+							"health": 100,
+							"status": 2,
+							"transport capacity": 5,
+							"maintenance":
+							{
+								"Iron": 1,
+								"Food": 1
+							},
+							"supply capacity":
+							{
+								"Food": 5,
+								"Iron": 5,
+								"Uranium": 5,
+								"Gold": 5,
+								"Silicon": 5,
+								"Plastoil": 5
+							}
 						}
 					]
 				}

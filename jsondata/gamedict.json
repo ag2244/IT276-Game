@@ -167,6 +167,34 @@
 				"Iron": 10,
 				"Gold": 10
 			}
+		},
+		{
+			"type": "Transport",
+			"buildtime": 2,
+			"transport capacity": 5,
+			"maintenance":
+			{
+				"Iron": 1,
+				"Food": 1
+			},
+			"requirements":
+			[
+				"Shipyard"
+			],
+			"costs":
+			{
+				"Iron": 10,
+				"Gold": 10
+			},
+			"supply capacity":
+			{
+				"Food": 5,
+				"Iron": 5,
+				"Uranium": 5,
+				"Gold": 5,
+				"Silicon": 5,
+				"Plastoil": 5
+			}
 		}
 	]
 

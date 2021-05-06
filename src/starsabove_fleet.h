@@ -48,6 +48,12 @@ typedef struct
 
 	int buildtime;
 
+	int transport_capacity;
+	//Unit* embarked_units;
+
+	float* supply_capacity;
+	float* supply;
+
 	float* maintenance;
 
 	float* costs;
@@ -85,7 +91,7 @@ Ship* ship_copy(Ship* src, Fleet* fleet);
 
 Ship* ship_fromJson(SJson* ship_json, Fleet* fleet);
 
-Ship* ship_init(char shiptype[128], float* maintenance, float* costs, int health, int status, int buildtime, Fleet* fleet);
+Ship* ship_init(char shiptype[128], float* maintenance, float* costs, float* supply, float* supply_cap, int health, int status, int buildtime, Fleet* fleet);
 
 Fleet* fleet_fromjson(SJson* fleet_json);
 

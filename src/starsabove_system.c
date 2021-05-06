@@ -253,8 +253,6 @@ float* system_onNewTurn(Entity* self)
         resources_total = resourcelist_add(resources_total, systemdata->planets[i].onNewTurn(&systemdata->planets[i]));
     }
 
-    slog("---");
-
     return resources_total;
 
 }

@@ -1,5 +1,7 @@
 #include <SDL.h>
 
+#include "gfc_color.h"
+#include "gf2d_graphics.h"
 #include "simple_logger.h"
 
 #include "starsabove_ui_mainmenu.h"
@@ -15,6 +17,10 @@
 
 GameState gameState = { 0 };
 Bool KEYS[322];
+
+UI_Element* newturn_button;
+
+Font* futurlight;
 
 void test_uinumber()
 {
@@ -163,6 +169,8 @@ UI_Element* newturnbutton_init()
 		NULL
 	);
 
+	newturn_button = element;
+
 	return element;
 }
 
@@ -242,7 +250,9 @@ void prepare_game()
 
 	gameState.music = gfc_sound_load("audio/Stars Above.mp3", 0.5, 1);
 
-	gfc_sound_play(gameState.music, -1, 0.1, -1, -1);
+	gfc_sound_play(gameState.music, -1, 0.05, -1, -1);
+
+	futurlight = font_load("resources/fonts/futura light bt.ttf", 12);
 
 	//load_game();
 }
@@ -320,17 +330,25 @@ void testcmd()
 
 void starsabove_loop()
 {
+	char fps_display[64];
 
 	if (gameState.status == SA_INGAME)
 	{
 		entity_manager_update_entities();
 
 		entity_manager_draw_entities();
+
+		newturn_button->clickable = 0;
 	}
 
 	ui_manager_update();
 
 	ui_manager_draw();
+
+	//Draw FPS
+	sprintf(fps_display, "FPS: %.0f", gf2d_graphics_get_frames_per_second());
+
+	font_render(futurlight, fps_display, vector2d(1450, 0), gfc_color(255,255,255,100));
 }
 
 void newTurn()
@@ -344,6 +362,8 @@ void newTurn()
 	menu_state_free(menu_state_root(gameState.player_menustate));
 
 	gameState.player_menustate = nation_menustate(get_nation_by_name(gameState.playerNation), 1);
+
+	save_game("autosave.json");
 
 }
 
@@ -644,8 +664,6 @@ void processKeys(Uint8 keys, Uint32 mouse) {
 
 void starsabove_exit()
 {
-
-	save_game("TESTOUT.json");
 
 	gameState.currentClickable_entity = NULL;
 	gameState.currentClickable_ui = NULL;

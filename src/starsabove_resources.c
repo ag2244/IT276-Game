@@ -39,19 +39,22 @@ float* resources_fromJson(SJson* resources_json)
 
 SJson* resources_toJson(float* resources)
 {
-	int i;
+	int i; int num_zeroes = 0;
 	SJson* resources_json = sj_object_new(); 
 
 	for (i = 0; i < numresources; i++)
 	{
 
-		if (resources[i] != 0) 
+		if (resources[i] == 0) 
 		{
-			sj_object_insert(resources_json, resource_names[i], sj_new_float(resources[i]));
+			num_zeroes++; continue;
 		}
+		sj_object_insert(resources_json, resource_names[i], sj_new_float(resources[i]));
 	}
 
-	return resources_json;
+	if (num_zeroes < numresources) { return resources_json; }
+
+	return NULL;
 }
 
 Menu_State* resources_menustate_init(float* resources, Menu_State* previous_menustate, char* name)
@@ -81,7 +84,7 @@ Menu_State* resources_menustate_init(float* resources, Menu_State* previous_menu
 	for (i = 0; i < numresources; i++)
 	{
 
-		sprintf(textbox_name, "%s: %.3f", resource_names + i, resources[i]);
+		sprintf(textbox_name, "%s: %.1f", resource_names + i, resources[i]);
 
 		menu_addTo
 		(
