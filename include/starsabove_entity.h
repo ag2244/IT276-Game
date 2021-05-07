@@ -62,12 +62,12 @@ typedef struct Entity_s{
 
 	Game_Event* clickEvent;
 
-} Entity; //Finally naming it Entity
+} Entity_p; //Finally naming it Entity
 
 
 typedef struct
 {
-	Entity* entity_list;
+	Entity_p* entity_list;
 	Uint32 max_entities;
 
 } EntityManager;
@@ -88,7 +88,7 @@ EntityManager* entity_manager_get();
 * @brief get an entity with a name specified
 * @return The entity with a matching name, 0 if there is none, NULL if error.
 */
-Entity* get_entity_by_name(char* name);
+Entity_p* get_entity_by_name(char* name);
 
 /**
 * @brief calls update function on all entities
@@ -109,25 +109,25 @@ void entity_manager_free();
 * @brief allocate an entity, initialize to zero, return a pointer to it
 * @return NULL on error (see logs) or a pointer to an initialized entity
 */
-Entity* entity_new();
+Entity_p* entity_new();
 
 /**
 * @brief allocate an entity with a name, initialize to zero, return a pointer to it
 * @return NULL on error or a pointer to an initialized entity
 */
-Entity* entity_new_name(char* name);
+Entity_p* entity_new_name(char* name);
 
 /**
 * @brief free requested entity
 * @param ent the entity to free
 */
-void entity_free(Entity *ent);
+void entity_free(Entity_p *ent);
 
 /**
 * @brief draw an entity to the current render frame
 * @param ent the entity to draw
 */
-void entity_draw(Entity* ent);
+void entity_draw(Entity_p* ent);
 
 /**
 * @brief check if the mouse is hovering over this entity
@@ -135,13 +135,13 @@ void entity_draw(Entity* ent);
 * @param mX the x position of the mouse point
 * @param mY the y position of the mouse point
 */
-Bool entity_clickable(Entity* ent, float mX, float mY);
+Bool entity_clickable(Entity_p* ent, float mX, float mY);
 
 /**
 * @brief what to do with an entity that has been clicked
 * @param ent the entity that has been clicked
 */
-void entity_onClick(Entity* ent, Game_Event* event_reciever, Bool playerowned);
+void entity_onClick(Entity_p* ent, Game_Event* event_reciever, Bool playerowned);
 
 /**
 * @brief recieve a button transmission

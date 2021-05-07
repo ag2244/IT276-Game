@@ -57,7 +57,7 @@ SJson* resources_toJson(float* resources)
 	return NULL;
 }
 
-Menu_State* resources_menustate_init(float* resources, Menu_State* previous_menustate, char* name)
+Menu_State* resources_menustate_init(float* resources, Menu_State* previous_menustate, char* name, Bool exclude_zeroes)
 {
 	int i;
 
@@ -84,7 +84,60 @@ Menu_State* resources_menustate_init(float* resources, Menu_State* previous_menu
 	for (i = 0; i < numresources; i++)
 	{
 
+		if ((exclude_zeroes == 1) && (resources[i] == 0)) { continue; }
+
 		sprintf(textbox_name, "%s: %.1f", resource_names + i, resources[i]);
+
+		menu_addTo
+		(
+			resources_menustate->current_menu,
+			textbox_init
+			(
+				vector2d(10, 10),
+				vector2d(200, 50),
+				textbox_name,
+				font_load("resources/fonts/futur.ttf", 12)
+			)
+		);
+
+		strcpy(textbox_name, "");
+
+	}
+
+	//Hide the planet_menustate
+	menu_state_hide(resources_menustate);
+
+	return resources_menustate;
+}
+
+Menu_State* resources_comparative_menustate_init(float* resources, float* outof, Menu_State* previous_menustate, char* name)
+{
+	int i;
+
+	char textbox_name[128];
+
+	Menu_State* resources_menustate;
+
+	//Create the planet menu state
+	resources_menustate = menu_state_new(
+		previous_menustate,
+		textbox_init
+		(
+			vector2d(10, 10),
+			vector2d(200, 50),
+			name,
+			font_load("resources/fonts/futur.ttf", 16)
+		),
+		NULL,
+		vector2d(10, 10),
+		0,
+		5
+	);
+
+	for (i = 0; i < numresources; i++)
+	{
+
+		sprintf(textbox_name, "%s: %.1f / %.1f", resource_names + i, resources[i], outof[i]);
 
 		menu_addTo
 		(
@@ -122,6 +175,11 @@ float* resourcelist_new(float food, float iron, float uranium, float gold, float
 	return resources;
 }
 
+float* resourcelist_empty()
+{
+	return resourcelist_new(0, 0, 0, 0, 0, 0);
+}
+
 float* resourcelist_add(float* arr0, float* arr1)
 {
 	int i;
@@ -150,6 +208,21 @@ float* resourcelist_subtract(float* arr0, float* arr1)
 	return difference;
 }
 
+float* resourcelist_multiply(float* arr0, float* arr1)
+{
+
+	int i;
+
+	float* product = malloc(numresources * sizeof(float));
+
+	for (i = 0; i < numresources; i++)
+	{
+		product[i] = arr0[i] * arr1[i];
+	}
+
+	return product;
+}
+
 Bool resourcelist_checkdeficit(float* arr)
 {
 	int i;
@@ -157,6 +230,22 @@ Bool resourcelist_checkdeficit(float* arr)
 	for (i = 0; i < numresources; i++)
 	{
 		if (arr[i] < 0)
+		{
+			return 0;
+		}
+	}
+
+	return 1;
+
+}
+
+Bool resourcelist_iszero(float* arr)
+{
+	int i;
+
+	for (i = 0; i < numresources; i++)
+	{
+		if (arr[i] != 0)
 		{
 			return 0;
 		}
@@ -178,4 +267,19 @@ float* resourcelist_copy(float* arr)
 	}
 
 	return copy;
+}
+
+void resourcelist_print(float* arr)
+{
+	int i;
+
+	printf("\n");
+
+	for (i = 0; i < numresources; i++)
+	{
+		printf("%s: %i, ", resource_names[i], arr[i]);
+	}
+
+
+	printf("\n");
 }

@@ -172,7 +172,6 @@ void buildable_free(Buildable* buildable)
 	free(buildable->resource_output);
 }
 
-
 /* Create a menustate for a building */
 Menu_State* buildable_menustate_init(Buildable* buildable, Menu_State* previous_menustate)
 {
@@ -180,6 +179,10 @@ Menu_State* buildable_menustate_init(Buildable* buildable, Menu_State* previous_
 
 	UI_Element* inputresources_textbox;
 	UI_Element* outputresources_textbox;
+
+	UI_Element* supply_textbox;
+
+	UI_Element* resourceunlocks_textbox;
 
 	char temp_text[128];
 
@@ -227,58 +230,144 @@ Menu_State* buildable_menustate_init(Buildable* buildable, Menu_State* previous_
 	);
 
 	//Input Resources
-	inputresources_textbox = textbox_init
-	(
-		vector2d(10, 10),
-		vector2d(200, 50),
-		"Input Resources",
-		font_load("resources/fonts/futur.ttf", 12)
-	);
+	//---------------
 
-	sprintf(temp_text, "%s Inputs", buildable->name);
+	///*
+	if (!resourcelist_iszero(buildable->resource_input))
+	{
 
-	inputresources_textbox->signal = new_gameevent(
-		NULL,
-		NULL,
-		"GETRESOURCES",
-		NULL,
-		0,
-		resources_menustate_init(buildable->resource_input, building_menustate, temp_text),
-		0
-	);
+		inputresources_textbox = textbox_init
+		(
+			vector2d(10, 10),
+			vector2d(200, 50),
+			"Input Resources",
+			font_load("resources/fonts/futur.ttf", 12)
+		);
 
-	menu_addTo
-	(
-		building_menustate->current_menu,
-		inputresources_textbox
-	);
+		sprintf(temp_text, "%s Inputs", buildable->name);
 
+		inputresources_textbox->signal = new_gameevent(
+			NULL,
+			NULL,
+			"GETRESOURCES",
+			NULL,
+			0,
+			resources_menustate_init(buildable->resource_input, building_menustate, temp_text, 1),
+			0
+		);
+
+		menu_addTo
+		(
+			building_menustate->current_menu,
+			inputresources_textbox
+		);
+
+	}
+	//*/
+	
 	//Output Resources
-	outputresources_textbox = textbox_init
-	(
-		vector2d(10, 10),
-		vector2d(250, 50),
-		"Output Resources",
-		font_load("resources/fonts/futur.ttf", 12)
-	);
+	//----------------
+	
+	///*
+	if (!resourcelist_iszero(buildable->resource_output))
+	{
+		outputresources_textbox = textbox_init
+		(
+			vector2d(10, 10),
+			vector2d(250, 50),
+			"Output Resources",
+			font_load("resources/fonts/futur.ttf", 12)
+		);
 
-	sprintf(temp_text, "%s Outputs", buildable->name);
+		sprintf(temp_text, "%s Outputs", buildable->name);
 
-	outputresources_textbox->signal = new_gameevent(
-		NULL,
-		NULL,
-		"GETRESOURCES",
-		NULL,
-		0,
-		resources_menustate_init(buildable->resource_output, building_menustate, temp_text),
-		0
-	);
+		outputresources_textbox->signal = new_gameevent(
+			NULL,
+			NULL,
+			"GETRESOURCES",
+			NULL,
+			0,
+			resources_menustate_init(buildable->resource_output, building_menustate, temp_text, 1),
+			0
+		);
 
-	menu_addTo
-	(
-		building_menustate->current_menu,
-		outputresources_textbox
-	);
+		menu_addTo
+		(
+			building_menustate->current_menu,
+			outputresources_textbox
+		);
+
+	}
+	//*/
+
+	//Supply out of capacity
+	//----------------
+
+	///*
+	if (!resourcelist_iszero(buildable->supply_cap))
+	{
+
+		supply_textbox = textbox_init
+		(
+			vector2d(10, 10),
+			vector2d(250, 50),
+			"Supply",
+			font_load("resources/fonts/futur.ttf", 12)
+		);
+
+		supply_textbox->signal = new_gameevent(
+			NULL,
+			NULL,
+			"GETRESOURCES",
+			NULL,
+			0,
+			resources_comparative_menustate_init(buildable->supply, buildable->supply_cap, building_menustate, temp_text),
+			0
+		);
+
+		menu_addTo
+		(
+			building_menustate->current_menu,
+			supply_textbox
+		);
+	}
+	//*/
+
+	//Resource Unlocks
+	//----------------
+	
+	///*
+	if (!resourcelist_iszero(buildable->resource_unlock))
+	{
+
+		resourceunlocks_textbox = textbox_init
+		(
+			vector2d(10, 10),
+			vector2d(250, 50),
+			"Resource Unlocks",
+			font_load("resources/fonts/futur.ttf", 12)
+		);
+
+		sprintf(temp_text, "%s Outputs", buildable->name);
+
+		resourceunlocks_textbox->signal = new_gameevent(
+			NULL,
+			NULL,
+			"GETRESOURCES",
+			NULL,
+			0,
+			resources_menustate_init(buildable->resource_unlock, building_menustate, temp_text, 1),
+			0
+		);
+
+		menu_addTo
+		(
+			building_menustate->current_menu,
+			resourceunlocks_textbox
+		);
+	}
+
+	//*/
 
 	menu_state_hide(building_menustate);
 
@@ -428,7 +517,7 @@ Menu_State* buildable_construction_menustate_all(Menu_State* previous_menustate,
 				"BUILDING_COSTS",
 				this_buildable->name,
 				0,
-				resources_menustate_init(this_buildable->costs, this_buildable_menu, "Resource Costs"),
+				resources_menustate_init(this_buildable->costs, this_buildable_menu, "Resource Costs", 1),
 				0
 			);
 

@@ -35,7 +35,7 @@ typedef struct GameState_s
 	char playerNation[128];
 
 	UI_Element* currentClickable_ui;
-	Entity* currentClickable_entity;
+	Entity_p* currentClickable_entity;
 
 	Menu_State* player_menustate;
 

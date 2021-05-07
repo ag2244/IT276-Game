@@ -94,7 +94,21 @@
 			{
 				"Gold": 5
 			}
+		},
+		
+		{
+			"name": "Supply Depot",
+			"buildtime": 3,
+			"resource unlocks":
+			{
+				"Iron": 1
+			},
+			"costs":
+			{
+				"Gold": 1
+			}
 		}
+		
 	]
 
 	"Ships":

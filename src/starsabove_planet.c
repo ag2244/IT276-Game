@@ -304,7 +304,7 @@ Menu_State* planet_menustate_init(Planet* planet, Menu_State* system_menustate, 
         "GETRESOURCES",
         NULL,
         0,
-        resources_menustate_init(planet->resources_mining, planet_menustate, resource_button_name),
+        resources_menustate_init(planet->resources_mining, planet_menustate, resource_button_name, 1),
         0
     );
 
@@ -347,14 +347,28 @@ Menu_State* planet_menustate_init(Planet* planet, Menu_State* system_menustate, 
 float* planet_onNewTurn(Planet* planet)
 {
     int i;
-    float* resources_totalchange;
 
-    resources_totalchange = resourcelist_copy(planet->resources_mining);
+    float* resources_mining;
+    float* resources_minables = resourcelist_empty();
+    float* resources_totalchange = resourcelist_empty();
+
+    resources_mining = resourcelist_copy(planet->resources_mining);
 
     for (i = 0; i < planet->num_buildings; i++)
     {
         resources_totalchange = resourcelist_add(resources_totalchange, planet->buildings[i].onNewTurn(&planet->buildings[i]));
+
+        if (planet->buildings[i].status == (int)BLD_ACTIVE)
+        {
+            resources_minables = resourcelist_add(resources_minables, planet->buildings->resource_unlock);
+        }
     }
+
+    resources_mining = resourcelist_multiply(resources_mining, resources_minables);
+
+    resources_totalchange =  resourcelist_add(resources_mining, resources_totalchange);
+
+    //resourcelist_print(resources_totalchange);
 
     return resources_totalchange;
 }

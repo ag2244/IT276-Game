@@ -246,7 +246,7 @@ void nation_onNewTurn(Nation* nation)
 	int i;
 
 	EntityManager entitymgr = *entity_manager_get();
-	Entity* thisSystem;
+	Entity_p* thisSystem;
 
 	Fleet* thisfleet = NULL;
 
@@ -372,7 +372,7 @@ Fleet* nation_new_fleet(Nation* self, char location_name[128])
 	return NULL;
 }
 
-struct Fleet* nation_fleetbylocation(Nation* self, Entity* location, Bool createnew)
+struct Fleet* nation_fleetbylocation(Nation* self, Entity_p* location, Bool createnew)
 {
 	int i;
 
@@ -583,7 +583,7 @@ struct Menu_State* nation_menustate(Nation* nation, Bool _isPlayer)
 		"GETRESOURCES",
 		NULL,
 		0,
-		resources_menustate_init(nation->resources_total, nation_menustate, "Total Resources"),
+		resources_menustate_init(nation->resources_total, nation_menustate, "Total Resources", 1),
 		0
 	);
 

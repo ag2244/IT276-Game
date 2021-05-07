@@ -286,7 +286,7 @@ Menu_State* ship_menustate(Ship* ship, Menu_State* previous, Bool forconstructio
 		"GETCOSTS",
 		NULL,
 		0,
-		resources_menustate_init(ship->costs, ship_menustate, "Building Costs"),
+		resources_menustate_init(ship->costs, ship_menustate, "Building Costs", 1),
 		0
 	);
 
@@ -311,7 +311,7 @@ Menu_State* ship_menustate(Ship* ship, Menu_State* previous, Bool forconstructio
 		"GETMAINTENANCE",
 		NULL,
 		0,
-		resources_menustate_init(ship->maintenance, ship_menustate, "Maintenance Costs"),
+		resources_menustate_init(ship->maintenance, ship_menustate, "Maintenance Costs", 1),
 		0
 	);
 
@@ -499,7 +499,7 @@ Menu_State* fleet_menustate(Fleet* fleet, Menu_State* previous)
 		"SHOW_SUM",
 		NULL,
 		NULL,
-		resources_menustate_init(temp_floats, fleet_menustate, "Maintenance Costs"),
+		resources_menustate_init(temp_floats, fleet_menustate, "Maintenance Costs", 1),
 		0
 	);
 

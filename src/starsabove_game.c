@@ -99,7 +99,7 @@ void save_game(char* savefile_name)
 
 	int i;
 	EntityManager entity_manager = *entity_manager_get();
-	Entity* thisEntity;
+	Entity_p* thisEntity;
 
 	if (savefile_name == NULL)
 	{

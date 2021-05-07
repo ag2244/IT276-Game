@@ -30,12 +30,12 @@ System_Data* system_data_new(Uint32 numPlanets)
     return systemdata;
 }
 
-void load_system_neighbors(Entity* system, SJson* system_json)
+void load_system_neighbors(Entity_p* system, SJson* system_json)
 {
     int i;
 
     SJson* neighbors_json;
-    Entity* neighbors;
+    Entity_p* neighbors;
 
     if (!system_json)
     {
@@ -49,7 +49,7 @@ void load_system_neighbors(Entity* system, SJson* system_json)
         slog("Could not load this system's edges"); return;
     }
 
-    neighbors = malloc(sizeof(Entity) * sj_array_get_count(neighbors_json));
+    neighbors = malloc(sizeof(Entity_p) * sj_array_get_count(neighbors_json));
 
     for (i = 0; i < sj_array_get_count(neighbors_json); i++)
     {
@@ -182,7 +182,7 @@ int load_systems(SJson* game_json)
     return 1;
 }
 
-void system_onClick(Entity* self, Game_Event* event_reciever, Bool playerowned)
+void system_onClick(Entity_p* self, Game_Event* event_reciever, Bool playerowned)
 {
     if (self == NULL)
     {
@@ -204,7 +204,7 @@ void system_onClick(Entity* self, Game_Event* event_reciever, Bool playerowned)
 void system_update_fleetbutton(UI_Element* self)
 {
     int i;
-    Entity* this_entity;
+    Entity_p* this_entity;
 
     Nation* thisNation;
 
@@ -213,7 +213,7 @@ void system_update_fleetbutton(UI_Element* self)
         slog("CANNOT UPDATE NULL BUTTON!"); return;
     }
 
-    this_entity = (Entity*)self->data;
+    this_entity = (Entity_p*)self->data;
 
     for (i = 0; i < nation_list_get()->max_nations; i++)
     {
@@ -233,12 +233,12 @@ void system_update_fleetbutton(UI_Element* self)
     }
 }
 
-void system_update(Entity* self)
+void system_update(Entity_p* self)
 {
 
 }
 
-float* system_onNewTurn(Entity* self)
+float* system_onNewTurn(Entity_p* self)
 {
 
     int i;
@@ -257,7 +257,7 @@ float* system_onNewTurn(Entity* self)
 
 }
 
-void system_gameevent_init(Entity* ent, Bool playerOwned)
+void system_gameevent_init(Entity_p* ent, Bool playerOwned)
 {
     int i = 0;
 
@@ -333,7 +333,7 @@ void system_gameevent_init(Entity* ent, Bool playerOwned)
     menu_state_hide(ent->clickEvent->menu_state);
 }
 
-SJson* system_toJson(Entity* self)
+SJson* system_toJson(Entity_p* self)
 {
     int i;
 
@@ -400,7 +400,7 @@ SJson* system_toJson(Entity* self)
     return sj_object_new();
 }
 
-void system_reciever(Entity* self, Game_Event* event)
+void system_reciever(Entity_p* self, Game_Event* event)
 {
     int i;
 
@@ -467,7 +467,7 @@ void system_fleetbutton_onClick(UI_Element* self, Game_Event* event_reciever, Bo
 {
     int i;
 
-    Entity* this_entity;
+    Entity_p* this_entity;
     Nation* thisnation;
 
     Fleet* local_fleet = NULL;
@@ -484,7 +484,7 @@ void system_fleetbutton_onClick(UI_Element* self, Game_Event* event_reciever, Bo
         return NULL;
     }
 
-    this_entity = (Entity*) self->data;
+    this_entity = (Entity_p*) self->data;
 
     for (i = 0; i < nation_list_get()->max_nations; i++)
     {
@@ -522,7 +522,7 @@ void system_fleetbutton_onClick(UI_Element* self, Game_Event* event_reciever, Bo
     event_reciever->eventsound = gfc_sound_load("audio/Ship.mp3", 0.5, 1);
 }
 
-void system_spawn_initbuttons_fleets(Entity* self)
+void system_spawn_initbuttons_fleets(Entity_p* self)
 {
     UI_Element* fleet_button;
 
@@ -553,7 +553,7 @@ void system_spawn_initbuttons_fleets(Entity* self)
     fleet_button->collider_box->is_clickable = box_clickable;
 }
 
-void system_spawn_initbuttons(Entity* self)
+void system_spawn_initbuttons(Entity_p* self)
 {
 
     if (!self)
@@ -568,11 +568,11 @@ void system_spawn_initbuttons(Entity* self)
     system_spawn_initbuttons_fleets(self);
 }
 
-Entity* system_spawn(char* name, Vector2D position, Nation* owner, System_Data* systemdata)
+Entity_p* system_spawn(char* name, Vector2D position, Nation* owner, System_Data* systemdata)
 {
     int i = 0;
 
-    Entity* ent = NULL;
+    Entity_p* ent = NULL;
 
     //Create the new entity
     ent = entity_new_name(name);
@@ -624,7 +624,7 @@ Entity* system_spawn(char* name, Vector2D position, Nation* owner, System_Data* 
     return ent;
 }
 
-Menu_State* system_neighbors_menustate(Entity* self, Menu_State* previous, char title[128], Game_Event* template)
+Menu_State* system_neighbors_menustate(Entity_p* self, Menu_State* previous, char title[128], Game_Event* template)
 {
     int i;
 
@@ -689,7 +689,7 @@ int system_data_numPlanets(System_Data* systemdata)
     return systemdata->num_planets;
 }
 
-int system_num_planets(Entity* system)
+int system_num_planets(Entity_p* system)
 {
     return system_data_numPlanets((struct System_Data *) system->data);
 }
@@ -712,7 +712,7 @@ Planet* system_data_planet_byname(System_Data* systemdata, char* planet_name)
     return NULL;
 }
 
-Planet* system_planet_byname(Entity* system, char* planet_name)
+Planet* system_planet_byname(Entity_p* system, char* planet_name)
 {
     return system_data_planet_byname((struct System_Data*)system->data, planet_name);
 }

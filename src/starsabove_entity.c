@@ -24,7 +24,7 @@ void entity_manager_init(Uint32 max_entities)
 		entity_manager_free();
 	}
 
-	entity_manager.entity_list = (Entity*)gfc_allocate_array(sizeof(Entity), max_entities);
+	entity_manager.entity_list = (Entity_p*)gfc_allocate_array(sizeof(Entity_p), max_entities);
 
 	if (entity_manager.entity_list == NULL) {
 		slog("Failed to allocate entity list!");
@@ -47,10 +47,10 @@ EntityManager* entity_manager_get() {
 
 }
 
-Entity* get_entity_by_name(char* name)
+Entity_p* get_entity_by_name(char* name)
 {
 	int i;
-	Entity* current_entity;
+	Entity_p* current_entity;
 
 	if (entity_manager.entity_list == NULL) {
 		slog("Entity system does not exist!");
@@ -92,7 +92,7 @@ void entity_manager_free() {
 	slog("Entity system freed");
 }
 
-void entity_update(Entity* self) 
+void entity_update(Entity_p* self) 
 {
 	int i;
 
@@ -149,7 +149,7 @@ void entity_manager_draw_entities() {
 	}
 }
 
-Entity* entity_new() 
+Entity_p* entity_new() 
 {
 
 	int i;
@@ -163,7 +163,7 @@ Entity* entity_new()
 	{
 
 		if (entity_manager.entity_list[i]._inuse) continue; // Someone else using this one
-		memset(&entity_manager.entity_list[i], 0, sizeof(Entity));
+		memset(&entity_manager.entity_list[i], 0, sizeof(Entity_p));
 
 		entity_manager.entity_list[i]._inuse = 1;
 
@@ -176,9 +176,9 @@ Entity* entity_new()
 	return NULL;
 }
 
-Entity* entity_new_name(char* name)
+Entity_p* entity_new_name(char* name)
 {
-	Entity* new_ent = NULL;
+	Entity_p* new_ent = NULL;
 
 	//If there is an entity with this name
 	if (get_entity_by_name(name) != NULL)
@@ -197,7 +197,7 @@ Entity* entity_new_name(char* name)
 	return new_ent;
 }
 
-void entity_free(Entity* ent) 
+void entity_free(Entity_p* ent) 
 {
 	if (!ent) 
 	{
@@ -222,7 +222,7 @@ void entity_free(Entity* ent)
 	ent->data = NULL;
 }
 
-void entity_draw(Entity* ent) 
+void entity_draw(Entity_p* ent) 
 {
 	if (!ent)
 	{
@@ -344,7 +344,7 @@ void entity_draw(Entity* ent)
 	}
 }
 
-Bool entity_clickable(Entity* ent, float mX, float mY) {
+Bool entity_clickable(Entity_p* ent, float mX, float mY) {
 
 	Vector2D pos = vector2d(mX, mY);
 
@@ -368,7 +368,7 @@ Bool entity_clickable(Entity* ent, float mX, float mY) {
 
 }
 
-void entity_onClick(Entity* ent, Game_Event* event_reciever, Bool playerowned)
+void entity_onClick(Entity_p* ent, Game_Event* event_reciever, Bool playerowned)
 {
 	if (!ent)
 	{
@@ -387,7 +387,7 @@ void entity_onClick(Entity* ent, Game_Event* event_reciever, Bool playerowned)
 
 }
 
-void entity_reciever(Entity* self, Game_Event* event, Bool playerowned)
+void entity_reciever(Entity_p* self, Game_Event* event, Bool playerowned)
 {
 
 	if (!self)
