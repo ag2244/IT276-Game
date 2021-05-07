@@ -20,19 +20,6 @@
 						}
 					"buildings":
 						[
-							{
-								"name": "Factory",
-								"status": 2,
-								"input":
-								{
-									"Uranium": 1
-								},
-								
-								"output":
-								{
-									"Plastoil": 100
-								}
-							},
 							
 							{
 								"name": "Shipyard",

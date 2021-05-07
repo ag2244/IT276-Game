@@ -723,7 +723,7 @@ SJson* ship_toJson(Ship* self)
 
 	if (self->buildtime > 0) { sj_object_insert(ship, "buildtime", sj_new_int(self->buildtime)); }
 
-	if (self->buildtime > 0) { sj_object_insert(ship, "transport_capacity", sj_new_int(self->transport_capacity));}
+	if (self->transport_capacity > 0) { sj_object_insert(ship, "transport_capacity", sj_new_int(self->transport_capacity));}
 
 	sj_object_insert(ship, "maintenance", resources_toJson(self->maintenance));
 

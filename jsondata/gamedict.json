@@ -2,58 +2,79 @@
 
 	"Buildables":
 	[
-		{
-			"name": "Factory",
-			"buildtime": 3,
-			"input":
-			{
-				"Uranium": 1
-			},
-			
-			"output":
-			{
-				"Plastoil": 100
-			},
-			
-			"costs":
-			{
-				"Gold": 1
-			}
-		},
-		
-		{
-			"name": "Electronics Factory",
-			"buildtime": 3,
-			"input":
-			{
-				"Uranium": 1,
-				"Plastoil": 1
-			},
-			
-			"output":
-			{
-				"Silicon": 100
-			},
-			
-			"costs":
-			{
-				"Gold": 1
-			}
-		},
 		
 		{
 			"name": "Iron Mine",
 			"buildtime": 3,
-			"input":
+			"resource unlocks":
 			{
-				"Food": 1
+				"Iron": 1
 			},
-			
-			"output":
+			"costs":
 			{
-				"Iron": 100
+				"Gold": 1
+			}
+		},
+		
+		{
+			"name": "Farm",
+			"buildtime": 3,
+			"resource unlocks":
+			{
+				"Iron": 1
 			},
-			
+			"costs":
+			{
+				"Gold": 1
+			}
+		},
+		
+		{
+			"name": "Gold Mine",
+			"buildtime": 3,
+			"resource unlocks":
+			{
+				"Gold": 1
+			},
+			"costs":
+			{
+				"Gold": 1
+			}
+		},
+		
+		{
+			"name": "Uranium Mine",
+			"buildtime": 3,
+			"resource unlocks":
+			{
+				"Uranium": 1
+			},
+			"costs":
+			{
+				"Gold": 1
+			}
+		},
+		
+		{
+			"name": "Silicon Mine",
+			"buildtime": 3,
+			"resource unlocks":
+			{
+				"Silicon": 1
+			},
+			"costs":
+			{
+				"Gold": 1
+			}
+		},
+		
+		{
+			"name": "Plastoil Mine",
+			"buildtime": 3,
+			"resource unlocks":
+			{
+				"Plastoil": 1
+			},
 			"costs":
 			{
 				"Gold": 1

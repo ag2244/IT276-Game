@@ -100,6 +100,9 @@ Buildable* buildable_fromJson(SJson* buildable_json)
 		name,
 		resources_fromJson(sj_object_get_value(buildable_json, "input")),
 		resources_fromJson(sj_object_get_value(buildable_json, "output")),
+		resources_fromJson(sj_object_get_value(buildable_json, "resource unlocks")),
+		resources_fromJson(sj_object_get_value(buildable_json, "supply")),
+		resources_fromJson(sj_object_get_value(buildable_json, "supply capacity")),
 		resources_fromJson(sj_object_get_value(buildable_json, "costs")),
 		buildtime
 	);
@@ -116,6 +119,11 @@ SJson* buildable_toJson(Buildable* buildable)
 	sj_object_insert(buildable_json, "input", resources_toJson(buildable->resource_input));
 	sj_object_insert(buildable_json, "output", resources_toJson(buildable->resource_output));
 
+	sj_object_insert(buildable_json, "supply", resources_toJson(buildable->supply));
+	sj_object_insert(buildable_json, "supply capacity", resources_toJson(buildable->supply_cap));
+
+	sj_object_insert(buildable_json, "resource unlocks", resources_toJson(buildable->resource_unlock));
+
 	sj_object_insert(buildable_json, "status", sj_new_int(buildable->status));
 
 	if (buildable->buildtime > 0) {
@@ -128,7 +136,7 @@ SJson* buildable_toJson(Buildable* buildable)
 }
 
 /* Create, copy and destroy buildables */
-Buildable* buildable_new(int status, char* name, float* input, float* output, float* costs, int buildtime)
+Buildable* buildable_new(int status, char* name, float* input, float* output, float* resource_unlocks, float* supply, float* supply_cap, float* costs, int buildtime)
 {
 	int i;
 
@@ -139,23 +147,12 @@ Buildable* buildable_new(int status, char* name, float* input, float* output, fl
 
 	strcpy(buildable->name, name);
 
-	buildable->resource_input = malloc(numresources * sizeof(float));
-	buildable->resource_output = malloc(numresources * sizeof(float));
-	buildable->costs = malloc(numresources * sizeof(float));
-
-	for (i = 0; i < numresources; i++)
-	{
-		buildable->resource_input[i] = 0;
-		buildable->resource_output[i] = 0;
-		buildable->costs[i] = 0;
-	}
-
-	for (i = 0; i < numresources; i++)
-	{
-		buildable->resource_input[i] = input[i];
-		buildable->resource_output[i] = output[i];
-		buildable->costs[i] = costs[i];
-	}
+	buildable->resource_input = resourcelist_copy(input);
+	buildable->resource_output = resourcelist_copy(output);
+	buildable->supply = resourcelist_copy(supply);
+	buildable->supply_cap = resourcelist_copy(supply_cap);
+	buildable->resource_unlock = resourcelist_copy(resource_unlocks);
+	buildable->costs = resourcelist_copy(costs);
 
 	buildable->onNewTurn = buildable_onNewTurn;
 
@@ -166,7 +163,7 @@ Buildable* buildable_new(int status, char* name, float* input, float* output, fl
 
 Buildable* buildable_copy(Buildable* src)
 {
-	return buildable_new(src->status, src->name, src->resource_input, src->resource_output, src->costs, src->buildtime);
+	return buildable_new(src->status, src->name, src->resource_input, src->resource_output, src->resource_unlock, src->supply, src->supply_cap, src->costs, src->buildtime);
 }
 
 void buildable_free(Buildable* buildable)
