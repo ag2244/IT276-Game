@@ -8,7 +8,9 @@
 typedef struct Menu_State;
 
 typedef struct Fleet;
+typedef struct Unit;
 typedef struct Entity;
+typedef struct Spy;
 
 typedef struct Nation_s
 {
@@ -20,6 +22,8 @@ typedef struct Nation_s
 	float* resources_total;
 
 	struct Fleet* fleets;
+	struct Unit* units;
+	struct Spy* spies;
 
 	SJson* (*toJson)(struct Nation_s* self);
 
@@ -77,7 +81,7 @@ void nation_list_reciever(Game_Event* event);
 * @param max_systems the maximum number of systems it can own
 * @return NULL on error, or a pointer to a json object
 */
-Nation* nation_new(Nation* nation, char* name, float* resources, struct Fleet* fleets);
+Nation* nation_new(Nation* nation, char* name, float* resources, struct Fleet* fleets, struct Spy* spies);
 
 /**
 * @brief Add a nation to the nations list

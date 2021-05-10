@@ -233,6 +233,16 @@
 				"Silicon": 20,
 				"Plastoil": 20
 			},
+			
+			"spies":
+			[
+				{
+					"status": 3,
+					"location": "System3",
+					"sublocation": "System3 III"
+				}
+			]
+			
 			"fleets":
 			[
 				{

@@ -232,7 +232,6 @@ Menu_State* buildable_menustate_init(Buildable* buildable, Menu_State* previous_
 	//Input Resources
 	//---------------
 
-	///*
 	if (!resourcelist_iszero(buildable->resource_input))
 	{
 
@@ -263,12 +262,10 @@ Menu_State* buildable_menustate_init(Buildable* buildable, Menu_State* previous_
 		);
 
 	}
-	//*/
 	
 	//Output Resources
 	//----------------
 	
-	///*
 	if (!resourcelist_iszero(buildable->resource_output))
 	{
 		outputresources_textbox = textbox_init
@@ -298,12 +295,10 @@ Menu_State* buildable_menustate_init(Buildable* buildable, Menu_State* previous_
 		);
 
 	}
-	//*/
-
+	
 	//Supply out of capacity
 	//----------------
 
-	///*
 	if (!resourcelist_iszero(buildable->supply_cap))
 	{
 
@@ -331,12 +326,10 @@ Menu_State* buildable_menustate_init(Buildable* buildable, Menu_State* previous_
 			supply_textbox
 		);
 	}
-	//*/
-
+	
 	//Resource Unlocks
 	//----------------
 	
-	///*
 	if (!resourcelist_iszero(buildable->resource_unlock))
 	{
 
@@ -366,8 +359,6 @@ Menu_State* buildable_menustate_init(Buildable* buildable, Menu_State* previous_
 			resourceunlocks_textbox
 		);
 	}
-
-	//*/
 
 	menu_state_hide(building_menustate);
 

@@ -31,6 +31,12 @@
     <Filter Include="Header Files\Stars Above\UI">
       <UniqueIdentifier>{61e2a0b6-dd35-411e-a806-3b2c348c7a45}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Stars Above\Units">
+      <UniqueIdentifier>{843fb867-1783-48c5-9f8f-110be5f27b57}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Stars Above\Units">
+      <UniqueIdentifier>{bf5dcddf-c9ce-4fb2-8ddc-ff38bcd9f6a1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\gf2d_draw.h">
@@ -117,9 +123,6 @@
     <ClInclude Include="..\..\include\starsabove_camera.h">
       <Filter>Header Files\Stars Above\UI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\starsabove_army.h">
-      <Filter>Header Files\Stars Above</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\starsabove_fleet.h">
       <Filter>Header Files\Stars Above</Filter>
     </ClInclude>
@@ -131,6 +134,12 @@
     </ClInclude>
     <ClInclude Include="..\..\include\dirent.h">
       <Filter>Header Files\Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\starsabove_units.h">
+      <Filter>Header Files\Stars Above\Units</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\starsabove_units_spy.h">
+      <Filter>Header Files\Stars Above\Units</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -245,9 +254,6 @@
     <ClCompile Include="..\..\src\starsabove_ui_qtytextbox.c">
       <Filter>Source Files\Stars Above\UI</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\starsabove_army.c">
-      <Filter>Source Files\Stars Above</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\starsabove_fleet.c">
       <Filter>Source Files\Stars Above</Filter>
     </ClCompile>
@@ -256,6 +262,12 @@
     </ClCompile>
     <ClCompile Include="..\..\src\starsabove_ui_mainmenu.c">
       <Filter>Source Files\Stars Above\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\starsabove_units.c">
+      <Filter>Source Files\Stars Above\Units</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\starsabove_units_spy.c">
+      <Filter>Source Files\Stars Above\Units</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

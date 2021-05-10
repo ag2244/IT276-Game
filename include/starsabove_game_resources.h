@@ -24,6 +24,9 @@ typedef struct
 	Bool _menubase;
 	struct Menu_State* menu_state;
 
+	char datatype[128];
+	void* data;
+
 	Sound* eventsound;
 
 } Game_Event;

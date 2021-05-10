@@ -170,7 +170,6 @@
     <ClInclude Include="..\..\include\gf2d_draw.h" />
     <ClInclude Include="..\..\include\gf2d_graphics.h" />
     <ClInclude Include="..\..\include\gf2d_sprite.h" />
-    <ClInclude Include="..\..\include\starsabove_army.h" />
     <ClInclude Include="..\..\include\starsabove_ui_battlescreen.h" />
     <ClInclude Include="..\..\include\starsabove_buildable.h" />
     <ClInclude Include="..\..\include\starsabove_camera.h" />
@@ -187,6 +186,8 @@
     <ClInclude Include="..\..\include\starsabove_ui_gametext.h" />
     <ClInclude Include="..\..\include\starsabove_ui_mainmenu.h" />
     <ClInclude Include="..\..\include\starsabove_ui_textbox.h" />
+    <ClInclude Include="..\..\include\starsabove_units.h" />
+    <ClInclude Include="..\..\include\starsabove_units_spy.h" />
     <ClInclude Include="..\..\src\starsabove_fleet.h" />
   </ItemGroup>
   <ItemGroup>
@@ -212,7 +213,6 @@
     <ClCompile Include="..\..\src\gf2d_draw.c" />
     <ClCompile Include="..\..\src\gf2d_graphics.c" />
     <ClCompile Include="..\..\src\gf2d_sprite.c" />
-    <ClCompile Include="..\..\src\starsabove_army.c" />
     <ClCompile Include="..\..\src\starsabove_buildable.c" />
     <ClCompile Include="..\..\src\starsabove_camera.c" />
     <ClCompile Include="..\..\src\starsabove_collision.c" />
@@ -231,6 +231,8 @@
     <ClCompile Include="..\..\src\starsabove_ui_mainmenu.c" />
     <ClCompile Include="..\..\src\starsabove_ui_qtytextbox.c" />
     <ClCompile Include="..\..\src\starsabove_ui_textbox.c" />
+    <ClCompile Include="..\..\src\starsabove_units.c" />
+    <ClCompile Include="..\..\src\starsabove_units_spy.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -16,6 +16,7 @@
 #include "starsabove_ui_textbox.h"
 
 #include "starsabove_fleet.h"
+#include "starsabove_units_spy.h"
 
 Nation_List nation_list = { 0 };
 
@@ -64,7 +65,8 @@ int load_nations(SJson* game_json)
 		nation = nation_add(
 			name, 
 			resources_fromJson(sj_object_get_value(currentNation, "resources")), 
-			fleetlist_fromJson(sj_object_get_value(currentNation, "fleets"))
+			fleetlist_fromJson(sj_object_get_value(currentNation, "fleets")),
+			spies_fromJson(sj_object_get_value(currentNation, "spies"))
 		);
 
 		if (!nation)
@@ -194,7 +196,7 @@ void nation_list_reciever(Game_Event* event)
 	}
 }
 
-Nation* nation_new(Nation* nation, char* name, float* resources, Fleet* fleets)
+Nation* nation_new(Nation* nation, char* name, float* resources, Fleet* fleets, Spy* spies)
 {
 
 	gfc_line_cpy(nation->name, name);
@@ -207,6 +209,7 @@ Nation* nation_new(Nation* nation, char* name, float* resources, Fleet* fleets)
 	}
 
 	nation->fleets = fleets;
+	nation->spies = spies;
 
 	nation->toJson = nation_toJson;
 
@@ -215,7 +218,7 @@ Nation* nation_new(Nation* nation, char* name, float* resources, Fleet* fleets)
 	return nation;
 }
 
-Nation* nation_add(char* name, float* resources, Fleet* fleets)
+Nation* nation_add(char* name, float* resources, Fleet* fleets, Spy* spies)
 {
 	int i;
 
@@ -232,7 +235,7 @@ Nation* nation_add(char* name, float* resources, Fleet* fleets)
 
 		nation_list.nations[i]._inuse = 1;
 
-		nation_new(&nation_list.nations[i], name, resources, fleets);
+		nation_new(&nation_list.nations[i], name, resources, fleets, spies);
 
 		return &nation_list.nations[i];
 	}
@@ -528,6 +531,88 @@ void nation_menustate_national_fleets(Nation* self, Menu_State* nation_menustate
 
 }
 
+void nation_menustate_spies(Nation* self, Menu_State* nation_menustate)
+{
+	char i;
+
+	UI_Element* all_spies_textbox;
+	UI_Element* single_spy_textbox;
+
+	Menu_State* all_spies_menustate;
+
+	Spy* thisSpy;
+
+	char spyname[128];
+
+	all_spies_textbox = textbox_init
+	(
+		vector2d(10, 10),
+		vector2d(250, 50),
+		"National Spies",
+		font_load("resources/fonts/futur.ttf", 12)
+	);
+
+	all_spies_menustate = menu_state_new(
+		nation_menustate,
+		textbox_init
+		(
+			vector2d(10, 10),
+			vector2d(250, 50),
+			"National Spies",
+			font_load("resources/fonts/futur.ttf", 16)
+		),
+		NULL,
+		vector2d(10, 10),
+		0,
+		5
+	);
+
+	all_spies_textbox->signal = new_gameevent(
+		self->name,
+		"SPIES",
+		"SHOW_ALL",
+		NULL,
+		NULL,
+		all_spies_menustate,
+		0
+	);
+
+	for (i = 0; i < max_national_fleets; i++)
+	{
+		thisSpy = spyfromlist(self->spies, i);
+
+		if (!thisSpy) { continue; }
+
+		sprintf(spyname, "%s | %s, %s", spy_status_names[thisSpy->status], thisSpy->sublocation, thisSpy->location);
+
+		single_spy_textbox = textbox_init
+		(
+			vector2d(10, 10),
+			vector2d(250, 50),
+			spyname,
+			font_load("resources/fonts/futur.ttf", 10)
+		);
+
+		single_spy_textbox->signal = new_gameevent(
+			self->name,
+			"Spies",
+			"SHOW_ALL",
+			NULL,
+			NULL,
+			spy_menustate(thisSpy, all_spies_menustate, 0),
+			0
+		);
+
+		single_spy_textbox->signal->eventsound = gfc_sound_load("audio/Spy.mp3", 0.5, 1);
+
+		menu_addTo(all_spies_menustate->current_menu, single_spy_textbox);
+	}
+
+	menu_state_hide(all_spies_menustate);
+
+	menu_addTo(nation_menustate->current_menu, all_spies_textbox);
+}
+
 struct Menu_State* nation_menustate(Nation* nation, Bool _isPlayer)
 {
 
@@ -594,6 +679,8 @@ struct Menu_State* nation_menustate(Nation* nation, Bool _isPlayer)
 
 	nation_menustate_national_fleets(nation, nation_menustate);
 
+	nation_menustate_spies(nation, nation_menustate);
+
 	menu_state_show(nation_menustate);
 
 	return nation_menustate;
@@ -603,6 +690,7 @@ SJson* nation_toJson(Nation* self)
 {
 	int i;
 	SJson* fleetlist;
+	SJson* spieslist;
 	SJson* nation_json = sj_object_new();
 
 	sj_object_insert(nation_json, "name", sj_new_str(self->name));
@@ -611,6 +699,9 @@ SJson* nation_toJson(Nation* self)
 
 	fleetlist = fleetlist_toJson(self->fleets); 
 	if (sj_array_get_count(fleetlist) > 0) { sj_object_insert(nation_json, "fleets", fleetlist); }
+
+	spieslist = spies_toJson(self->spies);
+	if (sj_array_get_count(spieslist) > 0) { sj_object_insert(nation_json, "spies", spieslist); }
 
 	return nation_json;
 }
