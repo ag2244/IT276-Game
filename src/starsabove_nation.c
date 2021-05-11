@@ -35,6 +35,8 @@ int load_nations(SJson* game_json)
 
 	Fleet* thisfleet;
 
+	char flag_fileame[128];
+
 	//game["Nations"]
 	nations = sj_object_get_value(game_json, "Nations");
 
@@ -83,6 +85,9 @@ int load_nations(SJson* game_json)
 			thisfleet->owner = nation;
 		}
 
+		sprintf(flag_fileame, "images/flags/%s.png", name);
+
+		nation->flag = gf2d_sprite_load_all(flag_fileame, 50, 50, 1);
 
 	}
 

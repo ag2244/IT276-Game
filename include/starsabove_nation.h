@@ -27,6 +27,8 @@ typedef struct Nation_s
 
 	SJson* (*toJson)(struct Nation_s* self);
 
+	Sprite* flag;
+
 } Nation;
 
 typedef struct

@@ -242,6 +242,8 @@ void entity_draw(Entity_p* ent)
 			int i;
 			Vector2D view_pos;
 
+			Vector2D flagpos;
+
 			Vector2D collider_pos;
 			Vector2D neighbor_pos;
 
@@ -256,6 +258,25 @@ void entity_draw(Entity_p* ent)
 				NULL,
 				NULL,
 				(Uint32)ent->frame);
+
+			if (ent->owner)
+			{
+
+				flagpos = vector2d(
+					view_pos.x + (((float)ent->sprite->frame_w - (float)ent->owner->flag->frame_w) / 2),
+					view_pos.y + (((float)ent->sprite->frame_h - (float)ent->owner->flag->frame_h) / 2)
+				);
+
+				gf2d_sprite_draw(
+					ent->owner->flag,
+					flagpos,
+					NULL,
+					NULL,
+					NULL,
+					NULL,
+					NULL,
+					(Uint32)ent->frame);
+			}
 
 			if (ent->collider_circle)
 			{
